@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/blue"
+    android:layout_width="150dp"
+    android:layout_height="150dp">
+
+    <TextView
+
+        android:gravity="bottom"
+        android:textSize="40sp"
+        android:id="@+id/tv_listName"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+
+        android:textSize="40sp"
+        android:id="@+id/tv_numOfListItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>
+
+
+
+
+
+
+</RelativeLayout>
