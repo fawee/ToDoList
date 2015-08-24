@@ -9,7 +9,7 @@ import android.widget.GridView;
 import java.util.ArrayList;
 
 
-public class MainMenu extends ActionBarActivity {
+public class MainMenu extends ActionBarActivity implements  DialogAddListObject.OnAddButtonHandler {
 
     private GridView main_menu_gridView;
     private ArrayList<ListObject> listObjects;
@@ -61,8 +61,17 @@ public class MainMenu extends ActionBarActivity {
     }
 
     private void addNewListObject() {
-        ListObject list = new ListObject("Test", 0);
-        listObjects.add(list);
+        DialogAddListObject dialog = new DialogAddListObject();
+        dialog.show(getFragmentManager(), "Add List Object Dialog");
+
+    }
+
+
+
+    @Override
+    public void getInputTextFromDialog(String inputText) {
+        ListObject listObject = new ListObject(inputText, 0);
+        listObjects.add(listObject);
         listObjectAdapter.notifyDataSetChanged();
     }
 }
