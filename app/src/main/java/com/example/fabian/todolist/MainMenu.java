@@ -1,15 +1,18 @@
 package com.example.fabian.todolist;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
 
 
-public class MainMenu extends ActionBarActivity implements  DialogAddListObject.OnAddButtonHandler {
+public class MainMenu extends ActionBarActivity implements  DialogAddListObject.OnAddButtonHandler, AdapterView.OnItemClickListener {
 
     private GridView main_menu_gridView;
     private ArrayList<ListObject> listObjects;
@@ -32,6 +35,7 @@ public class MainMenu extends ActionBarActivity implements  DialogAddListObject.
     private void setupGUI() {
         setContentView(R.layout.activity_main_menu);
         main_menu_gridView = (GridView) findViewById(R.id.gridView);
+        main_menu_gridView.setOnItemClickListener(this);
     }
 
     @Override
@@ -73,5 +77,16 @@ public class MainMenu extends ActionBarActivity implements  DialogAddListObject.
         ListObject listObject = new ListObject(inputText, 0);
         listObjects.add(listObject);
         listObjectAdapter.notifyDataSetChanged();
+    }
+
+
+    //Clicklistener für die einzelnen ListObjects
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ListObject object = (ListObject) parent.getItemAtPosition(position);
+        String name = object.getTitle();
+        Intent intent = new Intent(MainMenu.this, SubMenu.class);
+        intent.putExtra("name", name);
+        startActivity(intent);
     }
 }
