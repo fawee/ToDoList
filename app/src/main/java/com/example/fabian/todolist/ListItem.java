@@ -1,10 +1,20 @@
 package com.example.fabian.todolist;
 
-/**
- * Created by fabian on 25.08.15.
- */
+
+import java.util.Date;
+
 public class ListItem {
 
-    private String task;
+    private String title;
+    private String note;
+    private int priority;
+    private Date dueDate;
+    private boolean remind;
+    private boolean isDone;
+
+    public ListItem(String title, String note, Date dueDate) {
+
+    }
+
 
 }
