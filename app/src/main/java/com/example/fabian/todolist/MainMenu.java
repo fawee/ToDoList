@@ -41,7 +41,7 @@ public class MainMenu extends ActionBarActivity implements  DialogAddListObject.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_menu, menu);
+        getMenuInflater().inflate(R.menu.main_menu_actionbar, menu);
         return true;
     }
 
@@ -51,6 +51,7 @@ public class MainMenu extends ActionBarActivity implements  DialogAddListObject.
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         switch (id) {
 
             case R.id.action_settings:
@@ -89,4 +90,6 @@ public class MainMenu extends ActionBarActivity implements  DialogAddListObject.
         intent.putExtra("name", name);
         startActivity(intent);
     }
+
+
 }

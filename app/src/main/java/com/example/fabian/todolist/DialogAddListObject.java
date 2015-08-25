@@ -7,7 +7,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.EditText;
-
+import android.widget.Spinner;
 
 
 public class DialogAddListObject extends DialogFragment {
@@ -15,6 +15,7 @@ public class DialogAddListObject extends DialogFragment {
     private OnAddButtonHandler onAddButtonHandler;
     private EditText edittextInput;
     private AlertDialog.Builder builder;
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -52,6 +53,8 @@ public class DialogAddListObject extends DialogFragment {
         builder.setTitle(getString(R.string.dialog_title_add_listobject));
         builder.setCancelable(false);
         builder.setView(edittextInput);
+
+
     }
 
     interface OnAddButtonHandler {
