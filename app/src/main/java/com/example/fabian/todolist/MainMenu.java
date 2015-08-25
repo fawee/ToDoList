@@ -83,7 +83,7 @@ public class MainMenu extends ActionBarActivity implements  DialogAddListObject.
     }
 
 
-    //Clicklistener für die einzelnen ListObjects
+    //ClickListener für die einzelnen ListObjects
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ListObject object = (ListObject) parent.getItemAtPosition(position);
