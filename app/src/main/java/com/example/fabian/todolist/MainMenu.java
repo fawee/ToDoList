@@ -24,6 +24,7 @@ public class MainMenu extends ActionBarActivity implements  DialogAddListObject.
         setupGUI();
         connectData();
 
+
     }
 
     private void connectData() {
@@ -34,6 +35,7 @@ public class MainMenu extends ActionBarActivity implements  DialogAddListObject.
 
     private void setupGUI() {
         setContentView(R.layout.activity_main_menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         main_menu_gridView = (GridView) findViewById(R.id.gridView);
         main_menu_gridView.setOnItemClickListener(this);
     }

@@ -15,6 +15,7 @@ public class SubMenu extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         Bundle extras = getIntent().getExtras();
         String name = extras.getString("name");
         TextView nameOfList = (TextView) findViewById(R.id.tvSubMenuNameListObject);
