@@ -7,8 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.GridView;
 
+import com.android.project.todolist.communicator.Communicator;
 import com.android.project.todolist.dialogs.DialogAddListObject;
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.adapter.ListObjectAdapter;
@@ -17,7 +19,7 @@ import com.android.project.todolist.R;
 import java.util.ArrayList;
 
 
-public class MainMenu extends ActionBarActivity implements DialogAddListObject.OnAddButtonHandler, AdapterView.OnItemClickListener {
+public class MainMenu extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener {
 
     private GridView main_menu_gridView;
     private ArrayList<ListObject> listObjects;
@@ -79,12 +81,17 @@ public class MainMenu extends ActionBarActivity implements DialogAddListObject.O
     }
 
 
-
     @Override
     public void getInputTextFromDialog(String inputText) {
         ListObject listObject = new ListObject(inputText, 0);
         listObjects.add(listObject);
         listObjectAdapter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void getDate(DatePicker view, int year, int month, int day) {
+
     }
 
 

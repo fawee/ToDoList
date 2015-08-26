@@ -1,20 +1,25 @@
 package com.android.project.todolist.domain;
 
 
+import android.text.format.DateFormat;
+
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class ListItem {
 
     private String title;
     private String note;
     private int priority;
-    private Date dueDate;
+    private GregorianCalendar calendar;
     private boolean reminder;
     private boolean isDone;
     private int listID;
 
-    public ListItem(String title, String note, Date dueDate) {
-
+    public ListItem(String title, String note, int year, int month, int day) {
+        this.title = title;
+        calendar = new GregorianCalendar(year, month, day);
     }
 
 
@@ -30,8 +35,13 @@ public class ListItem {
         return priority;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public String getStringFromDate() {
+        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT,
+                Locale.GERMANY);
+        String dateString = df.format(calendar.getTime());
+
+        return dateString;
+
     }
 
     public boolean getIsDone() {

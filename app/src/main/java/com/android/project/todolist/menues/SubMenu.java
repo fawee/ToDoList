@@ -1,5 +1,6 @@
 package com.android.project.todolist.menues;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -55,6 +56,7 @@ public class SubMenu extends ActionBarActivity {
     }
 
     private void addListItem() {
-
+        Intent i = new Intent(this, AddListItemMenu.class);
+        startActivity(i);
     }
 }

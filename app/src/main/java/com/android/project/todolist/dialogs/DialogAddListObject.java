@@ -9,11 +9,12 @@ import android.os.Bundle;
 import android.widget.EditText;
 
 import com.android.project.todolist.R;
+import com.android.project.todolist.communicator.Communicator;
 
 
 public class DialogAddListObject extends DialogFragment {
 
-    private OnAddButtonHandler onAddButtonHandler;
+    private Communicator communicator;
     private EditText edittextInput;
     private AlertDialog.Builder builder;
 
@@ -21,7 +22,7 @@ public class DialogAddListObject extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        onAddButtonHandler = (OnAddButtonHandler) activity;
+        communicator = (Communicator) activity;
     }
 
     @Override
@@ -43,7 +44,7 @@ public class DialogAddListObject extends DialogFragment {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                onAddButtonHandler.getInputTextFromDialog(edittextInput.getText().toString());
+                communicator.getInputTextFromDialog(edittextInput.getText().toString());
             }
         });
     }
@@ -58,8 +59,5 @@ public class DialogAddListObject extends DialogFragment {
 
     }
 
-    public interface OnAddButtonHandler {
 
-        public void getInputTextFromDialog(String inputText);
-    }
 }
