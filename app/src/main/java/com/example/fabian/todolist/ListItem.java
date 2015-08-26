@@ -11,6 +11,7 @@ public class ListItem {
     private Date dueDate;
     private boolean reminder;
     private boolean isDone;
+    private int listID;
 
     public ListItem(String title, String note, Date dueDate) {
 
@@ -37,11 +38,11 @@ public class ListItem {
         return isDone;
     }
 
-    public byte[] getReminder() {
+    public boolean getReminder() {
         return reminder;
     }
 
-    public byte[] getListID() {
+    public int getListID() {
         return listID;
     }
 }

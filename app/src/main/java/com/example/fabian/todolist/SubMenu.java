@@ -1,5 +1,6 @@
 package com.example.fabian.todolist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -14,12 +15,21 @@ public class SubMenu extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sub_menu);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        setupGUI();
+        readIntents();
+
+    }
+
+    private void readIntents() {
         Bundle extras = getIntent().getExtras();
         String name = extras.getString("name");
         TextView nameOfList = (TextView) findViewById(R.id.tvSubMenuNameListObject);
         nameOfList.setText(name);
+    }
+
+    private void setupGUI() {
+        setContentView(R.layout.activity_sub_menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
     @Override

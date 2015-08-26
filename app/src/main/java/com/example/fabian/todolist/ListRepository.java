@@ -32,7 +32,7 @@ public class ListRepository  {
     public static final String KEY_ListItem_reminder = "ListItem_reminder";
     public static final String KEY_ListItem_List_ID = "ListItem_List_ID";
 
-//Indexe noch setzen
+    //Indexe noch setzen
     public static final int COLUMN_TASK_INDEX = 1;
     public static final int COLUMN_DATE_INDEX = 2;
 
@@ -80,7 +80,7 @@ public class ListRepository  {
         return db.insert(DATABASE_tbl_ListItem, null, newListItemValues);
     }
 
-//Bis hier angepasst
+    //Bis hier angepasst
     public void removeList(ToDoItem item) {
         String whereClause = KEY_TASK + " = '" + item.getName() + "' AND "
                 + KEY_DATE + " = '" + item.getFormattedDate() + "'";
@@ -94,7 +94,7 @@ public class ListRepository  {
 
         db.delete(DATABASE_TABLE, whereClause, null);
     }
-//Bis hier hin Änderungen gemacht aber noch nicht fertig
+    //Bis hier hin Änderungen gemacht aber noch nicht fertig
     public ArrayList<ToDoItem> getAllToDoItems() {
         ArrayList<ToDoItem> items = new ArrayList<ToDoItem>();
         Cursor cursor = db.query(DATABASE_TABLE, new String[] { KEY_ID,
