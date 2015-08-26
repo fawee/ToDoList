@@ -1,4 +1,4 @@
-package com.example.fabian.todolist;
+package com.android.project.todolist.menues;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -9,10 +9,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.android.project.todolist.dialogs.DialogAddListObject;
+import com.android.project.todolist.domain.ListObject;
+import com.android.project.todolist.adapter.ListObjectAdapter;
+import com.android.project.todolist.R;
+
 import java.util.ArrayList;
 
 
-public class MainMenu extends ActionBarActivity implements  DialogAddListObject.OnAddButtonHandler, AdapterView.OnItemClickListener {
+public class MainMenu extends ActionBarActivity implements DialogAddListObject.OnAddButtonHandler, AdapterView.OnItemClickListener {
 
     private GridView main_menu_gridView;
     private ArrayList<ListObject> listObjects;

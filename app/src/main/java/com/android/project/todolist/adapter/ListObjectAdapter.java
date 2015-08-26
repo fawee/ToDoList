@@ -1,4 +1,4 @@
-package com.example.fabian.todolist;
+package com.android.project.todolist.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.android.project.todolist.domain.ListObject;
+import com.android.project.todolist.R;
 
 import java.util.ArrayList;
 

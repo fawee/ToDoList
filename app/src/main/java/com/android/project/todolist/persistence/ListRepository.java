@@ -1,10 +1,12 @@
-package com.example.fabian.todolist;
+package com.android.project.todolist.persistence;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.android.project.todolist.domain.ListItem;
 
 /**
  * Created by Patrick on 24.08.2015.

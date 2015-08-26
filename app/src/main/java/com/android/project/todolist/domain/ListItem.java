@@ -1,4 +1,4 @@
-package com.example.fabian.todolist;
+package com.android.project.todolist.domain;
 
 
 import java.util.Date;

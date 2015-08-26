@@ -1,4 +1,4 @@
-package com.example.fabian.todolist;
+package com.android.project.todolist.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,7 +7,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.Spinner;
+
+import com.android.project.todolist.R;
 
 
 public class DialogAddListObject extends DialogFragment {
@@ -57,7 +58,7 @@ public class DialogAddListObject extends DialogFragment {
 
     }
 
-    interface OnAddButtonHandler {
+    public interface OnAddButtonHandler {
 
         public void getInputTextFromDialog(String inputText);
     }

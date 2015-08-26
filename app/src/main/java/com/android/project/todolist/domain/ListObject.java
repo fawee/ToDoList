@@ -1,4 +1,4 @@
-package com.example.fabian.todolist;
+package com.android.project.todolist.domain;
 
 /**
  * Created by fabian on 24.08.15.

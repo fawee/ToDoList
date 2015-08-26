@@ -1,8 +1,9 @@
-package com.example.fabian.todolist;
+package com.android.project.todolist.menues;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.EditText;
+
+import com.android.project.todolist.R;
 
 
 public class AddListItemMenu extends Activity {

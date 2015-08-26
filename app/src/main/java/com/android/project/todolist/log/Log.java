@@ -1,4 +1,4 @@
-package com.example.fabian.todolist;
+package com.android.project.todolist.log;
 
 /**
  * Created by Patrick on 24.08.2015.
