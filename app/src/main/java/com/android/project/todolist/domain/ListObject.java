@@ -1,17 +1,15 @@
 package com.android.project.todolist.domain;
 
-/**
- * Created by fabian on 24.08.15.
- */
+
 public class ListObject {
 
     private String title;
     private int numOfListItems;
 
-    public ListObject(String title, int numOfListItems) {
+    public ListObject(String title) {
 
         this.title = title;
-        this.numOfListItems = numOfListItems;
+        numOfListItems = 0;
 
     }
 

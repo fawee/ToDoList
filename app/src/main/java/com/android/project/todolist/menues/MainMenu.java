@@ -10,11 +10,13 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.GridView;
 
+
 import com.android.project.todolist.communicator.Communicator;
 import com.android.project.todolist.dialogs.DialogAddListObject;
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.adapter.ListObjectAdapter;
 import com.android.project.todolist.R;
+
 
 import java.util.ArrayList;
 
@@ -24,14 +26,16 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
     private GridView main_menu_gridView;
     private ArrayList<ListObject> listObjects;
     private ListObjectAdapter listObjectAdapter;
+    private ListObject listObject;
+
+
+    private static final int REQUEST_CODE_OPEN_SUBMENU = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupGUI();
         connectData();
-
-
     }
 
     private void connectData() {
@@ -83,8 +87,8 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
 
     @Override
     public void getInputTextFromDialog(String inputText) {
-        ListObject listObject = new ListObject(inputText, 0);
-        listObjects.add(listObject);
+        ListObject newListObject = new ListObject(inputText);
+        listObjects.add(newListObject);
         listObjectAdapter.notifyDataSetChanged();
     }
 
@@ -95,15 +99,24 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
     }
 
 
+
     //ClickListener für die einzelnen ListObjects
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ListObject object = (ListObject) parent.getItemAtPosition(position);
-        String name = object.getTitle();
+        listObject = (ListObject) parent.getItemAtPosition(position);
+        String listObjectTitle = listObject.getTitle();
         Intent intent = new Intent(MainMenu.this, SubMenu.class);
-        intent.putExtra("name", name);
-        startActivity(intent);
+        intent.putExtra("name", listObjectTitle);
+        startActivityForResult(intent, REQUEST_CODE_OPEN_SUBMENU);
+
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Aktualisiert das Textview für die Anzahl der ListItems in der Liste
+        if(requestCode == REQUEST_CODE_OPEN_SUBMENU) {
+            listObject.setNumOfListItems(data.getExtras().getInt("NumOfListItems"));
+            listObjectAdapter.notifyDataSetChanged();
+        }
+    }
 }

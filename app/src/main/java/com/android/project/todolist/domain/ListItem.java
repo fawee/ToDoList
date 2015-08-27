@@ -20,6 +20,7 @@ public class ListItem {
     public ListItem(String title, String note, int year, int month, int day) {
         this.title = title;
         calendar = new GregorianCalendar(year, month, day);
+        this.note = note;
     }
 
 
