@@ -1,15 +1,21 @@
 package com.android.project.todolist.domain;
 
-
+/**
+ * Created by fabian on 24.08.15.
+ */
 public class ListObject {
 
+    private int listID;
     private String title;
     private int numOfListItems;
+    private int colour;
 
-    public ListObject(String title) {
+    public ListObject(int listID, String title, int numOfListItems, int colour) {
 
+        this.listID = listID;
         this.title = title;
-        numOfListItems = 0;
+        this.numOfListItems = numOfListItems;
+        this.colour = colour;
 
     }
 
@@ -28,4 +34,21 @@ public class ListObject {
     public void setNumOfListItems(int numOfListItems) {
         this.numOfListItems = numOfListItems;
     }
+
+    public int getColour() {
+        return colour;
+    }
+
+    public void setColour(int colour) {
+        this.colour= colour;
+    }
+
+    public int getListID() {
+        return listID;
+    }
+
+    public void setListID(int listID) {
+        this.listID= listID;
+    }
+
 }
