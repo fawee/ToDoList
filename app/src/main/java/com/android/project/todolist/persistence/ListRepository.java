@@ -142,7 +142,7 @@ public class ListRepository  {
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion1) {
 
         }
     }
