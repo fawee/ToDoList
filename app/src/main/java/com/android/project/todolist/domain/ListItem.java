@@ -18,7 +18,7 @@ public class ListItem {
     private boolean reminder;
     private int listID;
 
-    public ListItem(int listItemID, String title, String note, int prority, int year, int month, int day, boolean isDone, boolean reminder, int listID) {
+    public ListItem(int listItemID, String title, String note, int priority, int year, int month, int day, boolean isDone, boolean reminder, int listID) {
 
         this.listItemID = listItemID;
         this.title = title;
@@ -47,7 +47,7 @@ public class ListItem {
     public String getStringFromDueDate() {
         java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT,
                 Locale.GERMANY);
-        String dateString = df.format(calendar.getTime());
+        String dateString = df.format(dueDate.getTime());
 
         return dateString;
     }

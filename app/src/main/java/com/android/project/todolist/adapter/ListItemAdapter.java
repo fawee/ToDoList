@@ -46,7 +46,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         title.setText(listItemArrayList.get(position).getTitle());
 
         TextView date = (TextView) view.findViewById(R.id.listItem_date);
-        date.setText(listItemArrayList.get(position).getStringFromDate());
+        date.setText(listItemArrayList.get(position).getStringFromDueDate());
 
         TextView note = (TextView) view.findViewById(R.id.listItem_note);
         String userNote = listItemArrayList.get(position).getNote();
