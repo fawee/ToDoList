@@ -1,12 +1,19 @@
 <resources>
     <string name="app_name">ToDoList</string>
 
-    <string name="hello_world">Hello world!</string>
+    
     <string name="action_settings">Settings</string>
     <string name="dialog_title_add_listobject">Add a new List</string>
+    
     <string name="addListItemMenu_Title">Title</string>
     <string name="addListItemMenu_Date">Date</string>
     <string name="addListItemMenu_Date_hint">Set Date here</string>
     <string name="addListItemMenu_Note">Note</string>
     <string name="addListItemMenu_Note_hint">Add a Note here</string>
+    <string name="addListItemMenu_Priority">Priority</string>
+    <string-array name="addListItemMenu_Priority_Spinner">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

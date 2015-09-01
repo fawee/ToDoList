@@ -49,16 +49,17 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
 
     private void initArrayList(){
         listObjects = new ArrayList<ListObject>();
-        listObjects = db.getAllLists();
+       // listObjects = db.getAllLists();
     }
 
     private void initUI() {
-        listObjectAdapter = new ListObjectAdapter(this, listObjects);
-        main_menu_gridView.setAdapter(listObjectAdapter);
-        main_menu_gridView = (GridView) findViewById(R.id.gridView);
-        main_menu_gridView.setOnItemClickListener(this);
         setContentView(R.layout.activity_main_menu);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        main_menu_gridView = (GridView) findViewById(R.id.gridView);
+        listObjectAdapter = new ListObjectAdapter(this, listObjects);
+        main_menu_gridView.setAdapter(listObjectAdapter);
+        main_menu_gridView.setOnItemClickListener(this);
+
     }
 
     @Override
@@ -142,7 +143,7 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Aktualisiert das Textview für die Anzahl der ListItems in der Liste
         if(requestCode == REQUEST_CODE_OPEN_SUBMENU) {
-            listObject.setNumOfListItems(data.getExtras().getInt("NumOfListItems"));
+           // listObject.setNumOfListItems(data.getExtras().getInt("NumOfListItems"));
             listObjectAdapter.notifyDataSetChanged();
         }
     }
