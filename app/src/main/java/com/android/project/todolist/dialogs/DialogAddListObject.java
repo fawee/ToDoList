@@ -30,8 +30,15 @@ public class DialogAddListObject extends DialogFragment {
         setupDialog();
         handleClicks();
 
-        Dialog dialog = builder.create();
-        return dialog;
+        return builder.create();
+    }
+
+    private void setupDialog() {
+        builder = new AlertDialog.Builder(getActivity());
+        edittextInput = new EditText(getActivity());
+        builder.setTitle(getString(R.string.dialog_title_add_listobject));
+        builder.setCancelable(false);
+        builder.setView(edittextInput);
     }
 
     private void handleClicks() {
@@ -48,16 +55,5 @@ public class DialogAddListObject extends DialogFragment {
             }
         });
     }
-
-    private void setupDialog() {
-        builder = new AlertDialog.Builder(getActivity());
-        edittextInput = new EditText(getActivity());
-        builder.setTitle(getString(R.string.dialog_title_add_listobject));
-        builder.setCancelable(false);
-        builder.setView(edittextInput);
-
-
-    }
-
 
 }

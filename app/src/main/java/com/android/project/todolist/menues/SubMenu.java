@@ -54,9 +54,9 @@ public class SubMenu extends ActionBarActivity {
 
     private void readIntentsFromMainMenu() {
         Bundle extras = getIntent().getExtras();
-        String name = extras.getString("name");
+        String ListTitle = extras.getString("ListTitle");
         TextView nameOfList = (TextView) findViewById(R.id.tvSubMenuNameListObject);
-        nameOfList.setText(name);
+        nameOfList.setText(ListTitle);
     }
 
     private void setupGUI() {

@@ -1,0 +1,18 @@
+ToDos:
+- Datenbankanbindung
+    *List       Listen aus DB holen
+                Neue Liste in DB speichern und anschließend GridView aktualisieren
+                Nach bearbeiten der ListItems die anzahl der Items aktualisieren
+    *ListItem   ListItems aus DB holen
+                Neue ListItems in DB speichern und anschließend GridView aktualisieren
+                Nach bearbeiten eines Elements aktualisieren
+
+- ColourPicker
+- Wecker Funktion
+- ListItem Add Activity (Erinnerungsdatum)
+- LongClick -> Delete(Edit, Erledigt)
+
+- Cloud
+
+Bugs:
+

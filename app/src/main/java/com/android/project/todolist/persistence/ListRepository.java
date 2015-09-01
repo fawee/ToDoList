@@ -189,7 +189,7 @@ public class ListRepository  {
         }
         return false;
     }
-    //Bis hier hin Änderungen gemacht aber noch nicht fertig
+
     private class ToDoDBOpenHelper extends SQLiteOpenHelper {
         private static final String DATABASE_CREATE_tblList = "create table " + TABLE_tblList
                 + " (" + KEY_List_ID + " integer primary key autoincrement, " +

@@ -16,9 +16,11 @@ import com.android.project.todolist.dialogs.DialogAddListObject;
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.adapter.ListObjectAdapter;
 import com.android.project.todolist.R;
+import com.android.project.todolist.persistence.ListRepository;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainMenu extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
@@ -27,6 +29,7 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
     private ArrayList<ListObject> listObjects;
     private ListObjectAdapter listObjectAdapter;
     private ListObject listObject;
+    private ListRepository db;
 
 
     private static final int REQUEST_CODE_OPEN_SUBMENU = 0;
@@ -34,21 +37,28 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupGUI();
-        connectData();
+        initDB();
+        initArrayList();
+        initUI();
     }
 
-    private void connectData() {
-        listObjects = new ArrayList<>();
+    private void initDB(){
+        db = new ListRepository(this);
+        db.open();
+    }
+
+    private void initArrayList(){
+        listObjects = new ArrayList<ListObject>();
+        listObjects = db.getAllLists();
+    }
+
+    private void initUI() {
         listObjectAdapter = new ListObjectAdapter(this, listObjects);
         main_menu_gridView.setAdapter(listObjectAdapter);
-    }
-
-    private void setupGUI() {
-        setContentView(R.layout.activity_main_menu);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
         main_menu_gridView = (GridView) findViewById(R.id.gridView);
         main_menu_gridView.setOnItemClickListener(this);
+        setContentView(R.layout.activity_main_menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
     @Override
@@ -84,11 +94,11 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
 
     }
 
-
+    // Add new List
     @Override
     public void getInputTextFromDialog(String inputText) {
         ListObject newListObject = new ListObject(1, inputText, 0, 1);
-
+        newListObject.setListID(db.insertList(newListObject));
         listObjects.add(newListObject);
         listObjectAdapter.notifyDataSetChanged();
     }
@@ -104,12 +114,23 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
     //ClickListener für die einzelnen ListObjects
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (listObjects.get(position) == null) {
+
+        } else {
+            Intent i = new Intent(getApplicationContext(), SubMenu.class);
+            i.putExtra("ListID", listObjects.get(position).getListID());
+            i.putExtra("ListTitle", listObjects.get(position).getTitle());
+            startActivityForResult(i, REQUEST_CODE_OPEN_SUBMENU);
+        }
+
+
+        /*
         listObject = (ListObject) parent.getItemAtPosition(position);
         String listObjectTitle = listObject.getTitle();
         Intent intent = new Intent(MainMenu.this, SubMenu.class);
         intent.putExtra("name", listObjectTitle);
         startActivityForResult(intent, REQUEST_CODE_OPEN_SUBMENU);
-
+*/
     }
 
     @Override
