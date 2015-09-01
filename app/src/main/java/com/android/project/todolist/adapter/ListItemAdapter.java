@@ -50,7 +50,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
         TextView note = (TextView) view.findViewById(R.id.listItem_note);
         String userNote = listItemArrayList.get(position).getNote();
-        if(userNote.length() > 10) {
+        if(userNote.length() > 15) {
             note.setText(userNote.substring(0, 15) + "...");
         } else {
             note.setText(userNote);

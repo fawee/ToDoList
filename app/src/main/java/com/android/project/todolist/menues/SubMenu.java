@@ -114,7 +114,7 @@ public class SubMenu extends ActionBarActivity {
                 Date dueDate = getDateFromString(date);
                 GregorianCalendar cal = new GregorianCalendar();
                 cal.setTime(dueDate);
-                ListItem listItem = new ListItem(title, note, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+                ListItem listItem = new ListItem(1, title, note, 1, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), false, false, 1);
                 listItemArrayList.add(listItem);
                 listItemAdapter.notifyDataSetChanged();
             }

@@ -21,7 +21,7 @@ import com.android.project.todolist.R;
 import java.util.ArrayList;
 
 
-public class MainMenu extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener {
+public class MainMenu extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private GridView main_menu_gridView;
     private ArrayList<ListObject> listObjects;
@@ -87,7 +87,8 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
 
     @Override
     public void getInputTextFromDialog(String inputText) {
-        ListObject newListObject = new ListObject(inputText);
+        ListObject newListObject = new ListObject(1, inputText, 0, 1);
+
         listObjects.add(newListObject);
         listObjectAdapter.notifyDataSetChanged();
     }
@@ -112,6 +113,11 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
     }
 
     @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        return false;
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Aktualisiert das Textview für die Anzahl der ListItems in der Liste
         if(requestCode == REQUEST_CODE_OPEN_SUBMENU) {
@@ -119,4 +125,7 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
             listObjectAdapter.notifyDataSetChanged();
         }
     }
+
+
+
 }
