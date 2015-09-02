@@ -1,4 +1,4 @@
-package com.android.project.todolist.menues;
+package com.android.project.todolist.activities;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -48,7 +48,7 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
 
     private void initArrayList(){
         listObjects = new ArrayList<ListObject>();
-       // listObjects = db.getAllLists();
+        listObjects = db.getAllLists();
     }
 
     private void initUI() {
@@ -94,7 +94,7 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
 
     }
 
-    // Add new List
+    // Add new List to DB and UI
     @Override
     public void getInputTextFromDialog(String inputText) {
         ListObject newListObject = new ListObject(1, inputText, 0, 1);
@@ -103,13 +103,10 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
         listObjectAdapter.notifyDataSetChanged();
     }
 
-
     @Override
     public void getDate(DatePicker view, int year, int month, int day) {
 
     }
-
-
 
     //ClickListener für die einzelnen ListObjects
     @Override
@@ -122,7 +119,6 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
             i.putExtra("ListTitle", listObjects.get(position).getTitle());
             startActivityForResult(i, REQUEST_CODE_OPEN_SUBMENU);
         }
-
 
         /*
         listObject = (ListObject) parent.getItemAtPosition(position);

@@ -9,14 +9,14 @@ import java.util.Locale;
 
 public class ListItem {
 
-    private long listItemID;
+    private int listItemID;
     private String title;
     private String note;
     private int priority;
     private GregorianCalendar dueDate;
     private boolean isDone;
     private boolean reminder;
-    private long listID;
+    private int listID;
 
     public ListItem(int listItemID, String title, String note, int priority, int year, int month, int day, boolean isDone, boolean reminder, int listID) {
 
@@ -30,7 +30,11 @@ public class ListItem {
         this.listID = listID;
     }
 
-    public long getListItemID() {
+    public void setListItemID(int listItemID) {
+        this.listItemID = listItemID;
+    }
+
+    public int getListItemID() {
         return listItemID;
     }
 
@@ -58,6 +62,6 @@ public class ListItem {
         return reminder;
     }
 
-    public long getListID() { return listID; }
+    public int getListID() { return listID; }
 
 }

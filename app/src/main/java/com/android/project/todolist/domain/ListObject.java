@@ -5,7 +5,7 @@ package com.android.project.todolist.domain;
  */
 public class ListObject {
 
-    private long listID;
+    private int listID;
     private String title;
     private int numOfListItems;
     private int colour;
@@ -43,11 +43,11 @@ public class ListObject {
         this.colour= colour;
     }
 
-    public long getListID() {
+    public int getListID() {
         return listID;
     }
 
-    public void setListID(long listID) {
+    public void setListID(int listID) {
         this.listID= listID;
     }
 

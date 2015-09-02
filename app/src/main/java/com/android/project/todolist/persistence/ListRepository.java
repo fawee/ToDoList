@@ -66,16 +66,16 @@ public class ListRepository  {
         db.close();
     }
 
-    public long insertList(ListObject list) {
+    public int insertList(ListObject list) {
         ContentValues newListValues = new ContentValues();
 
         newListValues.put(KEY_List_Title, list.getTitle());
         newListValues.put(KEY_List_Colour, list.getColour());
 
-        return db.insert(TABLE_tblList, null, newListValues);
+        return (int)db.insert(TABLE_tblList, null, newListValues);
     }
 
-    public long insertListItem(ListItem item) {
+    public int insertListItem(ListItem item) {
         ContentValues newListItemValues = new ContentValues();
 
         newListItemValues.put(KEY_ListItem_Title, item.getTitle());
@@ -86,7 +86,7 @@ public class ListRepository  {
         newListItemValues.put(KEY_ListItem_reminder, item.getReminder());
         newListItemValues.put(KEY_ListItem_List_ID, item.getListID());
 
-        return db.insert(TABLE_tblListItem, null, newListItemValues);
+        return (int)db.insert(TABLE_tblListItem, null, newListItemValues);
     }
 
     public void removeList(ListObject list) {
@@ -108,9 +108,9 @@ public class ListRepository  {
         Cursor cursor = db.query(TABLE_tblList, new String[] { KEY_List_ID,KEY_List_Title, KEY_List_Colour}, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                int id= cursor.getInt(1);
-                String title = cursor.getString(2);
-                int colour = cursor.getInt(3);
+                int id= cursor.getInt(0);
+                String title = cursor.getString(1);
+                int colour = cursor.getInt(2);
 
                 lists.add(new ListObject(id, title, getNumOfListItems(id), colour));
 
@@ -119,14 +119,14 @@ public class ListRepository  {
         return lists;
     }
 
-    private long updateList(ListObject list){
+    private int updateList(ListObject list){
         ContentValues cv = new ContentValues();
         cv.put(KEY_List_Title, list.getTitle());
         cv.put(KEY_List_Colour, list.getColour());
-        return db.update(TABLE_tblList, cv, KEY_List_ID + " = " + list.getListID(), null);
+        return (int) db.update(TABLE_tblList, cv, KEY_List_ID + " = " + list.getListID(), null);
     }
 
-    private long updateListItem(ListItem item){
+    private int updateListItem(ListItem item){
         ContentValues cv = new ContentValues();
         cv.put(KEY_ListItem_Title, item.getTitle());
         cv.put(KEY_ListItem_Note, item.getNote());
@@ -134,40 +134,41 @@ public class ListRepository  {
         cv.put(KEY_ListItem_DueDate, item.getStringFromDueDate());
         cv.put(KEY_ListItem_isDone, item.getIsDone());
         cv.put(KEY_ListItem_reminder, item.getReminder());
-        return db.update(TABLE_tblListItem, cv, KEY_ListItem_ID + " = " + item.getListID(), null);
+        return (int)db.update(TABLE_tblListItem, cv, KEY_ListItem_ID + " = " + item.getListID(), null);
     }
 
     public ArrayList<ListItem> getItemsOfList(int listID) {
         ArrayList<ListItem> items = new ArrayList<ListItem>();
-        //Where klausel für die KEY_ListItem_List_ID muss noch angefügt werden
         Cursor cursor = db.query(TABLE_tblListItem, new String[] {  KEY_ListItem_ID,
                 KEY_ListItem_Title,
                 KEY_ListItem_Note,
                 KEY_ListItem_Priority,
                 KEY_ListItem_DueDate,
                 KEY_ListItem_isDone,
-                KEY_ListItem_reminder}, null, null, null, null, null);
+                KEY_ListItem_reminder},
+                KEY_ListItem_List_ID + " = " + listID,null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(1);
-                String title = cursor.getString(2);
-                String note = cursor.getString(3);
-                int prority = cursor.getInt(4);
-                String date = cursor.getString(5);
-                boolean isDone = booleanOfInt(cursor.getInt(6));
-                boolean reminder = booleanOfInt(cursor.getInt(7));
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String note = cursor.getString(2);
+                int priority = cursor.getInt(3);
+                String date = cursor.getString(4);
+                boolean isDone = booleanOfInt(cursor.getInt(5));
+                boolean reminder = booleanOfInt(cursor.getInt(6));
 
 
                 Date formatedDate = null;
                 try {
-                    formatedDate = new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.GERMAN).parse(date);
+                    formatedDate = new SimpleDateFormat("dd.MM.yy", Locale.GERMAN).parse(date);
+                    //formatedDate = new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.GERMAN).parse(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 Calendar cal = Calendar.getInstance(Locale.GERMAN);
                 cal.setTime(formatedDate);
 
-                items.add(new ListItem(id, title, note, prority, cal.get(Calendar.DAY_OF_MONTH),
+                items.add(new ListItem(id, title, note, priority, cal.get(Calendar.DAY_OF_MONTH),
                         cal.get(Calendar.MONTH), cal.get(Calendar.YEAR), isDone, reminder, listID));
             } while (cursor.moveToNext());
         }

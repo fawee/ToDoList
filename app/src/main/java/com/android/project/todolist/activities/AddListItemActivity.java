@@ -1,13 +1,9 @@
-package com.android.project.todolist.menues;
+package com.android.project.todolist.activities;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,12 +16,8 @@ import android.widget.TextView;
 import com.android.project.todolist.R;
 import com.android.project.todolist.communicator.Communicator;
 import com.android.project.todolist.dialogs.DatePickerFragment;
-import com.android.project.todolist.domain.ListItem;
 
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
