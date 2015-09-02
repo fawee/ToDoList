@@ -2,7 +2,6 @@ package com.android.project.todolist.menues;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import com.android.project.todolist.R;
 import com.android.project.todolist.adapter.ListItemAdapter;
 import com.android.project.todolist.domain.ListItem;
-import com.android.project.todolist.domain.ListObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -23,7 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 
-public class SubMenu extends ActionBarActivity {
+public class ListItemActivity extends ActionBarActivity {
 
     private ListView listView;
     private ListItemAdapter listItemAdapter;
@@ -99,7 +97,7 @@ public class SubMenu extends ActionBarActivity {
     }
 
     private void addListItem() {
-        Intent i = new Intent(this, AddListItemMenu.class);
+        Intent i = new Intent(this, AddListItemActivity.class);
         startActivityForResult(i, 1);
     }
 

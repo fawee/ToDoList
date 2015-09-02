@@ -59,10 +59,6 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         TextView priority = (TextView) view.findViewById(R.id.listItem_priority);
         priority.setText(listItemArrayList.get(position).getPriority()+ "");
 
-
-
-
-
         return view;
     }
 }

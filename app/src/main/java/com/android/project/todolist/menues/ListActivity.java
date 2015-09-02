@@ -20,10 +20,9 @@ import com.android.project.todolist.persistence.ListRepository;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class MainMenu extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class ListActivity extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private GridView main_menu_gridView;
     private ArrayList<ListObject> listObjects;
@@ -118,7 +117,7 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
         if (listObjects.get(position) == null) {
 
         } else {
-            Intent i = new Intent(getApplicationContext(), SubMenu.class);
+            Intent i = new Intent(getApplicationContext(), ListItemActivity.class);
             i.putExtra("ListID", listObjects.get(position).getListID());
             i.putExtra("ListTitle", listObjects.get(position).getTitle());
             startActivityForResult(i, REQUEST_CODE_OPEN_SUBMENU);
@@ -128,7 +127,7 @@ public class MainMenu extends ActionBarActivity implements Communicator, Adapter
         /*
         listObject = (ListObject) parent.getItemAtPosition(position);
         String listObjectTitle = listObject.getTitle();
-        Intent intent = new Intent(MainMenu.this, SubMenu.class);
+        Intent intent = new Intent(ListActivity.this, ListItemActivity.class);
         intent.putExtra("name", listObjectTitle);
         startActivityForResult(intent, REQUEST_CODE_OPEN_SUBMENU);
 */

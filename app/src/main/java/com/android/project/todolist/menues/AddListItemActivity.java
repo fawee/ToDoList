@@ -30,7 +30,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 
-public class AddListItemMenu extends Activity implements Communicator {
+public class AddListItemActivity extends Activity implements Communicator {
 
     private EditText title, date, note;
     private Spinner prioritySpinner;
