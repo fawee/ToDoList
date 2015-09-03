@@ -6,17 +6,26 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.android.project.todolist.R;
+import com.android.project.todolist.adapter.SpinnerAdapter;
 import com.android.project.todolist.communicator.Communicator;
+import com.android.project.todolist.domain.SpinnerItem;
+
+import java.util.ArrayList;
 
 
-public class DialogAddListObject extends DialogFragment {
+public class DialogAddListObject extends DialogFragment  {
 
     private Communicator communicator;
-    private EditText edittextInput;
+    private ArrayList<SpinnerItem> list;
     private AlertDialog.Builder builder;
+    private View view;
+    private Spinner spinner;
 
 
     @Override
@@ -28,17 +37,36 @@ public class DialogAddListObject extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         setupDialog();
+        setupSpinner();
         handleClicks();
 
         return builder.create();
     }
 
+    private void setupSpinner() {
+        spinner = (Spinner) view.findViewById(R.id.dialog_addList_spinner);
+        list = new ArrayList<>();
+        addColorsToSpinner();
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getActivity(), list);
+        spinner.setAdapter(spinnerAdapter);
+
+    }
+
+    private void addColorsToSpinner() {
+        list.add(new SpinnerItem("Blue", R.color.blue));
+        list.add(new SpinnerItem("Yellow", R.color.yellow));
+        list.add(new SpinnerItem("Green", R.color.green));
+        list.add(new SpinnerItem("Red", R.color.red));
+        list.add(new SpinnerItem("Lime", R.color.lime));
+    }
+
     private void setupDialog() {
         builder = new AlertDialog.Builder(getActivity());
-        edittextInput = new EditText(getActivity());
-        builder.setTitle(getString(R.string.dialog_title_add_listobject));
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        view = inflater.inflate(R.layout.dialog_add_list, null);
+        builder.setView(view);
         builder.setCancelable(false);
-        builder.setView(edittextInput);
+
     }
 
     private void handleClicks() {
@@ -51,9 +79,14 @@ public class DialogAddListObject extends DialogFragment {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                communicator.getInputTextFromDialog(edittextInput.getText().toString());
+                EditText edittextInput = (EditText) view.findViewById(R.id.dialog_addList_title);
+                SpinnerItem spinnerItem = (SpinnerItem) spinner.getSelectedItem();
+
+                communicator.getInputData(edittextInput.getText().toString(), spinnerItem.getColor());
+
             }
         });
     }
+
 
 }

@@ -7,7 +7,7 @@ import com.android.project.todolist.domain.ListObject;
 
 public interface Communicator {
 
-    void getInputTextFromDialog(String inputText);
+    void getInputData(String listTitle, int listColor);
     void getDate(DatePicker view, int year, int month, int day);
 
 

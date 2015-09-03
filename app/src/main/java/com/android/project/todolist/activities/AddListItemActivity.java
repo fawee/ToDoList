@@ -96,8 +96,10 @@ public class AddListItemActivity extends Activity implements Communicator {
     }
 
 
+
+
     @Override
-    public void getInputTextFromDialog(String inputText) {
+    public void getInputData(String listTitle, int listColor) {
 
     }
 
@@ -112,6 +114,8 @@ public class AddListItemActivity extends Activity implements Communicator {
 
         textView.setText(dateString);
     }
+
+
 
 
 }

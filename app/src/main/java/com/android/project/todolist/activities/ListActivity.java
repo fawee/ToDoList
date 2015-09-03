@@ -96,8 +96,8 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
 
     // Add new List to DB and UI
     @Override
-    public void getInputTextFromDialog(String inputText) {
-        ListObject newListObject = new ListObject(1, inputText, 0, 1);
+    public void getInputData(String listTitle, int listColor) {
+        ListObject newListObject = new ListObject(1, listTitle, 0, listColor);
         newListObject.setListID(db.insertList(newListObject));
         listObjects.add(newListObject);
         listObjectAdapter.notifyDataSetChanged();
@@ -107,6 +107,8 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
     public void getDate(DatePicker view, int year, int month, int day) {
 
     }
+
+
 
     //ClickListener für die einzelnen ListObjects
     @Override

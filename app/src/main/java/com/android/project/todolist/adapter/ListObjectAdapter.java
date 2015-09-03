@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.project.todolist.domain.ListObject;
@@ -40,9 +41,12 @@ public class ListObjectAdapter extends ArrayAdapter<ListObject> {
         } else {
             view = convertView;
         }
+        RelativeLayout list = (RelativeLayout) view.findViewById(R.id.list);
+        //list.setBackgroundResource(arrayList.get(position).getColour());
 
         TextView tv_titleListObject = (TextView) view.findViewById(R.id.tv_listName);
         tv_titleListObject.setText(arrayList.get(position).getTitle());
+
 
         TextView tv_numOfListItems = (TextView) view.findViewById(R.id.tv_numOfListItems);
         tv_numOfListItems.setText(""+ arrayList.get(position).getNumOfListItems());
