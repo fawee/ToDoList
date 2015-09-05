@@ -3,7 +3,9 @@ package com.android.project.todolist.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -68,6 +70,38 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         listItemAdapter = new ListItemAdapter(this, listItems);
         listView.setAdapter(listItemAdapter);
         listView.setOnItemLongClickListener(this);
+
+        registerForContextMenu(listView);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    //TODO funktioniert irgendwie noch nicht
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.listitem_floating_context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//TODO funktioniert irgendwie noch nicht und ist noch nicht angepasst
+        switch (item.getItemId()){
+            case R.id.listItem_FloatingMenu_delete:
+                db.removeListItem(listItems.get(info.position));
+                listItems.remove(info.position);
+                listItemAdapter.notifyDataSetChanged();
+                return true;
+            case R.id.listItem_FloatingMenu_Edit:
+                //ToDo
+                return true;
+            case R.id.listItem_FloatingMenu_IsDone:
+                listItems.get(info.position).setIsDone(true);
+                //ToDo DB speichern
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     //Men

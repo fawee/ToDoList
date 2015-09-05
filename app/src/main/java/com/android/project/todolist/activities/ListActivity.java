@@ -3,7 +3,9 @@ package com.android.project.todolist.activities;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,7 +24,7 @@ import com.android.project.todolist.persistence.ListRepository;
 import java.util.ArrayList;
 
 
-public class ListActivity extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class ListActivity extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener/*, AdapterView.OnItemLongClickListener*/ {
 
     private GridView main_menu_gridView;
     private ArrayList<ListObject> listObjects;
@@ -59,6 +61,35 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
         main_menu_gridView.setAdapter(listObjectAdapter);
         main_menu_gridView.setOnItemClickListener(this);
 
+        registerForContextMenu(main_menu_gridView);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.list_floating_context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()){
+            case R.id.list_FloatingMenu_delete:
+                db.removeList(listObjects.get(info.position));
+                listObjects.remove(info.position);
+//                listObjects.clear();
+//                listObjectAdapter.notifyDataSetChanged();
+//                listObjects = db.getAllLists();
+                listObjectAdapter.notifyDataSetChanged();
+                return true;
+            case R.id.list_FloatingMenu_Edit:
+                //ToDo
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     @Override
@@ -108,8 +139,6 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
 
     }
 
-
-
     //ClickListener für die einzelnen ListObjects
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -132,19 +161,12 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        return false;
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Aktualisiert das Textview für die Anzahl der ListItems in der Liste
         if(requestCode == REQUEST_CODE_OPEN_SUBMENU) {
-           // listObject.setNumOfListItems(data.getExtras().getInt("NumOfListItems"));
+            // listObject.setNumOfListItems(data.getExtras().getInt("NumOfListItems"));
             listObjectAdapter.notifyDataSetChanged();
         }
     }
-
-
 
 }

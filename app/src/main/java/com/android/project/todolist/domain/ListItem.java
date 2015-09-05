@@ -30,10 +30,6 @@ public class ListItem {
         this.listID = listID;
     }
 
-    public void setListItemID(int listItemID) {
-        this.listItemID = listItemID;
-    }
-
     public int getListItemID() {
         return listItemID;
     }
@@ -63,5 +59,33 @@ public class ListItem {
     }
 
     public int getListID() { return listID; }
+
+    public void setListItemID(int listItemID) {
+        this.listItemID = listItemID;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public void setDueDate(GregorianCalendar dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public void setIsDone(boolean isDone) {
+        this.isDone = isDone;
+    }
+
+    public void setReminder(boolean reminder) {
+        this.reminder = reminder;
+    }
 
 }

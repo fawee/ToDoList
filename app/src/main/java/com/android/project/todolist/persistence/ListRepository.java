@@ -90,10 +90,12 @@ public class ListRepository  {
     }
 
     public void removeList(ListObject list) {
-        //Befor deleting a List, all ListItems have to be deletet, maybe its not neede to do it manuel
+        //Nicht nur die Liste sondern auch die dazugehörigen ListItems müssen gelöscht werden, sollange in der DB noch keine Löschweitergabe implementiert ist, muss das manuel geschehen
+        String whereClause = KEY_ListItem_List_ID + " = " + list.getListID();
+        db.delete(TABLE_tblListItem, whereClause, null);
 
-        String whereClause = KEY_List_ID + " = " + list.getListID();
 
+        whereClause = KEY_List_ID + " = " + list.getListID();
         db.delete(TABLE_tblList, whereClause, null);
     }
 
