@@ -28,6 +28,7 @@
 
     <EditText
         android:id="@+id/addListItemMenuDate"
+        android:focusableInTouchMode="false"
         android:inputType="date"
         android:hint="@string/addListItemMenu_Date_hint"
         android:layout_width="match_parent"
@@ -84,6 +85,7 @@
     <EditText
         android:id="@+id/addListItemActivityReminderDate"
         android:inputType="date"
+        android:focusableInTouchMode="false"
         android:hint="@string/addListItemActivityReminder_Date_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -96,6 +98,7 @@
 
     <EditText
         android:id="@+id/addListItemActivityReminderTime"
+        android:focusableInTouchMode="false"
         android:inputType="time"
         android:hint="@string/addListItemActivityReminder_Time_hint"
         android:layout_width="match_parent"
@@ -104,10 +107,10 @@
 
 
     <Button
+        android:id="@+id/addListItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ADD"
-        android:id="@+id/button"
+        android:text="@string/addListItemActivity_AddButton"
         android:layout_gravity="center_horizontal" />
     
     

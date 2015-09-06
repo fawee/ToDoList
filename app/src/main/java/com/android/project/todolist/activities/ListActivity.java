@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.GridView;
+import android.widget.TimePicker;
 
 
 import com.android.project.todolist.communicator.Communicator;
@@ -136,6 +137,11 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
 
     @Override
     public void getDate(DatePicker view, int year, int month, int day) {
+
+    }
+
+    @Override
+    public void getTime(TimePicker view, int hourOfDay, int minute) {
 
     }
 

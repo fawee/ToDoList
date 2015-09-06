@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -19,13 +20,14 @@ import com.android.project.todolist.domain.SpinnerItem;
 import java.util.ArrayList;
 
 
-public class DialogAddListObject extends DialogFragment  {
+public class DialogAddListObject extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
     private Communicator communicator;
     private ArrayList<SpinnerItem> list;
     private AlertDialog.Builder builder;
     private View view;
     private Spinner spinner;
+    private int pickedColor;
 
 
     @Override
@@ -49,7 +51,7 @@ public class DialogAddListObject extends DialogFragment  {
         addColorsToSpinner();
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getActivity(), list);
         spinner.setAdapter(spinnerAdapter);
-
+        spinner.setOnItemSelectedListener(this);
     }
 
     private void addColorsToSpinner() {
@@ -80,13 +82,22 @@ public class DialogAddListObject extends DialogFragment  {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EditText edittextInput = (EditText) view.findViewById(R.id.dialog_addList_title);
-                SpinnerItem spinnerItem = (SpinnerItem) spinner.getSelectedItem();
 
-                communicator.getInputData(edittextInput.getText().toString(), spinnerItem.getColor());
+                communicator.getInputData(edittextInput.getText().toString(), pickedColor);
 
             }
         });
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        SpinnerItem spinnerItem = (SpinnerItem) parent.getItemAtPosition(position);
+        pickedColor = spinnerItem.getColor();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

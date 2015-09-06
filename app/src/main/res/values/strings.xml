@@ -12,6 +12,7 @@
     <string name="addListItemMenu_Note">Note</string>
     <string name="addListItemMenu_Note_hint">Add a Note here</string>
     <string name="addListItemMenu_Priority">Priority</string>
+    <string name="addListItemActivity_AddButton">Ok</string>
 
     <string name="addListItemActivityReminder_Date_hint">Set Reminder Date here</string>
     <string name="addListItemActivityReminder_Time_hint">Set Reminder Time here</string>

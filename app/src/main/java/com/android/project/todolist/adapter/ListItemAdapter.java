@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.project.todolist.R;
 import com.android.project.todolist.domain.ListItem;
+
 
 import java.util.ArrayList;
 
@@ -42,14 +44,16 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
             view = convertView;
         }
 
+        ListItem currentListItem = listItemArrayList.get(position);
+
         CheckBox title = (CheckBox) view.findViewById(R.id.listItem_checkBox);
-        title.setText(listItemArrayList.get(position).getTitle());
+        //title.setText(currentListItem.getTitle());
 
         TextView date = (TextView) view.findViewById(R.id.listItem_date);
-        date.setText(listItemArrayList.get(position).getStringFromDueDate());
+        date.setText(currentListItem.getStringFromDueDate());
 
         TextView note = (TextView) view.findViewById(R.id.listItem_note);
-        String userNote = listItemArrayList.get(position).getNote();
+        String userNote = currentListItem.getNote();
         if(userNote.length() > 15) {
             note.setText(userNote.substring(0, 15) + "...");
         } else {
@@ -57,7 +61,12 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         }
 
         TextView priority = (TextView) view.findViewById(R.id.listItem_priority);
-        priority.setText(listItemArrayList.get(position).getPriority()+ "");
+        priority.setText(currentListItem.getPriority()+ "");
+
+        ImageView reminder = (ImageView) view.findViewById(R.id.listItem_reminder);
+        if(currentListItem.getReminder()) {
+            reminder.setImageResource(R.drawable.ic_list_item_alarm);
+        }
 
         return view;
     }

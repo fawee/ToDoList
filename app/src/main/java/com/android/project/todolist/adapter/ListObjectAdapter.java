@@ -41,15 +41,17 @@ public class ListObjectAdapter extends ArrayAdapter<ListObject> {
         } else {
             view = convertView;
         }
+
+        ListObject currentListObject = arrayList.get(position);
+
         RelativeLayout list = (RelativeLayout) view.findViewById(R.id.list);
-        //list.setBackgroundResource(arrayList.get(position).getColour());
+        list.setBackgroundResource(currentListObject.getColour());
 
         TextView tv_titleListObject = (TextView) view.findViewById(R.id.tv_listName);
-        tv_titleListObject.setText(arrayList.get(position).getTitle());
-
+        tv_titleListObject.setText(currentListObject.getTitle());
 
         TextView tv_numOfListItems = (TextView) view.findViewById(R.id.tv_numOfListItems);
-        tv_numOfListItems.setText(""+ arrayList.get(position).getNumOfListItems());
+        tv_numOfListItems.setText(""+ currentListObject.getNumOfListItems());
 
 
         return view;
