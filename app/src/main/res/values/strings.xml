@@ -12,6 +12,12 @@
     <string name="addListItemMenu_Note">Note</string>
     <string name="addListItemMenu_Note_hint">Add a Note here</string>
     <string name="addListItemMenu_Priority">Priority</string>
+
+    <string name="addListItemActivityReminder_Date_hint">Set Reminder Date here</string>
+    <string name="addListItemActivityReminder_Time_hint">Set Reminder Time here</string>
+    <string name="addListItemActivityReminder_Time">Time</string>
+
+
     <string-array name="addListItemMenu_Priority_Spinner">
         <item>1</item>
         <item>2</item>
@@ -21,4 +27,5 @@
     <string name="FloatingMenu_Delete">Löschen</string>
     <string name="FloatingMenu_Edit">Bearbeiten</string>
     <string name="FloatingMenu_IsDone">Erledigt</string>
+    <string name="addListItemActivity_RemindMe">Remind me?</string>
 </resources>

@@ -162,8 +162,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     }
 
     private Date getDateFromString(String dateString) {
-        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT,
-                Locale.GERMANY);
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
         try {
             return df.parse(dateString);
         } catch (ParseException e) {

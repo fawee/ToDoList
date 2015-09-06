@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 
 import com.android.project.todolist.R;
@@ -24,8 +27,10 @@ import java.util.Locale;
 
 public class AddListItemActivity extends Activity implements Communicator {
 
-    private EditText title, date, note;
+    private EditText title, date, note, reminderDate, reminderTime;
+    private TextView reminderDateTV, reminderTimeTV;
     private Spinner prioritySpinner;
+    private ToggleButton reminder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +60,10 @@ public class AddListItemActivity extends Activity implements Communicator {
         String listItemNote = note.getText().toString();
         String listItemPriority = prioritySpinner.getSelectedItem().toString();
 
-        sendDataToSubMenu(listItemTitle, listItemDate, listItemNote, listItemPriority);
-
+        //ÜBERPRÜFT OB USER DATUM GEWÄHLT HAT ODER NICHT
+        if(!listItemDate.equals("")) {
+            sendDataToSubMenu(listItemTitle, listItemDate, listItemNote, listItemPriority);
+        }
 
     }
 
@@ -86,16 +93,63 @@ public class AddListItemActivity extends Activity implements Communicator {
     }
 
     private void setupGUI() {
-        title = (EditText) findViewById(R.id.addListItemMenuTitle);
-        date = (EditText) findViewById(R.id.addListItemMenuDate);
-        note = (EditText) findViewById(R.id.addListItemMenuNote);
-        prioritySpinner = (Spinner) findViewById(R.id.addListItemMenuPriority);
+        initViews();
+        initPrioritySpinner();
+        initReminder();
+
+    }
+
+    private void initReminder() {
+        reminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    showReminderOptions();
+                } else {
+                    hideReminderOptions();
+                }
+            }
+        });
+    }
+
+    private void hideReminderOptions() {
+        reminderDateTV.setVisibility(View.INVISIBLE);
+        reminderDate.setVisibility(View.INVISIBLE);
+        reminderTimeTV.setVisibility(View.INVISIBLE);
+        reminderTime.setVisibility(View.INVISIBLE);
+    }
+
+    private void showReminderOptions() {
+        reminderDateTV.setVisibility(View.VISIBLE);
+        reminderDate.setVisibility(View.VISIBLE);
+        reminderTimeTV.setVisibility(View.VISIBLE);
+        reminderTime.setVisibility(View.VISIBLE);
+    }
+
+
+    private void initPrioritySpinner() {
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.addListItemMenu_Priority_Spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         prioritySpinner.setAdapter(adapter);
     }
 
+    private void initViews() {
+        title = (EditText) findViewById(R.id.addListItemMenuTitle);
+        date = (EditText) findViewById(R.id.addListItemMenuDate);
+        note = (EditText) findViewById(R.id.addListItemMenuNote);
+        prioritySpinner = (Spinner) findViewById(R.id.addListItemMenuPriority);
+        reminder = (ToggleButton) findViewById(R.id.reminderButton);
+        initReminderViews();
+    }
 
+    private void initReminderViews() {
+        reminderDateTV = (TextView) findViewById(R.id.addListItemActivityReminderDateTV);
+        reminderTimeTV = (TextView) findViewById(R.id.addListItemActivityReminderTimeTV);
+
+        reminderDate = (EditText) findViewById(R.id.addListItemActivityReminderDate);
+        reminderTime = (EditText) findViewById(R.id.addListItemActivityReminderTime);
+        hideReminderOptions();
+    }
 
 
     @Override
@@ -114,7 +168,6 @@ public class AddListItemActivity extends Activity implements Communicator {
 
         textView.setText(dateString);
     }
-
 
 
 
