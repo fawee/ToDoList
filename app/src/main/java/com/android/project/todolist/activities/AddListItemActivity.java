@@ -1,9 +1,14 @@
 package com.android.project.todolist.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DialogFragment;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -40,6 +45,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     private Spinner prioritySpinner;
     private ToggleButton reminder;
 
+
     private int flag;
 
     @Override
@@ -58,7 +64,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         reminderTime.setOnClickListener(this);
         addListItemButton.setOnClickListener(this);
     }
-
 
 
     private void setupGUI() {
@@ -143,13 +148,12 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT,
                 Locale.GERMANY);
         String dateString = df.format(dueDate.getTime());
-        if(flag == 0) {
+        if (flag == 0) {
             dateTextView.setText(dateString);
         }
-        if(flag == 1) {
+        if (flag == 1) {
             reminderDateTextView.setText(dateString);
         }
-
 
 
     }
@@ -161,19 +165,17 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         reminderTimeTextView.setText(formattedTime);
 
 
-
-        
     }
 
     private String formatTime(int hourOfDay, int minute) {
         String hour, min;
-        if(hourOfDay < 10) {
+        if (hourOfDay < 10) {
             hour = "0" + String.valueOf(hourOfDay);
         } else {
             hour = String.valueOf(hourOfDay);
         }
 
-        if(minute < 10) {
+        if (minute < 10) {
             min = "0" + String.valueOf(minute);
         } else {
             min = String.valueOf(minute);
@@ -196,16 +198,17 @@ public class AddListItemActivity extends Activity implements Communicator, View.
                 flag = 1;
                 showDatePickerDialog();
                 break;
-            
+
             case R.id.addListItemActivityReminderTime:
                 showTimePickerDialog();
                 break;
 
             case R.id.addListItemButton:
+                setAlarm();
                 createListItem();
                 break;
-            
-            
+
+
         }
     }
 
@@ -216,18 +219,39 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         String listItemPriority = prioritySpinner.getSelectedItem().toString();
         boolean listItemReminder = isReminded();
 
+        //if(listItemReminder) {
+        //    setAlarm();
+        //}
+
         //ÜBERPRÜFT OB USER DATUM GEWÄHLT HAT ODER NICHT
         if (!listItemDate.equals("")) {
             sendDataToSubMenu(listItemTitle, listItemDate, listItemNote, listItemPriority, listItemReminder);
         }
 
+
+    }
+
+    private void setAlarm() {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_list_item_alarm)
+                        .setContentTitle("My notification")
+                        .setContentText("Hello World!");
+
+
+        int mNotificationId = 001;
+
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 
     private boolean isReminded() {
         String rDate = reminderDate.getText().toString();
         String rTime = reminderTime.getText().toString();
-        if(reminder.isChecked()) {
-            if((!rDate.equals("")) && (!rTime.equals(""))) {
+        if (reminder.isChecked()) {
+            if ((!rDate.equals("")) && (!rTime.equals(""))) {
                 return true;
             }
         }
