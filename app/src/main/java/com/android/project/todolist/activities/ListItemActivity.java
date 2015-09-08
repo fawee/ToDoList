@@ -146,15 +146,21 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         if (requestCode == REQUEST_CODE_ADD_LISTITEM) {
             if (resultCode == RESULT_OK) {
                 String title = data.getExtras().getString("Title");
-                String date = data.getExtras().getString("Date");
+                String dDate = data.getExtras().getString("DueDate");
                 String note = data.getExtras().getString("Note");
                 String priority = data.getExtras().getString("Priority");
                 boolean reminder = data.getExtras().getBoolean("Reminder");
+                String rDate = data.getExtras().getString("ReminderDate");
 
-                Date dueDate = getDateFromString(date);
-                GregorianCalendar cal = new GregorianCalendar();
-                cal.setTime(dueDate);
-                ListItem newListItem = new ListItem(1, title, note, Integer.parseInt(priority), cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), false, reminder, listID);
+                Date dueDate = getDateFromString(dDate);
+                GregorianCalendar calDueDate = new GregorianCalendar();
+                calDueDate.setTime(dueDate);
+
+                Date reminderDate = getDateFromString(dDate);
+                GregorianCalendar calReminderDate = new GregorianCalendar();
+                calReminderDate.setTime(reminderDate);
+
+                ListItem newListItem = new ListItem(1, title, note, Integer.parseInt(priority), calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH), false, reminder, calReminderDate, listID);
                 newListItem.setListItemID(db.insertListItem(newListItem));
                 listItems.add(newListItem);
                 listItemAdapter.notifyDataSetChanged();

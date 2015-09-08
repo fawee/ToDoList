@@ -3,6 +3,7 @@ package com.android.project.todolist.domain;
 
 import android.text.format.DateFormat;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -16,9 +17,11 @@ public class ListItem {
     private GregorianCalendar dueDate;
     private boolean isDone;
     private boolean reminder;
+    //TODO: ist GregorianCalendar richtig gewählt?
+    private Calendar reminderDate;
     private int listID;
 
-    public ListItem(int listItemID, String title, String note, int priority, int year, int month, int day, boolean isDone, boolean reminder, int listID) {
+    public ListItem(int listItemID, String title, String note, int priority, int year, int month, int day, boolean isDone, boolean reminder, Calendar reminderDate, int listID) {
 
         this.listItemID = listItemID;
         this.title = title;
@@ -27,6 +30,7 @@ public class ListItem {
         dueDate = new GregorianCalendar(year, month, day);
         this.isDone = isDone;
         this.reminder = reminder;
+        this.reminderDate = reminderDate;
         this.listID = listID;
     }
 
@@ -50,12 +54,19 @@ public class ListItem {
         return df.format(dueDate.getTime());
     }
 
-    public boolean getIsDone() {
-        return isDone;
+    public boolean getIsDone() { return isDone;}
+
+    public boolean getReminder() {return reminder;}
+
+    public Calendar getReminderDate() {
+        return reminderDate;
     }
 
-    public boolean getReminder() {
-        return reminder;
+    public String getStringFromReminderDate() {
+        //TODO:ist "long" richtig?
+        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG,
+                Locale.GERMANY);
+        return df.format(dueDate.getTime());
     }
 
     public int getListID() { return listID; }
@@ -86,6 +97,10 @@ public class ListItem {
 
     public void setReminder(boolean reminder) {
         this.reminder = reminder;
+    }
+
+    public void setReminderDate(GregorianCalendar reminderDate) {
+        this.reminderDate = reminderDate;
     }
 
 }

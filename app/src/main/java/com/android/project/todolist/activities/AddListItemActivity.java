@@ -32,12 +32,11 @@ import java.util.Locale;
 
 public class AddListItemActivity extends Activity implements Communicator, View.OnClickListener {
 
-    private EditText title, date, note, reminderDate, reminderTime;
+    private EditText title, dueDate, note, reminderDay, reminderTime;
     private TextView reminderDateTV, reminderTimeTV;
     private Button addListItemButton;
     private Spinner prioritySpinner;
     private ToggleButton reminder;
-
 
     private int flag;
 
@@ -47,23 +46,21 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         setContentView(R.layout.activity_add_listitem_menu);
         setupGUI();
         setupOnClickListener();
-
-
     }
 
     private void setupOnClickListener() {
-        date.setOnClickListener(this);
-        reminderDate.setOnClickListener(this);
+        dueDate.setOnClickListener(this);
+        reminderDay.setOnClickListener(this);
         reminderTime.setOnClickListener(this);
         addListItemButton.setOnClickListener(this);
     }
+
 
 
     private void setupGUI() {
         initViews();
         initPrioritySpinner();
         initReminder();
-
     }
 
     private void initReminder() {
@@ -82,23 +79,22 @@ public class AddListItemActivity extends Activity implements Communicator, View.
 
     private void clearInputs() {
         reminderTime.setText("");
-        reminderDate.setText("");
+        reminderDay.setText("");
     }
 
     private void hideReminderOptions() {
         reminderDateTV.setVisibility(View.INVISIBLE);
-        reminderDate.setVisibility(View.INVISIBLE);
+        reminderDay.setVisibility(View.INVISIBLE);
         reminderTimeTV.setVisibility(View.INVISIBLE);
         reminderTime.setVisibility(View.INVISIBLE);
     }
 
     private void showReminderOptions() {
         reminderDateTV.setVisibility(View.VISIBLE);
-        reminderDate.setVisibility(View.VISIBLE);
+        reminderDay.setVisibility(View.VISIBLE);
         reminderTimeTV.setVisibility(View.VISIBLE);
         reminderTime.setVisibility(View.VISIBLE);
     }
-
 
     private void initPrioritySpinner() {
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.addListItemMenu_Priority_Spinner, android.R.layout.simple_spinner_item);
@@ -108,7 +104,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
 
     private void initViews() {
         title = (EditText) findViewById(R.id.addListItemMenuTitle);
-        date = (EditText) findViewById(R.id.addListItemMenuDate);
+        dueDate = (EditText) findViewById(R.id.addListItemMenuDate);
         note = (EditText) findViewById(R.id.addListItemMenuNote);
         prioritySpinner = (Spinner) findViewById(R.id.addListItemMenuPriority);
         addListItemButton = (Button) findViewById(R.id.addListItemButton);
@@ -119,8 +115,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     private void initReminderViews() {
         reminderDateTV = (TextView) findViewById(R.id.addListItemActivityReminderDateTV);
         reminderTimeTV = (TextView) findViewById(R.id.addListItemActivityReminderTimeTV);
-
-        reminderDate = (EditText) findViewById(R.id.addListItemActivityReminderDate);
+        reminderDay = (EditText) findViewById(R.id.addListItemActivityReminderDate);
         reminderTime = (EditText) findViewById(R.id.addListItemActivityReminderTime);
         hideReminderOptions();
     }
@@ -147,8 +142,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         if (flag == 1) {
             reminderDateTextView.setText(dateString);
         }
-
-
     }
 
     @Override
@@ -156,8 +149,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         TextView reminderTimeTextView = (TextView) findViewById(R.id.addListItemActivityReminderTime);
         String formattedTime = formatTime(hourOfDay, minute);
         reminderTimeTextView.setText(formattedTime);
-
-
     }
 
     private String formatTime(int hourOfDay, int minute) {
@@ -199,31 +190,36 @@ public class AddListItemActivity extends Activity implements Communicator, View.
             case R.id.addListItemButton:
                 createListItem();
                 break;
-
-
+            
+            
         }
     }
 
     private void createListItem() {
         String listItemTitle = title.getText().toString();
-        String listItemDate = date.getText().toString();
+        String listItemDueDate = dueDate.getText().toString();
         String listItemNote = note.getText().toString();
         String listItemPriority = prioritySpinner.getSelectedItem().toString();
         boolean listItemReminder = isReminded();
-
-
-
+        String listItemReminderDate = "";
+        //plausibilitytest of the Reminder input
+        if (listItemReminder){
+            if (reminderDay.equals("") ^ reminderTime.equals("")) {
+                //TODO: Benutzerbenachrichtigung, dass er beide Werte eingeben muss
+            }
+            else if (!reminderDay.equals("")){
+                String listItemReminderDay = reminderDay.getText().toString();
+                String listItemReminderTime = reminderTime.getText().toString();
+                listItemReminderDate = listItemReminderDay + " " + listItemReminderTime;
+            }
+        }
         //ÜBERPRÜFT OB USER DATUM GEWÄHLT HAT ODER NICHT
-        if (!listItemDate.equals("")) {
-
+        if (!listItemDueDate.equals("")) {
             if(listItemReminder) {
                 setAlarm();
             }
-
-            sendDataToSubMenu(listItemTitle, listItemDate, listItemNote, listItemPriority, listItemReminder);
         }
-
-
+        sendDataToSubMenu(listItemTitle, listItemDueDate, listItemNote, listItemPriority, listItemReminder, listItemReminderDate);
     }
 
     private void setAlarm() {
@@ -235,8 +231,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder.setSound(alarmSound);
 
-
-
         int mNotificationId = 001;
 
         NotificationManager mNotifyMgr =
@@ -246,7 +240,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
     private boolean isReminded() {
-        String rDate = reminderDate.getText().toString();
+        String rDate = reminderDay.getText().toString();
         String rTime = reminderTime.getText().toString();
         if (reminder.isChecked()) {
             if ((!rDate.equals("")) && (!rTime.equals(""))) {
@@ -257,13 +251,14 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
 
-    private void sendDataToSubMenu(String listItemTitle, String listItemDate, String listItemNote, String listItemPriority, boolean listItemReminder) {
+    private void sendDataToSubMenu(String listItemTitle, String listItemDueDate, String listItemNote, String listItemPriority, boolean listItemReminder,  String listItemReminderDate) {
         Intent i = getIntent();
         i.putExtra("Title", listItemTitle);
-        i.putExtra("Date", listItemDate);
+        i.putExtra("DueDate", listItemDueDate);
         i.putExtra("Note", listItemNote);
         i.putExtra("Priority", listItemPriority);
         i.putExtra("Reminder", listItemReminder);
+        i.putExtra("ReminderDate", listItemReminderDate);
         setResult(RESULT_OK, i);
         finish();
     }

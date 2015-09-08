@@ -26,21 +26,22 @@ public class ListRepository  {
     private static final String TABLE_tblList = "tbl_List";
     private static final String TABLE_tblListItem = "tbl_ListItem";
 
-    public static final String KEY_List_ID = "List_ID";
-    public static final String KEY_List_Title = "List_Title";
-    public static final String KEY_List_Colour = "List_Colour";
+    public static final String KEY_List_ID = "Lst_ID";
+    public static final String KEY_List_Title = "Lst_Title";
+    public static final String KEY_List_Colour = "Lst_Colour";
 
 //    public static final int COLUMN_TASK_INDEX = 1;
 //    public static final int COLUMN_DATE_INDEX = 2;
 
-    public static final String KEY_ListItem_ID = "ListItem_ID";
-    public static final String KEY_ListItem_Title = "ListItem_Title";
-    public static final String KEY_ListItem_Note = "ListItem_Note";
-    public static final String KEY_ListItem_Priority = "ListItem_Priority";
-    public static final String KEY_ListItem_DueDate = "ListItem_DueDate";
-    public static final String KEY_ListItem_isDone = "ListItem_isDone";
-    public static final String KEY_ListItem_reminder = "ListItem_reminder";
-    public static final String KEY_ListItem_List_ID = "ListItem_List_ID";
+    public static final String KEY_ListItem_ID = "LstItem_ID";
+    public static final String KEY_ListItem_Title = "LstItem_Title";
+    public static final String KEY_ListItem_Note = "LstItem_Note";
+    public static final String KEY_ListItem_Priority = "LstItem_Priority";
+    public static final String KEY_ListItem_DueDate = "LstItem_DueDate";
+    public static final String KEY_ListItem_isDone = "LstItem_isDone";
+    public static final String KEY_ListItem_reminder = "LstItem_reminder";
+    public static final String KEY_ListItem_ReminderDate = "LstItem_ReminderDate";
+    public static final String KEY_ListItem_List_ID = "LstItem_List_ID";
 
 //    //Indexe noch setzen
 //    public static final int COLUMN_TASK_INDEX = 1;
@@ -84,6 +85,7 @@ public class ListRepository  {
         newListItemValues.put(KEY_ListItem_DueDate, item.getStringFromDueDate());
         newListItemValues.put(KEY_ListItem_isDone, item.getIsDone());
         newListItemValues.put(KEY_ListItem_reminder, item.getReminder());
+        newListItemValues.put(KEY_ListItem_ReminderDate, item.getStringFromReminderDate());
         newListItemValues.put(KEY_ListItem_List_ID, item.getListID());
 
         return (int)db.insert(TABLE_tblListItem, null, newListItemValues);
@@ -136,6 +138,7 @@ public class ListRepository  {
         cv.put(KEY_ListItem_DueDate, item.getStringFromDueDate());
         cv.put(KEY_ListItem_isDone, item.getIsDone());
         cv.put(KEY_ListItem_reminder, item.getReminder());
+        cv.put(KEY_ListItem_ReminderDate, item.getStringFromReminderDate());
         return (int)db.update(TABLE_tblListItem, cv, KEY_ListItem_ID + " = " + item.getListID(), null);
     }
 
@@ -147,7 +150,8 @@ public class ListRepository  {
                 KEY_ListItem_Priority,
                 KEY_ListItem_DueDate,
                 KEY_ListItem_isDone,
-                KEY_ListItem_reminder},
+                KEY_ListItem_reminder,
+                KEY_ListItem_ReminderDate},
                 KEY_ListItem_List_ID + " = " + listID,null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
@@ -155,33 +159,41 @@ public class ListRepository  {
                 String title = cursor.getString(1);
                 String note = cursor.getString(2);
                 int priority = cursor.getInt(3);
-                String date = cursor.getString(4);
+                String dueDate = cursor.getString(4);
                 boolean isDone = booleanOfInt(cursor.getInt(5));
                 boolean reminder = booleanOfInt(cursor.getInt(6));
+                String reminderDate = cursor.getString(7);
 
-
+                // Formation of DueDate
                 Date formatedDate = null;
                 try {
-                    formatedDate = new SimpleDateFormat("dd.MM.yy", Locale.GERMAN).parse(date);
+                    formatedDate = new SimpleDateFormat("dd.MM.yy", Locale.GERMAN).parse(dueDate);
                     //formatedDate = new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.GERMAN).parse(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Calendar cal = Calendar.getInstance(Locale.GERMAN);
-                cal.setTime(formatedDate);
+                Calendar calDueD = Calendar.getInstance(Locale.GERMAN);
+                calDueD.setTime(formatedDate);
 
-                items.add(new ListItem(id, title, note, priority, cal.get(Calendar.DAY_OF_MONTH),
-                        cal.get(Calendar.MONTH), cal.get(Calendar.YEAR), isDone, reminder, listID));
+                // Formation of ReminderDate
+                formatedDate = null;
+                try {
+                    formatedDate = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).parse(reminderDate);
+                    //formatedDate = new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.GERMAN).parse(reminderDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Calendar calRemD = Calendar.getInstance(Locale.GERMAN);
+                calRemD.setTime(formatedDate);
+
+                items.add(new ListItem(id, title, note, priority, calDueD.get(Calendar.DAY_OF_MONTH),
+                        calDueD.get(Calendar.MONTH), calDueD.get(Calendar.YEAR), isDone, reminder, calRemD, listID));
             } while (cursor.moveToNext());
         }
         return items;
     }
 
     private int getNumOfListItems(int listID) {
-        /*String query = "SELECT count(" + KEY_ListItem_ID + ")"
-                        +"FROM " + TABLE_tblListItem
-                        +"WHERE " + KEY_ListItem_List_ID + " = " + listID ;
-        return db. simpleQueryForLong(query);*/
         Cursor cursor = db.query(TABLE_tblListItem,new String[] {KEY_ListItem_List_ID}, KEY_ListItem_List_ID + " = " + listID, null,null,null,null);
         return cursor.getCount();
     }
@@ -207,6 +219,7 @@ public class ListRepository  {
                 KEY_ListItem_DueDate + " text, " +
                 KEY_ListItem_isDone + " integer, " +
                 KEY_ListItem_reminder + " integer, " +
+                KEY_ListItem_ReminderDate + " text, " +
                 KEY_ListItem_List_ID + " integer);";
 
         public ToDoDBOpenHelper(Context c, String dbname,

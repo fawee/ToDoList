@@ -51,7 +51,7 @@ public class ListObjectAdapter extends ArrayAdapter<ListObject> {
         ListObject currentListObject = arrayList.get(position);
 
         RelativeLayout list = (RelativeLayout) view.findViewById(R.id.list);
-        list.setBackgroundResource(currentListObject.getColour());
+        //list.setBackgroundResource(currentListObject.getColour());
 
 
 

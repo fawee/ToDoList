@@ -16,6 +16,8 @@ X    - ColourPicker
     - Cloud
 
     Bugs:
+        - Das ReminderDatum wird noch nicht richtig gesetzt
+        - Gesetztes Reminderdatum löst fehler beim auslesen aus der DB aus
 
     CodeSmell:
     Im Forum fragen ob man die DBs Indizes einfach in (int) casten kann. Da es notwendig ist und in der DB eh nur Int gespeichert wird
