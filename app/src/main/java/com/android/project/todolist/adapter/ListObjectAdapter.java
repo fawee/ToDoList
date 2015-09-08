@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ public class ListObjectAdapter extends ArrayAdapter<ListObject> {
     private int main_menu_single_list_layout;
 
 
+
     public ListObjectAdapter(Context context, ArrayList<ListObject> arrayList) {
         super(context, R.layout.main_menu_single_list, arrayList);
         this.context = context;
@@ -38,6 +40,10 @@ public class ListObjectAdapter extends ArrayAdapter<ListObject> {
         if(convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(main_menu_single_list_layout, null);
+
+            //Animation für neu angelegte Listen
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left));
+
         } else {
             view = convertView;
         }
@@ -46,6 +52,10 @@ public class ListObjectAdapter extends ArrayAdapter<ListObject> {
 
         RelativeLayout list = (RelativeLayout) view.findViewById(R.id.list);
         list.setBackgroundResource(currentListObject.getColour());
+
+
+
+
 
         TextView tv_titleListObject = (TextView) view.findViewById(R.id.tv_listName);
         tv_titleListObject.setText(currentListObject.getTitle());

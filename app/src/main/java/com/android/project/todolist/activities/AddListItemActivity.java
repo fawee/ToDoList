@@ -1,15 +1,13 @@
 package com.android.project.todolist.activities;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.DialogFragment;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,7 +17,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
@@ -29,10 +26,6 @@ import com.android.project.todolist.dialogs.DatePickerFragment;
 import com.android.project.todolist.dialogs.TimePickerFragment;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -204,7 +197,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
                 break;
 
             case R.id.addListItemButton:
-                setAlarm();
                 createListItem();
                 break;
 
@@ -219,12 +211,15 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         String listItemPriority = prioritySpinner.getSelectedItem().toString();
         boolean listItemReminder = isReminded();
 
-        //if(listItemReminder) {
-        //    setAlarm();
-        //}
+
 
         //ÜBERPRÜFT OB USER DATUM GEWÄHLT HAT ODER NICHT
         if (!listItemDate.equals("")) {
+
+            if(listItemReminder) {
+                setAlarm();
+            }
+
             sendDataToSubMenu(listItemTitle, listItemDate, listItemNote, listItemPriority, listItemReminder);
         }
 
@@ -237,6 +232,9 @@ public class AddListItemActivity extends Activity implements Communicator, View.
                         .setSmallIcon(R.drawable.ic_list_item_alarm)
                         .setContentTitle("My notification")
                         .setContentText("Hello World!");
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        mBuilder.setSound(alarmSound);
+
 
 
         int mNotificationId = 001;
