@@ -16,6 +16,7 @@ import com.android.project.todolist.R;
 import com.android.project.todolist.adapter.SpinnerAdapter;
 import com.android.project.todolist.communicator.Communicator;
 import com.android.project.todolist.domain.SpinnerItem;
+import com.android.project.todolist.log.Log;
 
 import java.util.ArrayList;
 
@@ -23,12 +24,11 @@ import java.util.ArrayList;
 public class DialogAddListObject extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
     private Communicator communicator;
-    private ArrayList<SpinnerItem> list;
+    private ArrayList<SpinnerItem> spinnerItems;
     private AlertDialog.Builder builder;
     private View view;
     private Spinner spinner;
     private String pickedColor;
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -38,58 +38,81 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        setupDialog();
-        setupSpinner();
-        handleClicks();
+        Log.d(String.valueOf(getArguments().getInt("listId")));
+        int listID = getArguments().getInt("listId");
+        String listTitle = getArguments().getString("listTitle");
+        String listColour = getArguments().getString("listColour");
+        Log.d("Add or Edit List");//ToDo: entfernen
+        Log.d(String.valueOf(listID));//ToDo: entfernen
+        Log.d(listTitle);//ToDo: entfernen
+        Log.d(listColour);//ToDo: entfernen
+        setupDialog(listTitle);
+        setupSpinner(listColour);
+        if(listTitle.equals("")){   handleClicks("Add", listID);}
+        else{                       handleClicks("Save", listID);}
 
         return builder.create();
     }
 
-    private void setupSpinner() {
-        spinner = (Spinner) view.findViewById(R.id.dialog_addList_spinner);
-        list = new ArrayList<>();
-        addColorsToSpinner();
-        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getActivity(), list);
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(this);
-    }
-
-    private void addColorsToSpinner() {
-        //ToDo: nachstehende Construktoraufrufe werden komischerweisße nicht akzeptiert, dass in der mitte ist ja ein STring kein int
-/*        list.add(new SpinnerItem("Blue", R.string.spinnerBlue, R.color.blue));
-        list.add(new SpinnerItem("Yellow", R.string.spinnerYellow, R.color.yellow));
-        list.add(new SpinnerItem("Green", R.string.spinnerGreen, R.color.green));
-        list.add(new SpinnerItem("Red", R.string.spinnerRed, R.color.red));
-        list.add(new SpinnerItem("Lime", R.string.spinnerLime, R.color.lime));*/
-        list.add(new SpinnerItem("Blue", "blue", R.color.blue));
-        list.add(new SpinnerItem("Yellow", "yellow", R.color.yellow));
-        list.add(new SpinnerItem("Green", "green", R.color.green));
-        list.add(new SpinnerItem("Red", "red", R.color.red));
-        list.add(new SpinnerItem("Lime", "lime", R.color.lime));
-    }
-
-    private void setupDialog() {
+    private void setupDialog(String listTitle) {
         builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.dialog_add_list, null);
+
+        EditText editTListTitle = (EditText) view.findViewById(R.id.dialog_addList_title);
+        editTListTitle.setText(listTitle);
+
         builder.setView(view);
         builder.setCancelable(false);
 
     }
 
-    private void handleClicks() {
+    private void setupSpinner(String preselectedColour) {
+        spinner = (Spinner) view.findViewById(R.id.dialog_addList_spinner);
+        spinnerItems = new ArrayList<>();
+        addColorsToSpinner();
+        //SpinnerItem preselectedItem = l
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getActivity(), spinnerItems);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setSelection(getPreselectedSpinnerPosition(preselectedColour));
+        spinner.setOnItemSelectedListener(this);
+    }
+
+    private int getPreselectedSpinnerPosition(String preselectedColour){
+        for(int position = 0; position < spinnerItems.size();position++ ){
+            if (spinnerItems.get(position).getColorValue().equals(preselectedColour)){
+                return position;
+            }
+        }
+        return 0;
+    }
+    private void addColorsToSpinner() {
+        //ToDo: nachstehende Construktoraufrufe werden komischerweisße nicht akzeptiert, dass in der mitte ist ja ein STring kein int
+/*        spinnerItems.add(new SpinnerItem("Blue", R.string.spinnerBlue, R.color.blue));
+        spinnerItems.add(new SpinnerItem("Yellow", R.string.spinnerYellow, R.color.yellow));
+        spinnerItems.add(new SpinnerItem("Green", R.string.spinnerGreen, R.color.green));
+        spinnerItems.add(new SpinnerItem("Red", R.string.spinnerRed, R.color.red));
+        spinnerItems.add(new SpinnerItem("Lime", R.string.spinnerLime, R.color.lime));*/
+        spinnerItems.add(new SpinnerItem("Blue", "blue", R.color.blue));
+        spinnerItems.add(new SpinnerItem("Yellow", "yellow", R.color.yellow));
+        spinnerItems.add(new SpinnerItem("Green", "green", R.color.green));
+        spinnerItems.add(new SpinnerItem("Red", "red", R.color.red));
+        spinnerItems.add(new SpinnerItem("Lime", "lime", R.color.lime));
+    }
+
+    private void handleClicks(String positivTitle, final int listID) {
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(positivTitle, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EditText edittextInput = (EditText) view.findViewById(R.id.dialog_addList_title);
 
-                communicator.getInputData(edittextInput.getText().toString(), pickedColor);
+                communicator.getInputData(edittextInput.getText().toString(), pickedColor, listID);
 
             }
         });

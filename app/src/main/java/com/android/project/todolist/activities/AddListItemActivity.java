@@ -122,9 +122,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
 
 
     @Override
-    public void getInputData(String listTitle, String listColor) {
-
-    }
+    public void getInputData(String listTitle, String listColor, int listID) {}
 
     @Override
     public void getDate(DatePicker view, int year, int month, int day) {

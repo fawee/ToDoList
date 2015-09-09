@@ -84,13 +84,14 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
 //                listObjectAdapter.notifyDataSetChanged();
 //                listObjects = db.getAllLists();
                 listObjectAdapter.notifyDataSetChanged();
-                return true;
+                break;
             case R.id.list_FloatingMenu_Edit:
-                //ToDo
-                return true;
+                EditListObject(info.position);
+                break;
             default:
                 return super.onContextItemSelected(item);
         }
+        return true;
     }
 
     @Override
@@ -122,16 +123,40 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
 
     private void addNewListObject() {
         DialogAddListObject dialog = new DialogAddListObject();
+        Bundle args = new Bundle();
+        args.putInt("listId", 0);
+        args.putString("listTitle", "");
+        args.putString("listColour", "");
+        dialog.setArguments(args);
         dialog.show(getFragmentManager(), "Add List Object Dialog");
+    }
 
+    private void EditListObject(int listPosition) {
+        DialogAddListObject dialog = new DialogAddListObject();
+        Bundle args = new Bundle();
+        args.putInt("listId", listObjects.get(listPosition).getListID());
+        args.putString("listTitle", listObjects.get(listPosition).getTitle());
+        args.putString("listColour", listObjects.get(listPosition).getColour());
+        dialog.setArguments(args);
+        dialog.show(getFragmentManager(), "Edit List Object Dialog");
     }
 
     // Add new List to DB and UI
     @Override
-    public void getInputData(String listTitle, String listColor) {
-        ListObject newListObject = new ListObject(1, listTitle, 0, listColor);
-        newListObject.setListID(db.insertList(newListObject));
-        listObjects.add(newListObject);
+    public void getInputData(String listTitle, String listColor, int listId) {
+        ListObject listObject = new ListObject(listId, listTitle, 0, listColor);
+        if (listId >0){
+            db.updateList(listObject);
+            for (int i = 0; i < listObjects.size(); i++){
+                if (listObjects.get(i).getListID() == listId){
+                    listObjects.set(i, listObject);
+                }
+            }
+        }
+        else {
+            listObject.setListID(db.insertList(listObject));
+            listObjects.add(listObject);
+        }
         listObjectAdapter.notifyDataSetChanged();
     }
 

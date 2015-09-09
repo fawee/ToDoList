@@ -7,7 +7,6 @@ public class SpinnerItem {
 
     private String colorName;
     private String colorValue;
-
     private int color;
 
     public SpinnerItem(String colorName, String colorValue, int color) {

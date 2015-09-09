@@ -123,14 +123,14 @@ public class ListRepository  {
         return lists;
     }
 
-    private int updateList(ListObject list){
+    public int updateList(ListObject list){
         ContentValues cv = new ContentValues();
         cv.put(KEY_List_Title, list.getTitle());
         cv.put(KEY_List_Colour, list.getColour());
         return (int) db.update(TABLE_tblList, cv, KEY_List_ID + " = " + list.getListID(), null);
     }
 
-    private int updateListItem(ListItem item){
+    public int updateListItem(ListItem item){
         ContentValues cv = new ContentValues();
         cv.put(KEY_ListItem_Title, item.getTitle());
         cv.put(KEY_ListItem_Note, item.getNote());
