@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">ToDoList</string>
 
+    <string name="spinnerBlue">blue</string>
+    <string name="spinnerWhite">white</string>
+    <string name="spinnerRed">red</string>
+    <string name="spinnerDeep_purple">deep_purple</string>
+    <string name="spinnerLime">lime</string>
+    <string name="spinnerYellow">yellow</string>
+    <string name="spinnerGreen">green</string>
 
     <string name="action_settings">Settings</string>
     <string name="dialog_title_add_listobject">Add a new List</string>
@@ -29,4 +36,6 @@
     <string name="FloatingMenu_Edit">Bearbeiten</string>
     <string name="FloatingMenu_IsDone">Erledigt</string>
     <string name="addListItemActivity_RemindMe">Remind me?</string>
+
+    <string name="blub">blub</string>
 </resources>

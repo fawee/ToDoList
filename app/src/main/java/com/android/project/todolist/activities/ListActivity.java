@@ -128,7 +128,7 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
 
     // Add new List to DB and UI
     @Override
-    public void getInputData(String listTitle, int listColor) {
+    public void getInputData(String listTitle, String listColor) {
         ListObject newListObject = new ListObject(1, listTitle, 0, listColor);
         newListObject.setListID(db.insertList(newListObject));
         listObjects.add(newListObject);

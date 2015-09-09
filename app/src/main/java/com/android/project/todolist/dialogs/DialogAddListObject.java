@@ -27,7 +27,7 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
     private AlertDialog.Builder builder;
     private View view;
     private Spinner spinner;
-    private int pickedColor;
+    private String pickedColor;
 
 
     @Override
@@ -55,11 +55,17 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
     }
 
     private void addColorsToSpinner() {
-        list.add(new SpinnerItem("Blue", R.color.blue));
-        list.add(new SpinnerItem("Yellow", R.color.yellow));
-        list.add(new SpinnerItem("Green", R.color.green));
-        list.add(new SpinnerItem("Red", R.color.red));
-        list.add(new SpinnerItem("Lime", R.color.lime));
+        //ToDo: nachstehende Construktoraufrufe werden komischerweisße nicht akzeptiert, dass in der mitte ist ja ein STring kein int
+/*        list.add(new SpinnerItem("Blue", R.string.spinnerBlue, R.color.blue));
+        list.add(new SpinnerItem("Yellow", R.string.spinnerYellow, R.color.yellow));
+        list.add(new SpinnerItem("Green", R.string.spinnerGreen, R.color.green));
+        list.add(new SpinnerItem("Red", R.string.spinnerRed, R.color.red));
+        list.add(new SpinnerItem("Lime", R.string.spinnerLime, R.color.lime));*/
+        list.add(new SpinnerItem("Blue", "blue", R.color.blue));
+        list.add(new SpinnerItem("Yellow", "yellow", R.color.yellow));
+        list.add(new SpinnerItem("Green", "green", R.color.green));
+        list.add(new SpinnerItem("Red", "red", R.color.red));
+        list.add(new SpinnerItem("Lime", "lime", R.color.lime));
     }
 
     private void setupDialog() {
@@ -93,7 +99,7 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         SpinnerItem spinnerItem = (SpinnerItem) parent.getItemAtPosition(position);
-        pickedColor = spinnerItem.getColor();
+        pickedColor = spinnerItem.getColorValue();
     }
 
     @Override

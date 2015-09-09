@@ -114,7 +114,7 @@ public class ListRepository  {
             do {
                 int id= cursor.getInt(0);
                 String title = cursor.getString(1);
-                int colour = cursor.getInt(2);
+                String colour = cursor.getString(2);
 
                 lists.add(new ListObject(id, title, getNumOfListItems(id), colour));
 
@@ -209,7 +209,7 @@ public class ListRepository  {
         private static final String DATABASE_CREATE_tblList = "create table " + TABLE_tblList
                 + " (" + KEY_List_ID + " integer primary key autoincrement, " +
                 KEY_List_Title + " text not null, " +
-                KEY_List_Colour + " integer);";
+                KEY_List_Colour + " text);";
 
         private static final String DATABASE_CREATE_tblListItem = "create table " + TABLE_tblListItem
                 + " (" + KEY_ListItem_ID + " integer primary key autoincrement, " +

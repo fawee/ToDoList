@@ -8,9 +8,9 @@ public class ListObject {
     private int listID;
     private String title;
     private int numOfListItems;
-    private int colour;
+    private String colour;
 
-    public ListObject(int listID, String title, int numOfListItems, int colour) {
+    public ListObject(int listID, String title, int numOfListItems, String colour) {
 
         this.listID = listID;
         this.title = title;
@@ -35,11 +35,11 @@ public class ListObject {
         this.numOfListItems = numOfListItems;
     }
 
-    public int getColour() {
+    public String getColour() {
         return colour;
     }
 
-    public void setColour(int colour) {
+    public void setColour(String colour) {
         this.colour= colour;
     }
 
