@@ -19,9 +19,19 @@ public class ListItem {
     private boolean reminder;
     //TODO: ist GregorianCalendar richtig gewählt?
     private Calendar reminderDate;
+    //private String reminderDate;
     private int listID;
 
-    public ListItem(int listItemID, String title, String note, int priority, int year, int month, int day, boolean isDone, boolean reminder, Calendar reminderDate, int listID) {
+    public ListItem(int listItemID,
+                    String title,
+                    String note,
+                    int priority,
+                    int year, int month, int day,
+                    boolean isDone,
+                    boolean reminder,
+                    Calendar reminderDate,
+                    int listID) {
+    //public ListItem(int listItemID, String title, String note, int priority, int year, int month, int day, boolean isDone, boolean reminder, String reminderDate, int listID) {
 
         this.listItemID = listItemID;
         this.title = title;
@@ -59,14 +69,15 @@ public class ListItem {
     public boolean getReminder() {return reminder;}
 
     public Calendar getReminderDate() {
+    //public String getReminderDate() {
         return reminderDate;
     }
 
     public String getStringFromReminderDate() {
-        //TODO:ist "long" richtig?
-        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG,
+        //TODO:"long" sorgt für "September" stat "09"
+        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT,
                 Locale.GERMANY);
-        return df.format(dueDate.getTime());
+        return df.format(reminderDate.getTime());
     }
 
     public int getListID() { return listID; }

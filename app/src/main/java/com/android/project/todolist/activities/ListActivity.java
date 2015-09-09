@@ -19,13 +19,14 @@ import com.android.project.todolist.dialogs.DialogAddListObject;
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.adapter.ListObjectAdapter;
 import com.android.project.todolist.R;
+import com.android.project.todolist.log.Log;
 import com.android.project.todolist.persistence.ListRepository;
 
 
 import java.util.ArrayList;
 
 
-public class ListActivity extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener/*, AdapterView.OnItemLongClickListener*/ {
+public class ListActivity extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener {
 
     private GridView main_menu_gridView;
     private ArrayList<ListObject> listObjects;
@@ -61,7 +62,6 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
         listObjectAdapter = new ListObjectAdapter(this, listObjects);
         main_menu_gridView.setAdapter(listObjectAdapter);
         main_menu_gridView.setOnItemClickListener(this);
-
         registerForContextMenu(main_menu_gridView);
     }
 
@@ -80,9 +80,6 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
             case R.id.list_FloatingMenu_delete:
                 db.removeList(listObjects.get(info.position));
                 listObjects.remove(info.position);
-//                listObjects.clear();
-//                listObjectAdapter.notifyDataSetChanged();
-//                listObjects = db.getAllLists();
                 listObjectAdapter.notifyDataSetChanged();
                 break;
             case R.id.list_FloatingMenu_Edit:
@@ -94,18 +91,18 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
         return true;
     }
 
+    // Inflate the menu; this adds items to the action bar if it is present.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu_actionbar, menu);
         return true;
     }
 
+    // Handle action bar item clicks here. The action bar will
+    // automatically handle clicks on the Home/Up button, so long
+    // as you specify a parent activity in AndroidManifest.xml.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         switch (id) {
@@ -181,23 +178,14 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
             i.putExtra("ListTitle", listObjects.get(position).getTitle());
             startActivityForResult(i, REQUEST_CODE_OPEN_SUBMENU);
         }
-
-        /*
-        listObject = (ListObject) parent.getItemAtPosition(position);
-        String listObjectTitle = listObject.getTitle();
-        Intent intent = new Intent(ListActivity.this, ListItemActivity.class);
-        intent.putExtra("name", listObjectTitle);
-        startActivityForResult(intent, REQUEST_CODE_OPEN_SUBMENU);
-*/
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Aktualisiert das Textview für die Anzahl der ListItems in der Liste
         if(requestCode == REQUEST_CODE_OPEN_SUBMENU) {
-            // listObject.setNumOfListItems(data.getExtras().getInt("NumOfListItems"));
-            listObjectAdapter.notifyDataSetChanged();
+            initArrayList();
+            initUI();
         }
     }
-
 }

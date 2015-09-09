@@ -75,10 +75,6 @@ public class ListObjectAdapter extends ArrayAdapter<ListObject> {
                 break;
         }
 
-
-
-
-
         TextView tv_titleListObject = (TextView) view.findViewById(R.id.tv_listName);
         tv_titleListObject.setText(currentListObject.getTitle());
 

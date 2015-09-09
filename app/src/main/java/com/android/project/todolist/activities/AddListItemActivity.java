@@ -24,14 +24,20 @@ import com.android.project.todolist.R;
 import com.android.project.todolist.communicator.Communicator;
 import com.android.project.todolist.dialogs.DatePickerFragment;
 import com.android.project.todolist.dialogs.TimePickerFragment;
+import com.android.project.todolist.domain.ListItem;
+import com.android.project.todolist.log.Log;
 
 import java.text.DateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+
+import static com.android.project.todolist.tools.Tools.getDateFromString;
 
 
 public class AddListItemActivity extends Activity implements Communicator, View.OnClickListener {
 
+    private ListItem listItemToEdit;
     private EditText title, dueDate, note, reminderDay, reminderTime;
     private TextView reminderDateTV, reminderTimeTV;
     private Button addListItemButton;
@@ -43,43 +49,71 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        readIntent();
+        initUI();
+    }
+
+    private void readIntent() {
+        Bundle extras = getIntent().getExtras();
+
+        String dueDate = extras.getString("listItemDueDate");
+
+        int dueYear= 0, dueMonth = 0, dueDay = 0;
+        if (!dueDate.equals("")) {
+            dueDay = Integer.parseInt(dueDate.substring(0, 2));
+            dueMonth = Integer.parseInt(dueDate.substring(3, 5));
+            dueYear = Integer.parseInt(dueDate.substring(6, 8));
+        }
+
+        Date reminderDate = getDateFromString(extras.getString("listItemReminderDate"));
+        GregorianCalendar calReminderDate = new GregorianCalendar();
+        calReminderDate.setTime(reminderDate);
+
+        listItemToEdit = new ListItem(  extras.getInt("listItemID"),
+                                        extras.getString("listItemTitle"),
+                                        extras.getString("listItemNote"),
+                                        extras.getInt("listItemPriority"),
+                                        dueYear,dueMonth, dueDay,
+                                        extras.getBoolean("listItemIsDone"),
+                                        extras.getBoolean("listItemReminder"),
+                                        calReminderDate,
+                                        extras.getInt("listID"));
+    }
+
+    private void initUI() {
         setContentView(R.layout.activity_add_listitem_menu);
-        setupGUI();
-        setupOnClickListener();
-    }
-
-    private void setupOnClickListener() {
-        dueDate.setOnClickListener(this);
-        reminderDay.setOnClickListener(this);
-        reminderTime.setOnClickListener(this);
-        addListItemButton.setOnClickListener(this);
-    }
-
-
-
-    private void setupGUI() {
         initViews();
         initPrioritySpinner();
         initReminder();
+        setupOnClickListener();
     }
 
-    private void initReminder() {
-        reminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    showReminderOptions();
-                } else {
-                    hideReminderOptions();
-                    clearInputs();
-                }
-            }
-        });
+    private void initViews() {
+        title = (EditText) findViewById(R.id.addListItemMenuTitle);
+        title.setText(listItemToEdit.getTitle());
+
+        dueDate = (EditText) findViewById(R.id.addListItemMenuDate);
+        dueDate.setText(listItemToEdit.getStringFromDueDate());
+
+        note = (EditText) findViewById(R.id.addListItemMenuNote);
+        note.setText(listItemToEdit.getNote());
+
+        prioritySpinner = (Spinner) findViewById(R.id.addListItemMenuPriority);
+
+        addListItemButton = (Button) findViewById(R.id.addListItemButton);
+
+        reminder = (ToggleButton) findViewById(R.id.reminderButton);
+        reminder.setChecked(listItemToEdit.getReminder());//Todo, setzt man so wirklich den reminder?
+
+        initReminderViews();
     }
 
-    private void clearInputs() {
-        reminderTime.setText("");
-        reminderDay.setText("");
+    private void initReminderViews() {
+        reminderDateTV = (TextView) findViewById(R.id.addListItemActivityReminderDateTV);
+        reminderTimeTV = (TextView) findViewById(R.id.addListItemActivityReminderTimeTV);
+        reminderDay = (EditText) findViewById(R.id.addListItemActivityReminderDate);
+        reminderTime = (EditText) findViewById(R.id.addListItemActivityReminderTime);
+        hideReminderOptions();
     }
 
     private void hideReminderOptions() {
@@ -102,24 +136,55 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         prioritySpinner.setAdapter(adapter);
     }
 
-    private void initViews() {
-        title = (EditText) findViewById(R.id.addListItemMenuTitle);
-        dueDate = (EditText) findViewById(R.id.addListItemMenuDate);
-        note = (EditText) findViewById(R.id.addListItemMenuNote);
-        prioritySpinner = (Spinner) findViewById(R.id.addListItemMenuPriority);
-        addListItemButton = (Button) findViewById(R.id.addListItemButton);
-        reminder = (ToggleButton) findViewById(R.id.reminderButton);
-        initReminderViews();
+    private void initReminder() {
+        reminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    showReminderOptions();
+                } else {
+                    hideReminderOptions();
+                    clearInputs();
+                }
+            }
+        });
     }
 
-    private void initReminderViews() {
-        reminderDateTV = (TextView) findViewById(R.id.addListItemActivityReminderDateTV);
-        reminderTimeTV = (TextView) findViewById(R.id.addListItemActivityReminderTimeTV);
-        reminderDay = (EditText) findViewById(R.id.addListItemActivityReminderDate);
-        reminderTime = (EditText) findViewById(R.id.addListItemActivityReminderTime);
-        hideReminderOptions();
+    private void clearInputs() {
+        reminderTime.setText("");
+        reminderDay.setText("");
     }
 
+    private void setupOnClickListener() {
+        dueDate.setOnClickListener(this);
+        reminderDay.setOnClickListener(this);
+        reminderTime.setOnClickListener(this);
+        addListItemButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.addListItemMenuDate:
+                flag = 0;
+                showDatePickerDialog();
+                break;
+
+            case R.id.addListItemActivityReminderDate:
+                flag = 1;
+                showDatePickerDialog();
+                break;
+
+            case R.id.addListItemActivityReminderTime:
+                showTimePickerDialog();
+                break;
+
+            case R.id.addListItemButton:
+                createListItem();
+                break;
+        }
+    }
 
     @Override
     public void getInputData(String listTitle, String listColor, int listID) {}
@@ -166,58 +231,43 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         return formattedTime;
     }
 
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.addListItemMenuDate:
-                flag = 0;
-                showDatePickerDialog();
-                break;
-
-            case R.id.addListItemActivityReminderDate:
-                flag = 1;
-                showDatePickerDialog();
-                break;
-
-            case R.id.addListItemActivityReminderTime:
-                showTimePickerDialog();
-                break;
-
-            case R.id.addListItemButton:
-                createListItem();
-                break;
-            
-            
-        }
-    }
-
     private void createListItem() {
-        String listItemTitle = title.getText().toString();
-        String listItemDueDate = dueDate.getText().toString();
-        String listItemNote = note.getText().toString();
-        String listItemPriority = prioritySpinner.getSelectedItem().toString();
-        boolean listItemReminder = isReminded();
-        String listItemReminderDate = "";
+
+        Date dDate = getDateFromString(dueDate.getText().toString());
+        GregorianCalendar calDueDate = new GregorianCalendar();
+        calDueDate.setTime(dDate);
+        String listItemReminderDate;
         //plausibilitytest of the Reminder input
-        if (listItemReminder){
+        if (isReminded()){
             if (reminderDay.equals("") ^ reminderTime.equals("")) {
                 //TODO: Benutzerbenachrichtigung, dass er beide Werte eingeben muss
+                return;
             }
             else if (!reminderDay.equals("")){
                 String listItemReminderDay = reminderDay.getText().toString();
                 String listItemReminderTime = reminderTime.getText().toString();
                 listItemReminderDate = listItemReminderDay + " " + listItemReminderTime;
             }
-        }
-        //ÜBERPRÜFT OB USER DATUM GEWÄHLT HAT ODER NICHT
-        if (!listItemDueDate.equals("")) {
-            if(listItemReminder) {
-                setAlarm();
+            //ÜBERPRÜFT OB USER DATUM GEWÄHLT HAT ODER NICHT
+            //ToDo aber warum die if?
+            if (!dDate.equals("")) {
+                    setAlarm();
             }
         }
-        sendDataToSubMenu(listItemTitle, listItemDueDate, listItemNote, listItemPriority, listItemReminder, listItemReminderDate);
+
+        Date rDate = getDateFromString(reminderDay.getText().toString());
+        GregorianCalendar calReminderDate = new GregorianCalendar();
+        calReminderDate.setTime(rDate);
+
+        listItemToEdit.setTitle(title.getText().toString());
+        listItemToEdit.setNote(note.getText().toString());
+        listItemToEdit.setDueDate(calDueDate);
+        listItemToEdit.setPriority(Integer.parseInt(prioritySpinner.getSelectedItem().toString()));
+        listItemToEdit.setReminder(isReminded());
+        listItemToEdit.setReminderDate(calReminderDate);
+
+        sendDataToSubMenu();
+        //sendDataToSubMenu(listItemTitle, listItemDueDate, listItemNote, listItemPriority, listItemReminder, listItemReminderDate);
     }
 
     private void setAlarm() {
@@ -249,14 +299,17 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
 
-    private void sendDataToSubMenu(String listItemTitle, String listItemDueDate, String listItemNote, String listItemPriority, boolean listItemReminder,  String listItemReminderDate) {
+    //private void sendDataToSubMenu(String listItemTitle, String listItemDueDate, String listItemNote, String listItemPriority, boolean listItemReminder,  String listItemReminderDate) {
+    private void sendDataToSubMenu() {
         Intent i = getIntent();
-        i.putExtra("Title", listItemTitle);
-        i.putExtra("DueDate", listItemDueDate);
-        i.putExtra("Note", listItemNote);
-        i.putExtra("Priority", listItemPriority);
-        i.putExtra("Reminder", listItemReminder);
-        i.putExtra("ReminderDate", listItemReminderDate);
+        i.putExtra("ListItemID", listItemToEdit.getListItemID());
+        i.putExtra("Title", listItemToEdit.getTitle());
+        i.putExtra("DueDate", listItemToEdit.getStringFromDueDate());
+        i.putExtra("Note", listItemToEdit.getNote());
+        i.putExtra("Priority", listItemToEdit.getPriority());
+        i.putExtra("Reminder", listItemToEdit.getReminder());
+        i.putExtra("ReminderDate", listItemToEdit.getStringFromReminderDate());
+        i.putExtra("ListID", listItemToEdit.getListID());
         setResult(RESULT_OK, i);
         finish();
     }
@@ -264,7 +317,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     private void showTimePickerDialog() {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
-
     }
 
     private void showDatePickerDialog() {

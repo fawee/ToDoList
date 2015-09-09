@@ -47,7 +47,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         ListItem currentListItem = listItemArrayList.get(position);
 
         CheckBox title = (CheckBox) view.findViewById(R.id.listItem_checkBox);
-        //title.setText(currentListItem.getTitle());
+        title.setText(currentListItem.getTitle());
 
         TextView date = (TextView) view.findViewById(R.id.listItem_date);
         date.setText(currentListItem.getStringFromDueDate());

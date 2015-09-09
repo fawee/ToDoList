@@ -42,10 +42,6 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
         int listID = getArguments().getInt("listId");
         String listTitle = getArguments().getString("listTitle");
         String listColour = getArguments().getString("listColour");
-        Log.d("Add or Edit List");//ToDo: entfernen
-        Log.d(String.valueOf(listID));//ToDo: entfernen
-        Log.d(listTitle);//ToDo: entfernen
-        Log.d(listColour);//ToDo: entfernen
         setupDialog(listTitle);
         setupSpinner(listColour);
         if(listTitle.equals("")){   handleClicks("Add", listID);}
@@ -71,7 +67,6 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
         spinner = (Spinner) view.findViewById(R.id.dialog_addList_spinner);
         spinnerItems = new ArrayList<>();
         addColorsToSpinner();
-        //SpinnerItem preselectedItem = l
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getActivity(), spinnerItems);
         spinner.setAdapter(spinnerAdapter);
         spinner.setSelection(getPreselectedSpinnerPosition(preselectedColour));

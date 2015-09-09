@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.android.project.todolist.R;
 import com.android.project.todolist.adapter.ListItemAdapter;
 import com.android.project.todolist.domain.ListItem;
+import com.android.project.todolist.log.Log;
 import com.android.project.todolist.persistence.ListRepository;
 
 import java.text.DateFormat;
@@ -25,8 +26,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import static com.android.project.todolist.tools.Tools.getDateFromString;
 
-public class ListItemActivity extends ActionBarActivity implements AdapterView.OnItemLongClickListener {
+
+public class ListItemActivity extends ActionBarActivity {
 
     private ListView listView;
     private ListItemAdapter listItemAdapter;
@@ -50,8 +53,6 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         Bundle extras = getIntent().getExtras();
         listID = extras.getInt("ListID");
         listTitle = extras.getString("ListTitle");
-        TextView tvListTitle = (TextView) findViewById(R.id.tvSubMenuNameListObject);
-//        tvListTitle.setText(listTitle);
     }
 
     private void initDB(){
@@ -66,17 +67,16 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     private void initUI() {
         setContentView(R.layout.activity_sub_menu);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        TextView tvListTitle = (TextView) findViewById(R.id.tvSubMenuNameListObject);
+        tvListTitle.setText(listTitle);
         listView = (ListView) findViewById(R.id.listViewSubMenu);
         listItemAdapter = new ListItemAdapter(this, listItems);
         listView.setAdapter(listItemAdapter);
-        listView.setOnItemLongClickListener(this);
-
         registerForContextMenu(listView);
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-    //TODO funktioniert irgendwie noch nicht
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.listitem_floating_context_menu, menu);
@@ -85,7 +85,6 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-//TODO funktioniert irgendwie noch nicht und ist noch nicht angepasst
         switch (item.getItemId()){
             case R.id.listItem_FloatingMenu_delete:
                 db.removeListItem(listItems.get(info.position));
@@ -93,18 +92,17 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                 listItemAdapter.notifyDataSetChanged();
                 return true;
             case R.id.listItem_FloatingMenu_Edit:
-                //ToDo
+                editListItem(info.position);
                 return true;
-            case R.id.listItem_FloatingMenu_IsDone:
+            /*case R.id.listItem_FloatingMenu_IsDone:
                 listItems.get(info.position).setIsDone(true);
                 //ToDo DB speichern
-                return true;
+                return true;*/
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    //Men
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.sub_menu_actionbar, menu);
@@ -116,7 +114,6 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                updateChanges();
                 onBackPressed();
                 return true;
 
@@ -127,17 +124,29 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         return super.onOptionsItemSelected(item);
     }
 
-    //Aktualisiert Anzahl der ListItems in der Liste
-    private void updateChanges() {
-        int numOfListItems = listItems.size();
-        Intent i = getIntent();
-        i.putExtra("NumOfListItems", numOfListItems);
-        setResult(RESULT_OK, i);
-
-    }
-
     private void addListItem() {
         Intent i = new Intent(this, AddListItemActivity.class);
+        i.putExtra("listItemID", 0);
+        i.putExtra("listItemTitle", "");
+        i.putExtra("listItemDueDate", "");
+        i.putExtra("listItemNote", "");
+        i.putExtra("listItemPriority", 3);
+        i.putExtra("listItemReminder", false);
+        i.putExtra("listItemReminderDate", "");
+        i.putExtra("listID", listID);
+        startActivityForResult(i, 1);
+    }
+
+    private void editListItem(int itemPossition) {
+        Intent i = new Intent(this, AddListItemActivity.class);
+        i.putExtra("listItemID", listItems.get(itemPossition).getListItemID());
+        i.putExtra("listItemTitle", listItems.get(itemPossition).getTitle());
+        i.putExtra("listItemDueDate", listItems.get(itemPossition).getStringFromDueDate());
+        i.putExtra("listItemNote", listItems.get(itemPossition).getNote());
+        i.putExtra("listItemPriority", listItems.get(itemPossition).getPriority());
+        i.putExtra("listItemReminder", listItems.get(itemPossition).getReminder());
+        i.putExtra("listItemReminderDate", listItems.get(itemPossition).getStringFromReminderDate());
+        i.putExtra("listID", listItems.get(itemPossition).getListID());
         startActivityForResult(i, 1);
     }
 
@@ -145,42 +154,52 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_ADD_LISTITEM) {
             if (resultCode == RESULT_OK) {
+                int listItemID =data.getExtras().getInt("ListItemID");
                 String title = data.getExtras().getString("Title");
                 String dDate = data.getExtras().getString("DueDate");
                 String note = data.getExtras().getString("Note");
-                String priority = data.getExtras().getString("Priority");
+                int priority = data.getExtras().getInt("Priority");
                 boolean reminder = data.getExtras().getBoolean("Reminder");
                 String rDate = data.getExtras().getString("ReminderDate");
+                int listID = data.getExtras().getInt("ListID");
 
+                //if(!dDate.equals("")) {
                 Date dueDate = getDateFromString(dDate);
                 GregorianCalendar calDueDate = new GregorianCalendar();
                 calDueDate.setTime(dueDate);
-
-                Date reminderDate = getDateFromString(dDate);
+                //}
+                //if(!rDate.equals("")) {
+                Date reminderDate = getDateFromString(rDate);
                 GregorianCalendar calReminderDate = new GregorianCalendar();
                 calReminderDate.setTime(reminderDate);
+                //}
 
-                ListItem newListItem = new ListItem(1, title, note, Integer.parseInt(priority), calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH), false, reminder, calReminderDate, listID);
-                newListItem.setListItemID(db.insertListItem(newListItem));
-                listItems.add(newListItem);
+                ListItem listItem = new ListItem(listItemID,
+                                                title,
+                                                note,
+                                                priority,
+                                                calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH),
+                                                false,
+                                                reminder,
+                                                calReminderDate,
+                                                listID);
+                //listItem listItem = new listItem(1, title, note, Integer.parseInt(priority), calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH), false, reminder, rDate, listID);
+                if (data.getExtras().getInt("ListItemID") == 0){
+                    listItem.setListItemID(db.insertListItem(listItem));
+                    listItems.add(listItem);
+
+                }
+                else {
+                    db.updateListItem(listItem);
+                    for (int i = 0; i < listItems.size(); i++) {
+                        if (listItems.get(i).getListItemID() == listItem.getListItemID()) {
+                            listItems.set(i, listItem);
+                        }
+                    }
+                }
                 listItemAdapter.notifyDataSetChanged();
             }
         }
-    }
-
-    private Date getDateFromString(String dateString) {
-        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
-        try {
-            return df.parse(dateString);
-        } catch (ParseException e) {
-            // return current date as fallback
-            return new Date();
-        }
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-        return false;
     }
 }
 
