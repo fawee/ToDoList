@@ -11,12 +11,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.project.todolist.R;
 import com.android.project.todolist.adapter.SpinnerAdapter;
 import com.android.project.todolist.communicator.Communicator;
 import com.android.project.todolist.domain.SpinnerItem;
 import com.android.project.todolist.log.Log;
+import com.android.project.todolist.tools.Tools;
 
 import java.util.ArrayList;
 
@@ -42,7 +44,7 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
         int listID = getArguments().getInt("listId");
         String listTitle = getArguments().getString("listTitle");
         String listColour = getArguments().getString("listColour");
-        setupDialog(listTitle);
+        setupDialog(listTitle, listColour);
         setupSpinner(listColour);
         if(listTitle.equals("")){   handleClicks("Add", listID);}
         else{                       handleClicks("Save", listID);}
@@ -50,13 +52,16 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
         return builder.create();
     }
 
-    private void setupDialog(String listTitle) {
+    private void setupDialog(String listTitle, String listColour) {
         builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.dialog_add_list, null);
 
         EditText editTListTitle = (EditText) view.findViewById(R.id.dialog_addList_title);
         editTListTitle.setText(listTitle);
+
+        TextView dialogHead = (TextView) view.findViewById(R.id.dialog_head);
+        Tools.setColor(listColour, dialogHead);
 
         builder.setView(view);
         builder.setCancelable(false);

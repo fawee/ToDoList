@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -40,6 +41,9 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         if(convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(sub_menu_single_listitem, null);
+
+            //Animation für neu angelegte ListItems
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left));
         } else {
             view = convertView;
         }

@@ -176,6 +176,7 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
             Intent i = new Intent(getApplicationContext(), ListItemActivity.class);
             i.putExtra("ListID", listObjects.get(position).getListID());
             i.putExtra("ListTitle", listObjects.get(position).getTitle());
+            i.putExtra("ListColor", listObjects.get(position).getColour());
             startActivityForResult(i, REQUEST_CODE_OPEN_SUBMENU);
         }
     }

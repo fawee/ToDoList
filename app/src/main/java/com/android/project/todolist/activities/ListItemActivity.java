@@ -17,6 +17,7 @@ import com.android.project.todolist.adapter.ListItemAdapter;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.log.Log;
 import com.android.project.todolist.persistence.ListRepository;
+import com.android.project.todolist.tools.Tools;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -36,7 +37,7 @@ public class ListItemActivity extends ActionBarActivity {
     private ArrayList<ListItem> listItems;
     private ListRepository db;
     private int listID;
-    private String listTitle;
+    private String listTitle, listColor;
 
     private static final int REQUEST_CODE_ADD_LISTITEM = 1;
 
@@ -53,6 +54,7 @@ public class ListItemActivity extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         listID = extras.getInt("ListID");
         listTitle = extras.getString("ListTitle");
+        listColor = extras.getString("ListColor");
     }
 
     private void initDB(){
@@ -69,6 +71,7 @@ public class ListItemActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         TextView tvListTitle = (TextView) findViewById(R.id.tvSubMenuNameListObject);
         tvListTitle.setText(listTitle);
+        Tools.setColor(listColor, tvListTitle);
         listView = (ListView) findViewById(R.id.listViewSubMenu);
         listItemAdapter = new ListItemAdapter(this, listItems);
         listView.setAdapter(listItemAdapter);
@@ -87,9 +90,7 @@ public class ListItemActivity extends ActionBarActivity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()){
             case R.id.listItem_FloatingMenu_delete:
-                db.removeListItem(listItems.get(info.position));
-                listItems.remove(info.position);
-                listItemAdapter.notifyDataSetChanged();
+                deleteListItem(info);
                 return true;
             case R.id.listItem_FloatingMenu_Edit:
                 editListItem(info.position);
@@ -101,6 +102,13 @@ public class ListItemActivity extends ActionBarActivity {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void deleteListItem(AdapterView.AdapterContextMenuInfo info) {
+
+        db.removeListItem(listItems.get(info.position));
+        listItems.remove(info.position);
+        listItemAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -130,23 +138,23 @@ public class ListItemActivity extends ActionBarActivity {
         i.putExtra("listItemTitle", "");
         i.putExtra("listItemDueDate", "");
         i.putExtra("listItemNote", "");
-        i.putExtra("listItemPriority", 3);
+        i.putExtra("listItemPriority", 0);
         i.putExtra("listItemReminder", false);
         i.putExtra("listItemReminderDate", "");
         i.putExtra("listID", listID);
         startActivityForResult(i, 1);
     }
 
-    private void editListItem(int itemPossition) {
+    private void editListItem(int itemPosition) {
         Intent i = new Intent(this, AddListItemActivity.class);
-        i.putExtra("listItemID", listItems.get(itemPossition).getListItemID());
-        i.putExtra("listItemTitle", listItems.get(itemPossition).getTitle());
-        i.putExtra("listItemDueDate", listItems.get(itemPossition).getStringFromDueDate());
-        i.putExtra("listItemNote", listItems.get(itemPossition).getNote());
-        i.putExtra("listItemPriority", listItems.get(itemPossition).getPriority());
-        i.putExtra("listItemReminder", listItems.get(itemPossition).getReminder());
-        i.putExtra("listItemReminderDate", listItems.get(itemPossition).getStringFromReminderDate());
-        i.putExtra("listID", listItems.get(itemPossition).getListID());
+        i.putExtra("listItemID", listItems.get(itemPosition).getListItemID());
+        i.putExtra("listItemTitle", listItems.get(itemPosition).getTitle());
+        i.putExtra("listItemDueDate", listItems.get(itemPosition).getStringFromDueDate());
+        i.putExtra("listItemNote", listItems.get(itemPosition).getNote());
+        i.putExtra("listItemPriority", listItems.get(itemPosition).getPriority());
+        i.putExtra("listItemReminder", listItems.get(itemPosition).getReminder());
+        i.putExtra("listItemReminderDate", listItems.get(itemPosition).getStringFromReminderDate());
+        i.putExtra("listID", listItems.get(itemPosition).getListID());
         startActivityForResult(i, 1);
     }
 

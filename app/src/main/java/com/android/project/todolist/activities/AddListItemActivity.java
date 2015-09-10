@@ -100,12 +100,19 @@ public class AddListItemActivity extends Activity implements Communicator, View.
 
         prioritySpinner = (Spinner) findViewById(R.id.addListItemMenuPriority);
 
+
         addListItemButton = (Button) findViewById(R.id.addListItemButton);
 
         reminder = (ToggleButton) findViewById(R.id.reminderButton);
-        reminder.setChecked(listItemToEdit.getReminder());//Todo, setzt man so wirklich den reminder?
 
         initReminderViews();
+
+        if(listItemToEdit.getReminder()) {
+            reminder.setChecked(true);
+            showReminderOptions();
+        }
+
+
     }
 
     private void initReminderViews() {
@@ -134,6 +141,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.addListItemMenu_Priority_Spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         prioritySpinner.setAdapter(adapter);
+        prioritySpinner.setSelection(listItemToEdit.getPriority()-1);
     }
 
     private void initReminder() {

@@ -1,6 +1,7 @@
 package com.android.project.todolist.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.R;
+import com.android.project.todolist.tools.Tools;
 
 import java.util.ArrayList;
 
@@ -42,7 +44,7 @@ public class ListObjectAdapter extends ArrayAdapter<ListObject> {
             view = layoutInflater.inflate(main_menu_single_list_layout, null);
 
             //Animation für neu angelegte Listen
-            view.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left));
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
 
         } else {
             view = convertView;
@@ -51,34 +53,17 @@ public class ListObjectAdapter extends ArrayAdapter<ListObject> {
         ListObject currentListObject = arrayList.get(position);
 
         RelativeLayout list = (RelativeLayout) view.findViewById(R.id.list);
-        switch (currentListObject.getColour()){
-            case "blue":
-                list.setBackgroundResource(R.color.blue);
-                break;
-            case "green":
-                list.setBackgroundResource(R.color.green);
-                break;
-            case "red":
-                list.setBackgroundResource(R.color.red);
-                break;
-            case "yellow":
-                list.setBackgroundResource(R.color.yellow);
-                break;
-            case "lime":
-                list.setBackgroundResource(R.color.lime);
-                break;
-            case "white":
-                list.setBackgroundResource(R.color.white);
-                break;
-            case "deep_purple":
-                list.setBackgroundResource(R.color.deep_purple);
-                break;
-        }
+        Tools.setColor(currentListObject.getColour(), list);
 
         TextView tv_titleListObject = (TextView) view.findViewById(R.id.tv_listName);
+        //CustomFont
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Roboto-Black.ttf");
+        tv_titleListObject.setTypeface(font);
+
         tv_titleListObject.setText(currentListObject.getTitle());
 
         TextView tv_numOfListItems = (TextView) view.findViewById(R.id.tv_numOfListItems);
+        tv_numOfListItems.setTypeface(font);
         tv_numOfListItems.setText(""+ currentListObject.getNumOfListItems());
 
 
