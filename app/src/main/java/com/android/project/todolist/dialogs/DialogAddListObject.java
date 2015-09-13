@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,10 +58,13 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.dialog_add_list, null);
 
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
+
         EditText editTListTitle = (EditText) view.findViewById(R.id.dialog_addList_title);
         editTListTitle.setText(listTitle);
 
         TextView dialogHead = (TextView) view.findViewById(R.id.dialog_head);
+        dialogHead.setTypeface(font);
         Tools.setColor(listColour, dialogHead);
 
         builder.setView(view);

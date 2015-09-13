@@ -10,7 +10,7 @@
     <string name="spinnerGreen">green</string>
 
     <string name="action_settings">Settings</string>
-    <string name="dialog_title_add_listobject">Add a new List</string>
+    <string name="dialog_title_add_listobject">Customize your List</string>
     <string name="dialog_hint_title_listobject">Name of your List…</string>
 
     <string name="addListItemMenu_Title">Title</string>
@@ -21,6 +21,7 @@
     <string name="addListItemMenu_Priority">Priority</string>
     <string name="addListItemActivity_AddButton">Ok</string>
 
+    <string name="addListItemActivityTitle_hint">Set Title here</string>
     <string name="addListItemActivityReminder_Date_hint">Set Reminder Date here</string>
     <string name="addListItemActivityReminder_Time_hint">Set Reminder Time here</string>
     <string name="addListItemActivityReminder_Time">Time</string>

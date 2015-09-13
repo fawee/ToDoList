@@ -7,7 +7,8 @@
     <TextView
 
         android:gravity="bottom"
-        android:textSize="40sp"
+        android:textColor="@color/white"
+        android:textSize="30sp"
         android:id="@+id/tv_listName"
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -16,6 +17,7 @@
     <TextView
 
         android:textSize="40sp"
+        android:textColor="@color/white"
         android:id="@+id/tv_numOfListItems"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -39,7 +39,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
 
     private ListItem listItemToEdit;
     private EditText title, dueDate, note, reminderDay, reminderTime;
-    private TextView reminderDateTV, reminderTimeTV;
+    private TextView reminderDateTV, reminderTimeTV, dateTextView;
     private Button addListItemButton;
     private Spinner prioritySpinner;
     private ToggleButton reminder;
@@ -93,7 +93,11 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         title.setText(listItemToEdit.getTitle());
 
         dueDate = (EditText) findViewById(R.id.addListItemMenuDate);
-        dueDate.setText(listItemToEdit.getStringFromDueDate());
+
+        //Löst das Problem mit year, month, day = 0 im Kalender
+        if(!listItemToEdit.getStringFromDueDate().equals("31.12.02")) {
+            dueDate.setText(listItemToEdit.getStringFromDueDate());
+        }
 
         note = (EditText) findViewById(R.id.addListItemMenuNote);
         note.setText(listItemToEdit.getNote());
@@ -200,7 +204,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     @Override
     public void getDate(DatePicker view, int year, int month, int day) {
 
-        TextView dateTextView = (TextView) findViewById(R.id.addListItemMenuDate);
+        dateTextView = (TextView) findViewById(R.id.addListItemMenuDate);
         TextView reminderDateTextView = (TextView) findViewById(R.id.addListItemActivityReminderDate);
 
         GregorianCalendar dueDate = new GregorianCalendar(year, month, day);
@@ -281,9 +285,10 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     private void setAlarm() {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_list_item_alarm)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
+                        .setSmallIcon(R.drawable.ic_list_item_alarm_white)
+                        .setContentTitle("Reminder is activated")
+                        .setTicker("Reminder activated!")
+                        .setContentText("funktioniert noch nicht!");
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder.setSound(alarmSound);
 

@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ import java.util.Locale;
 import static com.android.project.todolist.tools.Tools.getDateFromString;
 
 
-public class ListItemActivity extends ActionBarActivity {
+public class ListItemActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
     private ListView listView;
     private ListItemAdapter listItemAdapter;
@@ -73,6 +74,7 @@ public class ListItemActivity extends ActionBarActivity {
         tvListTitle.setText(listTitle);
         Tools.setColor(listColor, tvListTitle);
         listView = (ListView) findViewById(R.id.listViewSubMenu);
+        listView.setOnItemClickListener(this);
         listItemAdapter = new ListItemAdapter(this, listItems);
         listView.setAdapter(listItemAdapter);
         registerForContextMenu(listView);
@@ -206,8 +208,24 @@ public class ListItemActivity extends ActionBarActivity {
                     }
                 }
                 listItemAdapter.notifyDataSetChanged();
+
+
             }
         }
+    }
+
+
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(listItems.get(position).getIsDone()) {
+            listItems.get(position).setIsDone(false);
+        } else {
+            listItems.get(position).setIsDone(true);
+        }
+        db.updateListItem(listItems.get(position));
+        listItemAdapter.notifyDataSetChanged();
     }
 }
 

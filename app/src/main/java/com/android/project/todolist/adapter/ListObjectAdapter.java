@@ -57,7 +57,7 @@ public class ListObjectAdapter extends ArrayAdapter<ListObject> {
 
         TextView tv_titleListObject = (TextView) view.findViewById(R.id.tv_listName);
         //CustomFont
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Roboto-Black.ttf");
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Roboto-Regular.ttf");
         tv_titleListObject.setTypeface(font);
 
         tv_titleListObject.setText(currentListObject.getTitle());

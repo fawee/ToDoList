@@ -10,5 +10,7 @@
     <color name="green">#4caf50</color>
     <color name="dark_background">#2B2B2B</color>
     <color name="actionbar_color">#37474F</color>
+    <color name="indigo">#3F51B5</color>
+    <color name="teal">#009688</color>
 
 </resources>

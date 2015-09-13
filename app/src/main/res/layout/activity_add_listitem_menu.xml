@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/dark_background"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/addListItemMenuTitleTV"
         android:text="@string/addListItemMenu_Title"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"/>
@@ -15,14 +21,16 @@
     <EditText
         android:id="@+id/addListItemMenuTitle"
         android:inputType="text"
+        android:hint="@string/addListItemActivityTitle_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue"
-        android:padding="16dp"/>
+        android:padding="12dp"/>
 
     <TextView
         android:id="@+id/addListItemMenuDateTV"
         android:text="@string/addListItemMenu_Date"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -31,30 +39,40 @@
         android:focusableInTouchMode="false"
         android:inputType="date"
         android:hint="@string/addListItemMenu_Date_hint"
+        android:background="@color/green"
+        android:padding="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/addListItemMenuNoteTV"
         android:text="@string/addListItemMenu_Note"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
         android:id="@+id/addListItemMenuNote"
         android:hint="@string/addListItemMenu_Note_hint"
+        android:inputType="text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        android:padding="12dp"/>
 
     <TextView
         android:id="@+id/addListItemMenuPriorityTV"
         android:text="@string/addListItemMenu_Priority"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     
     <Spinner
         android:id="@+id/addListItemMenuPriority"
         android:layout_width="wrap_content"
+        android:background="@color/red"
+        android:popupBackground="@color/red"
+        android:padding="12dp"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
@@ -66,19 +84,22 @@
         <TextView
             android:id="@+id/addListItemActivityReminderTV"
             android:text="@string/addListItemActivity_RemindMe"
+            android:gravity="center"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
         <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New ToggleButton"
+            android:textColor="@color/white"
             android:id="@+id/reminderButton" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/addListItemActivityReminderDateTV"
         android:text="@string/addListItemMenu_Date"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -88,11 +109,14 @@
         android:focusableInTouchMode="false"
         android:hint="@string/addListItemActivityReminder_Date_hint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@color/deep_purple"
+        android:padding="12dp"/>
 
     <TextView
         android:id="@+id/addListItemActivityReminderTimeTV"
         android:text="@string/addListItemActivityReminder_Time"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -102,7 +126,9 @@
         android:inputType="time"
         android:hint="@string/addListItemActivityReminder_Time_hint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@color/deep_purple"
+        android:padding="12dp"/>
 
 
 
@@ -111,8 +137,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/addListItemActivity_AddButton"
+        android:textColor="@color/white"
         android:layout_gravity="center_horizontal" />
     
     
 
 </LinearLayout>
+
+</ScrollView>

@@ -6,6 +6,9 @@
 
         android:id="@+id/dialog_head"
         android:text="@string/dialog_title_add_listobject"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:scaleType="center"
@@ -16,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/dialog_hint_title_listobject"
+        android:inputType="text"
         android:layout_marginBottom="16dp"/>
 
     <Spinner

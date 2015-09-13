@@ -48,10 +48,11 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
             view = convertView;
         }
 
-        ListItem currentListItem = listItemArrayList.get(position);
+        final ListItem currentListItem = listItemArrayList.get(position);
 
-        CheckBox title = (CheckBox) view.findViewById(R.id.listItem_checkBox);
+        final CheckBox title = (CheckBox) view.findViewById(R.id.listItem_checkBox);
         title.setText(currentListItem.getTitle());
+        title.setChecked(currentListItem.getIsDone());
 
         TextView date = (TextView) view.findViewById(R.id.listItem_date);
         date.setText(currentListItem.getStringFromDueDate());
@@ -69,7 +70,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
         ImageView reminder = (ImageView) view.findViewById(R.id.listItem_reminder);
         if(currentListItem.getReminder()) {
-            reminder.setImageResource(R.drawable.ic_list_item_alarm);
+            reminder.setImageResource(R.drawable.ic_list_item_alarm_white);
         }
 
         return view;
