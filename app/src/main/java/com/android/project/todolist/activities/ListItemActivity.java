@@ -193,6 +193,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                                                 reminder,
                                                 calReminderDate,
                                                 listID);
+
                 //listItem listItem = new listItem(1, title, note, Integer.parseInt(priority), calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH), false, reminder, rDate, listID);
                 if (data.getExtras().getInt("ListItemID") == 0){
                     listItem.setListItemID(db.insertListItem(listItem));
@@ -219,11 +220,14 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         if(listItems.get(position).getIsDone()) {
             listItems.get(position).setIsDone(false);
         } else {
             listItems.get(position).setIsDone(true);
         }
+
+        listItems.set(position, listItems.get(position));
         db.updateListItem(listItems.get(position));
         listItemAdapter.notifyDataSetChanged();
     }

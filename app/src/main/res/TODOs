@@ -3,22 +3,28 @@ X -> Erledigt
     - Datenbankanbindung
 X       *List       Listen aus DB holen
 X                   Neue Liste in DB speichern und anschließend GridView aktualisieren
-                    Nach bearbeiten der ListItems die anzahl der Items aktualisieren
+X                   Nach bearbeiten der ListItems die anzahl der Items aktualisieren
 X       *ListItem   ListItems aus DB holen
 X                   Neue ListItems in DB speichern und anschließend GridView aktualisieren
-                    Nach bearbeiten eines Elements aktualisieren
+X                   Nach bearbeiten eines Elements aktualisieren
 
 X    - ColourPicker
     - Wecker Funktion
-    - ListItem Add Activity (Erinnerungsdatum)
-    - LongClick -> Delete(Edit, Erledigt)
-    - wenn man in eine liste geht, sollte der kopf nicht blau, sondern an die farbe der liste angepasst werden
+X   - ListItem Add Activity (Erinnerungsdatum)
+X   - LongClick -> Delete(Edit, Erledigt)
+X   - wenn man in eine liste geht, sollte der kopf nicht blau, sondern an die farbe der liste angepasst werden
+
+    - Sortieren: - Listen
+                 - ListItems
 
     - Cloud
 
     Bugs:
         - Das ReminderDatum wird noch nicht richtig gesetzt
         - Gesetztes Reminderdatum löst fehler beim auslesen aus der DB aus
+        - falsches datum bei listitems (reopen)
+        - addListItemActivity addiert Monat um +1 bei Date (wenn man auf bearbeiten geht)
+        - Checkbox nicht gespeichert bei ReOpen
 
     CodeSmell:
     Im Forum fragen ob man die DBs Indizes einfach in (int) casten kann. Da es notwendig ist und in der DB eh nur Int gespeichert wird
