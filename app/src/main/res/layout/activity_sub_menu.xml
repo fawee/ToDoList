@@ -4,8 +4,10 @@
     android:background="@color/dark_background"
     android:layout_height="match_parent">
 
-
-
+    <RelativeLayout
+        android:id="@+id/listItemActivityHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvSubMenuNameListObject"
@@ -16,6 +18,26 @@
             android:gravity="center"
             android:textSize="25sp"
             />
+
+        <ImageButton
+            android:id="@+id/delete_listItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@null"
+            android:src="@drawable/ic_delete_listitem"
+            android:layout_alignRight="@+id/tvSubMenuNameListObject"
+            />
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+
 
 
 

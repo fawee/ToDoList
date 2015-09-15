@@ -75,4 +75,9 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
         return view;
     }
+
+    @Override
+    public int getCount() {
+        return listItemArrayList.size();
+    }
 }

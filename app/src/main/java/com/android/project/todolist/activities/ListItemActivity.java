@@ -1,5 +1,6 @@
 package com.android.project.todolist.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -11,10 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.project.todolist.R;
 import com.android.project.todolist.adapter.ListItemAdapter;
@@ -38,7 +41,7 @@ import java.util.Locale;
 import static com.android.project.todolist.tools.Tools.getDateFromString;
 
 
-public class ListItemActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class ListItemActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private ListView listView;
     private ListItemAdapter listItemAdapter;
@@ -46,6 +49,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     private ListRepository db;
     private int listID;
     private String listTitle, listColor;
+    private ImageButton deleteListItemButton;
 
     private static final int REQUEST_CODE_ADD_LISTITEM = 1;
 
@@ -65,22 +69,26 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         listColor = extras.getString("ListColor");
     }
 
-    private void initDB(){
+    private void initDB() {
         db = new ListRepository(this);
         db.open();
     }
 
-    private void initArrayList(){
+    private void initArrayList() {
         listItems = new ArrayList<ListItem>();
         listItems = db.getItemsOfList(listID);
     }
+
     private void initUI() {
         setContentView(R.layout.activity_sub_menu);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         TextView tvListTitle = (TextView) findViewById(R.id.tvSubMenuNameListObject);
+        deleteListItemButton = (ImageButton) findViewById(R.id.delete_listItems);
+        deleteListItemButton.setOnClickListener(this);
         tvListTitle.setText(listTitle);
         Tools.setColor(listColor, tvListTitle);
         listView = (ListView) findViewById(R.id.listViewSubMenu);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemClickListener(this);
         listItemAdapter = new ListItemAdapter(this, listItems);
         listView.setAdapter(listItemAdapter);
@@ -97,10 +105,8 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch (item.getItemId()){
-            case R.id.listItem_FloatingMenu_delete:
-                deleteListItem(info);
-                return true;
+        switch (item.getItemId()) {
+
             case R.id.listItem_FloatingMenu_Edit:
                 editListItem(info.position);
                 return true;
@@ -113,12 +119,6 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         }
     }
 
-    private void deleteListItem(AdapterView.AdapterContextMenuInfo info) {
-
-        db.removeListItem(listItems.get(info.position));
-        listItems.remove(info.position);
-        listItemAdapter.notifyDataSetChanged();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -198,7 +198,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_ADD_LISTITEM) {
             if (resultCode == RESULT_OK) {
-                int listItemID =data.getExtras().getInt("ListItemID");
+                int listItemID = data.getExtras().getInt("ListItemID");
                 String title = data.getExtras().getString("Title");
                 String dDate = data.getExtras().getString("DueDate");
                 String note = data.getExtras().getString("Note");
@@ -219,22 +219,21 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                 //}
 
                 ListItem listItem = new ListItem(listItemID,
-                                                title,
-                                                note,
-                                                priority,
-                                                calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH),
-                                                false,
-                                                reminder,
-                                                calReminderDate,
-                                                listID);
+                        title,
+                        note,
+                        priority,
+                        calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH),
+                        false,
+                        reminder,
+                        calReminderDate,
+                        listID);
 
                 //listItem listItem = new listItem(1, title, note, Integer.parseInt(priority), calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH), false, reminder, rDate, listID);
-                if (data.getExtras().getInt("ListItemID") == 0){
+                if (data.getExtras().getInt("ListItemID") == 0) {
                     listItem.setListItemID(db.insertListItem(listItem));
                     listItems.add(listItem);
 
-                }
-                else {
+                } else {
                     db.updateListItem(listItem);
                     for (int i = 0; i < listItems.size(); i++) {
                         if (listItems.get(i).getListItemID() == listItem.getListItemID()) {
@@ -252,12 +251,38 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(!listItems.get(position).getIsDone()) {
+        if (!listItems.get(position).getIsDone()) {
             listItems.get(position).setIsDone(true);
+
         } else {
             listItems.get(position).setIsDone(false);
+
         }
         listItemAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.delete_listItems:
+                deleteListItem();
+                break;
+        }
+    }
+
+    private void deleteListItem() {
+        SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
+        int itemCount = listView.getCount();
+
+        for (int i = itemCount - 1; i >= 0; i--) {
+            if (checkedItemPositions.get(i)) {
+                db.removeListItem(listItems.get(i));
+                listItemAdapter.remove(listItems.get(i));
+            }
+        }
+        checkedItemPositions.clear();
+        listItemAdapter.notifyDataSetChanged();
+        //Todo: Hier noch ne Toast Message um User mitzuteilen wie view gelöscht wurde.
     }
 }
 
