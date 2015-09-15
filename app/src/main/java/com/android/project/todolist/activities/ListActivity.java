@@ -15,6 +15,8 @@ import android.widget.TimePicker;
 
 
 import com.android.project.todolist.communicator.Communicator;
+import com.android.project.todolist.comparators.ListCompAlphabet;
+import com.android.project.todolist.comparators.ListCompMostItems;
 import com.android.project.todolist.dialogs.DialogAddListObject;
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.adapter.ListObjectAdapter;
@@ -24,6 +26,7 @@ import com.android.project.todolist.persistence.ListRepository;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class ListActivity extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener {
@@ -103,12 +106,21 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
     // as you specify a parent activity in AndroidManifest.xml.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
 
         switch (id) {
 
             case R.id.action_settings:
                 return true;
+            
+            case R.id.action_sortAlphabetically:
+                sortListsAlphabetically();
+                break;
+
+            case R.id.action_sortMostItems:
+                sortListsMostItems();
+                break;
 
             case R.id.action_addListObject:
                 addNewListObject();
@@ -116,6 +128,16 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sortListsMostItems() {
+        Collections.sort(listObjects, new ListCompMostItems());
+        listObjectAdapter.notifyDataSetChanged();
+    }
+
+    private void sortListsAlphabetically() {
+        Collections.sort(listObjects, new ListCompAlphabet());
+        listObjectAdapter.notifyDataSetChanged();
     }
 
     private void addNewListObject() {

@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public class ListItem {
+public class ListItem implements Comparable<ListItem> {
 
     private int listItemID;
     private String title;
@@ -115,4 +115,8 @@ public class ListItem {
     }
 
 
+    @Override
+    public int compareTo(ListItem listItem) {
+        return (int) (this.dueDate.getTimeInMillis() - listItem.dueDate.getTimeInMillis());
+    }
 }

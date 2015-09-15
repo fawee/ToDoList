@@ -102,6 +102,8 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
         spinnerItems.add(new SpinnerItem("Green", "green", R.color.green));
         spinnerItems.add(new SpinnerItem("Red", "red", R.color.red));
         spinnerItems.add(new SpinnerItem("Lime", "lime", R.color.lime));
+        spinnerItems.add(new SpinnerItem("Teal", "teal", R.color.teal));
+        spinnerItems.add(new SpinnerItem("Indigo", "indigo", R.color.indigo));
     }
 
     private void handleClicks(String positivTitle, final int listID) {

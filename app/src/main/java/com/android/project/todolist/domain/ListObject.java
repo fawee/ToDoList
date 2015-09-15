@@ -1,5 +1,7 @@
 package com.android.project.todolist.domain;
 
+import java.util.Comparator;
+
 /**
  * Created by fabian on 24.08.15.
  */
@@ -50,5 +52,6 @@ public class ListObject {
     public void setListID(int listID) {
         this.listID= listID;
     }
+
 
 }

@@ -39,4 +39,10 @@
     <string name="addListItemActivity_RemindMe">Remind me?</string>
 
     <string name="blub">blub</string>
+
+
+    <string name="action_sortAlphabetically">Sort: A-Z</string>
+    <string name="action_sortMostItems">Sort: Most Items</string>
+    <string name="action_sortPriority">Sort: Priority</string>
+    <string name="action_sortDate">Sort: Date</string>
 </resources>

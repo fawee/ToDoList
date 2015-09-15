@@ -8,21 +8,26 @@
 
         android:gravity="bottom"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:id="@+id/tv_listName"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_marginLeft="10dp"
         android:layout_alignParentBottom="true"/>
 
     <TextView
 
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:textColor="@color/white"
         android:id="@+id/tv_numOfListItems"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:gravity="center"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/actionbar_color"/>
 
 
 

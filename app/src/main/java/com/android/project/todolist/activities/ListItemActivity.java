@@ -3,6 +3,7 @@ package com.android.project.todolist.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.SparseBooleanArray;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,11 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.project.todolist.R;
 import com.android.project.todolist.adapter.ListItemAdapter;
+import com.android.project.todolist.comparators.ListItemCompAlphabet;
+import com.android.project.todolist.comparators.ListItemCompPriority;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.log.Log;
 import com.android.project.todolist.persistence.ListRepository;
@@ -24,8 +29,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 import static com.android.project.todolist.tools.Tools.getDateFromString;
@@ -127,11 +134,38 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                 onBackPressed();
                 return true;
 
+            case R.id.action_sortAlphabeticallyLI:
+                sortListItemsAlphabetically();
+                break;
+
+            case R.id.action_sortPriority:
+                sortListItemsPriority();
+                break;
+
+            case R.id.action_sortDate:
+                sortListItemsDate();
+                break;
+
             case R.id.action_addListItem:
                 addListItem();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sortListItemsDate() {
+        Collections.sort(listItems);
+        listItemAdapter.notifyDataSetChanged();
+    }
+
+    private void sortListItemsPriority() {
+        Collections.sort(listItems, new ListItemCompPriority());
+        listItemAdapter.notifyDataSetChanged();
+    }
+
+    private void sortListItemsAlphabetically() {
+        Collections.sort(listItems, new ListItemCompAlphabet());
+        listItemAdapter.notifyDataSetChanged();
     }
 
     private void addListItem() {
@@ -216,19 +250,13 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     }
 
 
-
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        if(listItems.get(position).getIsDone()) {
-            listItems.get(position).setIsDone(false);
-        } else {
+        if(!listItems.get(position).getIsDone()) {
             listItems.get(position).setIsDone(true);
+        } else {
+            listItems.get(position).setIsDone(false);
         }
-
-        listItems.set(position, listItems.get(position));
-        db.updateListItem(listItems.get(position));
         listItemAdapter.notifyDataSetChanged();
     }
 }

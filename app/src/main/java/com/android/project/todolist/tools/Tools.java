@@ -45,10 +45,18 @@ public class Tools {
             case "deep_purple":
                 view.setBackgroundResource(R.color.deep_purple);
                 break;
+            case "teal":
+                view.setBackgroundResource(R.color.teal);
+                break;
+            case "indigo":
+                view.setBackgroundResource(R.color.indigo);
+                break;
             default:
                 view.setBackgroundResource(R.color.actionbar_color);
         }
     }
+
+
 
 
 }

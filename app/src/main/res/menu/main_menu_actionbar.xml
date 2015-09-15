@@ -1,13 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".ListActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+
+
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_sortAlphabetically"
+        android:title="@string/action_sortAlphabetically"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_sortMostItems"
+        android:title="@string/action_sortMostItems"
+        app:showAsAction="never" />
 
     <item android:id="@+id/action_addListObject"
         app:showAsAction="always"
         android:icon="@drawable/ic_add_list_object"
-        android:orderInCategory="200"
         android:title="AddList" />
 
 
