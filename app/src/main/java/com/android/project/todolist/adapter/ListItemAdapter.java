@@ -55,7 +55,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         title.setChecked(currentListItem.getIsDone());
 
         TextView date = (TextView) view.findViewById(R.id.listItem_date);
-        date.setText(currentListItem.getStringFromDueDate());
+        date.setText(currentListItem.getFormatedDueDate());
 
         TextView note = (TextView) view.findViewById(R.id.listItem_note);
         String userNote = currentListItem.getNote();

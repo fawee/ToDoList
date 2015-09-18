@@ -1,43 +1,40 @@
 package com.android.project.todolist.domain;
 
 
-import android.text.format.DateFormat;
-
-import java.util.Calendar;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 
 public class ListItem implements Comparable<ListItem> {
+
+    private static final String DATE_FORMAT = "dd.MM.yyyy";
+    private static final String TIME_FORMAT = "hh:mm";
 
     private int listItemID;
     private String title;
     private String note;
     private int priority;
-    private GregorianCalendar dueDate;
+    private long dueDate;
     private boolean isDone;
     private boolean reminder;
-    //TODO: ist GregorianCalendar richtig gewählt?
-    private Calendar reminderDate;
-    //private String reminderDate;
+    private long reminderDate;
     private int listID;
 
     public ListItem(int listItemID,
                     String title,
                     String note,
                     int priority,
-                    int year, int month, int day,
+                    long dueDate,
                     boolean isDone,
                     boolean reminder,
-                    Calendar reminderDate,
+                    long reminderDate,
                     int listID) {
-    //public ListItem(int listItemID, String title, String note, int priority, int year, int month, int day, boolean isDone, boolean reminder, String reminderDate, int listID) {
-
         this.listItemID = listItemID;
         this.title = title;
         this.note = note;
         this.priority = priority;
-        dueDate = new GregorianCalendar(year, month, day);
+        this.dueDate = dueDate;
         this.isDone = isDone;
         this.reminder = reminder;
         this.reminderDate = reminderDate;
@@ -58,26 +55,57 @@ public class ListItem implements Comparable<ListItem> {
 
     public int getPriority() { return priority; }
 
-    public String getStringFromDueDate() {
-        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT,
-                Locale.GERMANY);
-        return df.format(dueDate.getTime());
+    public long getDueDate() { return dueDate; }
+
+    public String getFormatedDueDate() {
+        if (this.dueDate == 0) {
+            return "";
+        }
+        else{
+            try {
+                DateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+                Date netDate = (new Date(dueDate));
+                return sdf.format(netDate);
+            } catch (Exception ex) {
+                return "";
+            }
+        }
     }
 
     public boolean getIsDone() { return isDone;}
 
     public boolean getReminder() {return reminder;}
 
-    public Calendar getReminderDate() {
-    //public String getReminderDate() {
-        return reminderDate;
+    public long getReminderDate() { return reminderDate; }
+
+    public String getFormatedReminderDate(){
+        if (this.reminderDate == 0){
+            return "";
+        }
+        else {
+            try {
+                DateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+                Date netDate = (new Date(reminderDate));
+                return sdf.format(netDate);
+            } catch (Exception ex) {
+                return "";
+            }
+        }
     }
 
-    public String getStringFromReminderDate() {
-        //TODO:"long" sorgt für "September" stat "09"
-        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT,
-                Locale.GERMANY);
-        return df.format(reminderDate.getTime());
+    public String getFormatedReminderTime(){
+        if (this.reminderDate == 0){
+            return "";
+        }
+        else {
+            try {
+                DateFormat sdf = new SimpleDateFormat("HH:mm");
+                Date netDate = (new Date(reminderDate));
+                return sdf.format(netDate);
+            } catch (Exception ex) {
+                return "";
+            }
+        }
     }
 
     public int getListID() { return listID; }
@@ -98,8 +126,23 @@ public class ListItem implements Comparable<ListItem> {
         this.priority = priority;
     }
 
-    public void setDueDate(GregorianCalendar dueDate) {
-        this.dueDate = dueDate;
+    public void setDueDate(long dueDate) { this.dueDate = dueDate; }
+
+    public void setDueDate(String Date){
+        if (Date.equals("")){
+            this.dueDate=0;
+        }
+        else {
+            //DateFormat formatter  = new SimpleDateFormat(DATE_FORMAT);
+            DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+            Date date = null;
+            try {
+                date = (Date) formatter.parse(Date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            this.dueDate = date.getTime();
+        }
     }
 
     public void setIsDone(boolean isDone) {
@@ -110,13 +153,30 @@ public class ListItem implements Comparable<ListItem> {
         this.reminder = reminder;
     }
 
-    public void setReminderDate(GregorianCalendar reminderDate) {
+    public void setReminderDate(long reminderDate) {
         this.reminderDate = reminderDate;
     }
 
+    public void setReminderDate(String Date){
+        if (Date.equals("")){
+            this.reminderDate=0;
+        }
+        else{
+            //DateFormat formatter  = new SimpleDateFormat(DATE_FORMAT);
+            DateFormat formatter  = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            Date date = null;
+            try {
+                date = (Date)formatter.parse(Date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            this.reminderDate = date.getTime();
+        }
+    }
 
     @Override
     public int compareTo(ListItem listItem) {
-        return (int) (this.dueDate.getTimeInMillis() - listItem.dueDate.getTimeInMillis());
+        //return (int) (this.dueDate.getTimeInMillis() - listItem.dueDate.getTimeInMillis());
+        return (int) (this.dueDate - listItem.dueDate);
     }
 }

@@ -36,3 +36,10 @@ X                 - ListItems
     http://developer.android.com/guide/topics/ui/menus.html#FloatingContextMenu
     https://www.youtube.com/watch?v=exmLnLvBxDE&list=PLshdtb5UWjSp0879mLeCsDQN6L73XBZTk&index=27
     http://www.sqlite.org/datatype3.html
+
+
+    Links für Timestamp
+    http://stackoverflow.com/questions/7363112/best-way-to-work-with-dates-in-android-sqlite
+    http://www.sqlite.org/lang_datefunc.html
+        konvert
+    http://stackoverflow.com/questions/13241251/timestamp-to-string-date

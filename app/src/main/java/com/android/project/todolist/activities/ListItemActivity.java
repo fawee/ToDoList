@@ -38,9 +38,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-import static com.android.project.todolist.tools.Tools.getDateFromString;
-
-
 public class ListItemActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private ListView listView;
@@ -185,11 +182,11 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         Intent i = new Intent(this, AddListItemActivity.class);
         i.putExtra("listItemID", listItems.get(itemPosition).getListItemID());
         i.putExtra("listItemTitle", listItems.get(itemPosition).getTitle());
-        i.putExtra("listItemDueDate", listItems.get(itemPosition).getStringFromDueDate());
+        i.putExtra("listItemDueDate", listItems.get(itemPosition).getDueDate());
         i.putExtra("listItemNote", listItems.get(itemPosition).getNote());
         i.putExtra("listItemPriority", listItems.get(itemPosition).getPriority());
         i.putExtra("listItemReminder", listItems.get(itemPosition).getReminder());
-        i.putExtra("listItemReminderDate", listItems.get(itemPosition).getStringFromReminderDate());
+        i.putExtra("listItemReminderDate", listItems.get(itemPosition).getReminderDate());
         i.putExtra("listID", listItems.get(itemPosition).getListID());
         startActivityForResult(i, 1);
     }
@@ -200,35 +197,23 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
             if (resultCode == RESULT_OK) {
                 int listItemID = data.getExtras().getInt("ListItemID");
                 String title = data.getExtras().getString("Title");
-                String dDate = data.getExtras().getString("DueDate");
+                long dueDate = data.getExtras().getLong("DueDate");
                 String note = data.getExtras().getString("Note");
                 int priority = data.getExtras().getInt("Priority");
                 boolean reminder = data.getExtras().getBoolean("Reminder");
-                String rDate = data.getExtras().getString("ReminderDate");
+                long reminderDate = data.getExtras().getLong("ReminderDate");
                 int listID = data.getExtras().getInt("ListID");
-
-                //if(!dDate.equals("")) {
-                Date dueDate = getDateFromString(dDate);
-                GregorianCalendar calDueDate = new GregorianCalendar();
-                calDueDate.setTime(dueDate);
-                //}
-                //if(!rDate.equals("")) {
-                Date reminderDate = getDateFromString(rDate);
-                GregorianCalendar calReminderDate = new GregorianCalendar();
-                calReminderDate.setTime(reminderDate);
-                //}
 
                 ListItem listItem = new ListItem(listItemID,
                         title,
                         note,
                         priority,
-                        calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH),
+                        dueDate,
                         false,
                         reminder,
-                        calReminderDate,
+                        reminderDate,
                         listID);
 
-                //listItem listItem = new listItem(1, title, note, Integer.parseInt(priority), calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH), false, reminder, rDate, listID);
                 if (data.getExtras().getInt("ListItemID") == 0) {
                     listItem.setListItemID(db.insertListItem(listItem));
                     listItems.add(listItem);
@@ -242,8 +227,6 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                     }
                 }
                 listItemAdapter.notifyDataSetChanged();
-
-
             }
         }
     }

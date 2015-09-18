@@ -32,9 +32,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import static com.android.project.todolist.tools.Tools.getDateFromString;
-
-
 public class AddListItemActivity extends Activity implements Communicator, View.OnClickListener {
 
     private ListItem listItemToEdit;
@@ -58,26 +55,15 @@ public class AddListItemActivity extends Activity implements Communicator, View.
 
         String dueDate = extras.getString("listItemDueDate");
 
-        int dueYear= 0, dueMonth = 0, dueDay = 0;
-        if (!dueDate.equals("")) {
-            dueDay = Integer.parseInt(dueDate.substring(0, 2));
-            dueMonth = Integer.parseInt(dueDate.substring(3, 5));
-            dueYear = Integer.parseInt(dueDate.substring(6, 8));
-        }
-
-        Date reminderDate = getDateFromString(extras.getString("listItemReminderDate"));
-        GregorianCalendar calReminderDate = new GregorianCalendar();
-        calReminderDate.setTime(reminderDate);
-
         listItemToEdit = new ListItem(  extras.getInt("listItemID"),
-                                        extras.getString("listItemTitle"),
-                                        extras.getString("listItemNote"),
-                                        extras.getInt("listItemPriority"),
-                                        dueYear,dueMonth, dueDay,
-                                        extras.getBoolean("listItemIsDone"),
-                                        extras.getBoolean("listItemReminder"),
-                                        calReminderDate,
-                                        extras.getInt("listID"));
+                extras.getString("listItemTitle"),
+                extras.getString("listItemNote"),
+                extras.getInt("listItemPriority"),
+                extras.getLong("listItemDueDate"),
+                extras.getBoolean("listItemIsDone"),
+                extras.getBoolean("listItemReminder"),
+                extras.getLong("listItemReminderDate"),
+                extras.getInt("listID"));
     }
 
     private void initUI() {
@@ -94,29 +80,23 @@ public class AddListItemActivity extends Activity implements Communicator, View.
 
         dueDate = (EditText) findViewById(R.id.addListItemMenuDate);
 
-        //Löst das Problem mit year, month, day = 0 im Kalender
-        if(!listItemToEdit.getStringFromDueDate().equals("31.12.02")) {
-            dueDate.setText(listItemToEdit.getStringFromDueDate());
-        }
+        dueDate.setText(listItemToEdit.getFormatedDueDate());
 
         note = (EditText) findViewById(R.id.addListItemMenuNote);
         note.setText(listItemToEdit.getNote());
 
         prioritySpinner = (Spinner) findViewById(R.id.addListItemMenuPriority);
 
-
         addListItemButton = (Button) findViewById(R.id.addListItemButton);
 
-        reminder = (ToggleButton) findViewById(R.id.reminderButton);
-
         initReminderViews();
-
+        reminderDay.setText(listItemToEdit.getFormatedReminderDate());
+        reminderTime.setText(listItemToEdit.getFormatedReminderTime());
+        reminder = (ToggleButton) findViewById(R.id.reminderButton);
         if(listItemToEdit.getReminder()) {
             reminder.setChecked(true);
             showReminderOptions();
         }
-
-
     }
 
     private void initReminderViews() {
@@ -145,7 +125,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.addListItemMenu_Priority_Spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         prioritySpinner.setAdapter(adapter);
-        prioritySpinner.setSelection(listItemToEdit.getPriority()-1);
+        prioritySpinner.setSelection(listItemToEdit.getPriority() - 1);
     }
 
     private void initReminder() {
@@ -203,14 +183,25 @@ public class AddListItemActivity extends Activity implements Communicator, View.
 
     @Override
     public void getDate(DatePicker view, int year, int month, int day) {
+        String dateString = "";
+        if (day > 9){
+            dateString = String.valueOf(day);
+        }
+        else{
+            dateString = "0"+day;
+        }
+        dateString += ".";
+        int tmpMonth = month + 1;
 
+        if (tmpMonth > 9){
+            dateString += String.valueOf(tmpMonth);
+        }
+        else{
+            dateString += "0"+tmpMonth;
+        }
+        dateString = dateString + "." + year;
         dateTextView = (TextView) findViewById(R.id.addListItemMenuDate);
         TextView reminderDateTextView = (TextView) findViewById(R.id.addListItemActivityReminderDate);
-
-        GregorianCalendar dueDate = new GregorianCalendar(year, month, day);
-        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT,
-                Locale.GERMANY);
-        String dateString = df.format(dueDate.getTime());
         if (flag == 0) {
             dateTextView.setText(dateString);
         }
@@ -244,11 +235,8 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
     private void createListItem() {
+        String listItemReminderDate = "";
 
-        Date dDate = getDateFromString(dueDate.getText().toString());
-        GregorianCalendar calDueDate = new GregorianCalendar();
-        calDueDate.setTime(dDate);
-        String listItemReminderDate;
         //plausibilitytest of the Reminder input
         if (isReminded()){
             if (reminderDay.equals("") ^ reminderTime.equals("")) {
@@ -262,24 +250,19 @@ public class AddListItemActivity extends Activity implements Communicator, View.
             }
             //ÜBERPRÜFT OB USER DATUM GEWÄHLT HAT ODER NICHT
             //ToDo aber warum die if?
-            if (!dDate.equals("")) {
+            /*if (!dDate.equals("")) {
                     setAlarm();
-            }
+            }*/
         }
-
-        Date rDate = getDateFromString(reminderDay.getText().toString());
-        GregorianCalendar calReminderDate = new GregorianCalendar();
-        calReminderDate.setTime(rDate);
 
         listItemToEdit.setTitle(title.getText().toString());
         listItemToEdit.setNote(note.getText().toString());
-        listItemToEdit.setDueDate(calDueDate);
+        listItemToEdit.setDueDate(dueDate.getText().toString());
         listItemToEdit.setPriority(Integer.parseInt(prioritySpinner.getSelectedItem().toString()));
         listItemToEdit.setReminder(isReminded());
-        listItemToEdit.setReminderDate(calReminderDate);
+        listItemToEdit.setReminderDate(listItemReminderDate);
 
         sendDataToSubMenu();
-        //sendDataToSubMenu(listItemTitle, listItemDueDate, listItemNote, listItemPriority, listItemReminder, listItemReminderDate);
     }
 
     private void setAlarm() {
@@ -317,11 +300,11 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         Intent i = getIntent();
         i.putExtra("ListItemID", listItemToEdit.getListItemID());
         i.putExtra("Title", listItemToEdit.getTitle());
-        i.putExtra("DueDate", listItemToEdit.getStringFromDueDate());
+        i.putExtra("DueDate", listItemToEdit.getDueDate());
         i.putExtra("Note", listItemToEdit.getNote());
         i.putExtra("Priority", listItemToEdit.getPriority());
         i.putExtra("Reminder", listItemToEdit.getReminder());
-        i.putExtra("ReminderDate", listItemToEdit.getStringFromReminderDate());
+        i.putExtra("ReminderDate", listItemToEdit.getReminderDate());
         i.putExtra("ListID", listItemToEdit.getListID());
         setResult(RESULT_OK, i);
         finish();

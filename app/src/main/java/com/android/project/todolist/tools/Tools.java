@@ -12,15 +12,6 @@ import java.util.Date;
  * Created by Patrick on 09.09.2015.
  */
 public class Tools {
-    public static Date getDateFromString(String dateString) {
-    DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
-    try {
-        return df.parse(dateString);
-    } catch (ParseException e) {
-        // TODo, keine gute idee
-        return new Date();
-    }
-    }
 
     public static void setColor(String color, View view) {
         switch (color){

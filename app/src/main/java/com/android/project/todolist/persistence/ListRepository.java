@@ -11,12 +11,7 @@ import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.domain.ListItem;
 
 import java.lang.String;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 
 public class ListRepository  {
@@ -82,10 +77,10 @@ public class ListRepository  {
         newListItemValues.put(KEY_ListItem_Title, item.getTitle());
         newListItemValues.put(KEY_ListItem_Note, item.getNote());
         newListItemValues.put(KEY_ListItem_Priority, item.getPriority());
-        newListItemValues.put(KEY_ListItem_DueDate, item.getStringFromDueDate());
+        newListItemValues.put(KEY_ListItem_DueDate, item.getDueDate());
         newListItemValues.put(KEY_ListItem_isDone, item.getIsDone());
         newListItemValues.put(KEY_ListItem_reminder, item.getReminder());
-        newListItemValues.put(KEY_ListItem_ReminderDate, item.getStringFromReminderDate());
+        newListItemValues.put(KEY_ListItem_ReminderDate, item.getReminderDate());
         newListItemValues.put(KEY_ListItem_List_ID, item.getListID());
 
         return (int)db.insert(TABLE_tblListItem, null, newListItemValues);
@@ -135,10 +130,10 @@ public class ListRepository  {
         cv.put(KEY_ListItem_Title, item.getTitle());
         cv.put(KEY_ListItem_Note, item.getNote());
         cv.put(KEY_ListItem_Priority, item.getNote());
-        cv.put(KEY_ListItem_DueDate, item.getStringFromDueDate());
+        cv.put(KEY_ListItem_DueDate, item.getDueDate());
         cv.put(KEY_ListItem_isDone, item.getIsDone());
         cv.put(KEY_ListItem_reminder, item.getReminder());
-        cv.put(KEY_ListItem_ReminderDate, item.getStringFromReminderDate());
+        cv.put(KEY_ListItem_ReminderDate, item.getReminderDate());
         return (int)db.update(TABLE_tblListItem, cv, KEY_ListItem_ID + " = " + item.getListID(), null);
     }
 
@@ -159,35 +154,19 @@ public class ListRepository  {
                 String title = cursor.getString(1);
                 String note = cursor.getString(2);
                 int priority = cursor.getInt(3);
-                String dueDate = cursor.getString(4);
+                long dueDate = cursor.getLong(4);
                 boolean isDone = booleanOfInt(cursor.getInt(5));
                 boolean reminder = booleanOfInt(cursor.getInt(6));
-                String reminderDate = cursor.getString(7);
-
-                // Formation of DueDate
-                Date formatedDate = null;
-                try {
-                    formatedDate = new SimpleDateFormat("dd.MM.yy", Locale.GERMAN).parse(dueDate);
-                    //formatedDate = new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.GERMAN).parse(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Calendar calDueD = Calendar.getInstance(Locale.GERMAN);
-                calDueD.setTime(formatedDate);
-
-                // Formation of ReminderDate
-                formatedDate = null;
-                try {
-                    formatedDate = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).parse(reminderDate);
-                    //formatedDate = new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.GERMAN).parse(reminderDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Calendar calRemD = Calendar.getInstance(Locale.GERMAN);
-                calRemD.setTime(formatedDate);
-
-                items.add(new ListItem(id, title, note, priority, calDueD.get(Calendar.DAY_OF_MONTH),
-                        calDueD.get(Calendar.MONTH), calDueD.get(Calendar.YEAR), isDone, reminder, calRemD, listID));
+                long reminderDate = cursor.getLong(7);
+                items.add(new ListItem( id,
+                        title,
+                        note,
+                        priority,
+                        dueDate,
+                        isDone,
+                        reminder,
+                        reminderDate,
+                        listID));
             } while (cursor.moveToNext());
         }
         return items;
@@ -216,10 +195,10 @@ public class ListRepository  {
                 KEY_ListItem_Title + " text not null, " +
                 KEY_ListItem_Note + " text, " +
                 KEY_ListItem_Priority + " integer, " +
-                KEY_ListItem_DueDate + " text, " +
+                KEY_ListItem_DueDate + " integer, " +
                 KEY_ListItem_isDone + " integer, " +
                 KEY_ListItem_reminder + " integer, " +
-                KEY_ListItem_ReminderDate + " text, " +
+                KEY_ListItem_ReminderDate + " integer, " +
                 KEY_ListItem_List_ID + " integer);";
 
         public ToDoDBOpenHelper(Context c, String dbname,
