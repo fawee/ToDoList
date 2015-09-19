@@ -86,7 +86,7 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
                 listObjectAdapter.notifyDataSetChanged();
                 break;
             case R.id.list_FloatingMenu_Edit:
-                EditListObject(info.position);
+                editListObject(info.position);
                 break;
             default:
                 return super.onContextItemSelected(item);
@@ -150,7 +150,7 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
         dialog.show(getFragmentManager(), "Add List Object Dialog");
     }
 
-    private void EditListObject(int listPosition) {
+    private void editListObject(int listPosition) {
         DialogAddListObject dialog = new DialogAddListObject();
         Bundle args = new Bundle();
         args.putInt("listId", listObjects.get(listPosition).getListID());

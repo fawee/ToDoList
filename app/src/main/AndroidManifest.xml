@@ -27,6 +27,9 @@
         <activity android:name=".activities.AddListItemActivity"
             android:parentActivityName=".activities.ListItemActivity">
         </activity>
+
+        <service android:name=".reminder.ReminderService"
+            android:enabled="true" />
     </application>
 
 </manifest>

@@ -9,18 +9,23 @@ X                   Neue ListItems in DB speichern und anschließend GridView ak
 X                   Nach bearbeiten eines Elements aktualisieren
 
 X    - ColourPicker
-    - Wecker Funktion
+X    - Wecker Funktion
 X   - ListItem Add Activity (Erinnerungsdatum)
 X   - LongClick -> Delete(Edit, Erledigt)
 X   - wenn man in eine liste geht, sollte der kopf nicht blau, sondern an die farbe der liste angepasst werden
 
 X    - Sortieren: - Listen
 X                 - ListItems
-    - Plausibilitätsprüfung für Reminder Datum
+X    - Plausibilitätsprüfung für Reminder Datum
+     - Wecker canceln
     - Cloud
 
     Bugs:
         - Checkbox nicht gespeichert bei ReOpen
+
+    Nice to Have:
+    - Tutorial bei Firststart
+    - Icon für die App
 
     CodeSmell:
     Im Forum fragen ob man die DBs Indizes einfach in (int) casten kann. Da es notwendig ist und in der DB eh nur Int gespeichert wird

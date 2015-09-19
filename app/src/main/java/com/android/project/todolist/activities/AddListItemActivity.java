@@ -1,12 +1,16 @@
 package com.android.project.todolist.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DialogFragment;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,6 +21,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
@@ -26,8 +31,10 @@ import com.android.project.todolist.dialogs.DatePickerFragment;
 import com.android.project.todolist.dialogs.TimePickerFragment;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.log.Log;
+import com.android.project.todolist.reminder.ReminderService;
 
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -40,6 +47,9 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     private Button addListItemButton;
     private Spinner prioritySpinner;
     private ToggleButton reminder;
+    private PendingIntent alarmIntent;
+    private AlarmManager alarmManager;
+    private Calendar currentTime, alarm;
 
     private int flag;
 
@@ -53,9 +63,8 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     private void readIntent() {
         Bundle extras = getIntent().getExtras();
 
-        String dueDate = extras.getString("listItemDueDate");
 
-        listItemToEdit = new ListItem(  extras.getInt("listItemID"),
+        listItemToEdit = new ListItem(extras.getInt("listItemID"),
                 extras.getString("listItemTitle"),
                 extras.getString("listItemNote"),
                 extras.getInt("listItemPriority"),
@@ -93,7 +102,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         reminderDay.setText(listItemToEdit.getFormatedReminderDate());
         reminderTime.setText(listItemToEdit.getFormatedReminderTime());
         reminder = (ToggleButton) findViewById(R.id.reminderButton);
-        if(listItemToEdit.getReminder()) {
+        if (listItemToEdit.getReminder()) {
             reminder.setChecked(true);
             showReminderOptions();
         }
@@ -179,25 +188,24 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
     @Override
-    public void getInputData(String listTitle, String listColor, int listID) {}
+    public void getInputData(String listTitle, String listColor, int listID) {
+    }
 
     @Override
     public void getDate(DatePicker view, int year, int month, int day) {
         String dateString = "";
-        if (day > 9){
+        if (day > 9) {
             dateString = String.valueOf(day);
-        }
-        else{
-            dateString = "0"+day;
+        } else {
+            dateString = "0" + day;
         }
         dateString += ".";
         int tmpMonth = month + 1;
 
-        if (tmpMonth > 9){
+        if (tmpMonth > 9) {
             dateString += String.valueOf(tmpMonth);
-        }
-        else{
-            dateString += "0"+tmpMonth;
+        } else {
+            dateString += "0" + tmpMonth;
         }
         dateString = dateString + "." + year;
         dateTextView = (TextView) findViewById(R.id.addListItemMenuDate);
@@ -235,59 +243,111 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
     private void createListItem() {
-        String listItemReminderDate = "";
-
-        //plausibilitytest of the Reminder input
-        if (isReminded()){
-            if (reminderDay.equals("") ^ reminderTime.equals("")) {
-                //TODO: Benutzerbenachrichtigung, dass er beide Werte eingeben muss
-                return;
-            }
-            else if (!reminderDay.equals("")){
-                String listItemReminderDay = reminderDay.getText().toString();
-                String listItemReminderTime = reminderTime.getText().toString();
-                listItemReminderDate = listItemReminderDay + " " + listItemReminderTime;
-            }
-            //ÜBERPRÜFT OB USER DATUM GEWÄHLT HAT ODER NICHT
-            //ToDo aber warum die if?
-            /*if (!dDate.equals("")) {
-                    setAlarm();
-            }*/
-        }
+        String listItemReminderDay = reminderDay.getText().toString();
+        String listItemReminderTime = reminderTime.getText().toString();
+        boolean completeInputs = false;
+        boolean reminderIsSet = isReminded(listItemReminderDay, listItemReminderTime);
 
         listItemToEdit.setTitle(title.getText().toString());
         listItemToEdit.setNote(note.getText().toString());
         listItemToEdit.setDueDate(dueDate.getText().toString());
         listItemToEdit.setPriority(Integer.parseInt(prioritySpinner.getSelectedItem().toString()));
-        listItemToEdit.setReminder(isReminded());
-        listItemToEdit.setReminderDate(listItemReminderDate);
+        listItemToEdit.setReminder(isReminded(listItemReminderDay, listItemReminderTime));
 
-        sendDataToSubMenu();
+
+
+        //LOGIK! Überprüft, ob die Eingaben vollständig sind und ob evtl. Alarm gesetzt bzw. falsch gesetzt wurde
+
+        if((!listItemToEdit.getTitle().equals(""))) {
+
+            if(!reminder.isChecked()) {
+                completeInputs = true;
+            }
+
+            else if(listItemReminderDay.equals("") || listItemReminderTime.equals("")) {
+                completeInputs = false;
+                Toast.makeText(getApplicationContext(), "Can't set Reminder: Date or Time missing", Toast.LENGTH_SHORT).show();
+            }
+
+            else {
+                setReminderDate();
+                if(!isValidReminderDate()) {
+                    completeInputs = false;
+                    Toast.makeText(getApplicationContext(), "Can't set Reminder in the past", Toast.LENGTH_SHORT).show();
+                } else {
+                    listItemToEdit.setReminderDate(listItemReminderDay + " " + listItemReminderTime);
+                    completeInputs = true;
+                }
+
+            }
+
+        } else {
+            title.requestFocus();
+            Toast.makeText(getApplicationContext(), "Title is missing", Toast.LENGTH_SHORT).show();
+        }
+
+        if(completeInputs) {
+
+            if(reminderIsSet) {
+                setReminderAlarm();
+            }
+
+            sendDataToSubMenu();
+        }
+
+
     }
 
-    private void setAlarm() {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_list_item_alarm_white)
-                        .setContentTitle("Reminder is activated")
-                        .setTicker("Reminder activated!")
-                        .setContentText("funktioniert noch nicht!");
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        mBuilder.setSound(alarmSound);
-
-        int mNotificationId = 001;
-
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+    private boolean isValidReminderDate() {
+        if(currentTime.getTimeInMillis() >= alarm.getTimeInMillis()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    private boolean isReminded() {
-        String rDate = reminderDay.getText().toString();
-        String rTime = reminderTime.getText().toString();
+    private void setReminderDate() {
+        int day = Integer.parseInt(reminderDay.getText().toString().substring(0, 2));
+        int month = Integer.parseInt(reminderDay.getText().toString().substring(3, 5));
+        int year = Integer.parseInt(reminderDay.getText().toString().substring(6, 10));
+        int hour = Integer.parseInt(reminderTime.getText().toString().substring(0, 2));
+        int minute = Integer.parseInt(reminderTime.getText().toString().substring(3, 5));
+
+        alarm = Calendar.getInstance();
+        currentTime = Calendar.getInstance();
+        alarm.set(Calendar.YEAR, year);
+        alarm.set(Calendar.MONTH, month-1);
+        alarm.set(Calendar.DAY_OF_MONTH, day);
+        alarm.set(Calendar.HOUR_OF_DAY, hour);
+        alarm.set(Calendar.MINUTE, minute);
+        alarm.set(Calendar.SECOND, 0);
+
+    }
+
+
+    private void setReminderAlarm() {
+
+        Intent intent = new Intent(this, ReminderService.class);
+        int alarmID = listItemToEdit.getListItemID();
+        String listItemTitle = title.getText().toString();
+        String listItemNote = note.getText().toString();
+        intent.putExtra("title", listItemTitle);
+        intent.putExtra("alarmID", alarmID);
+        intent.putExtra("note", listItemNote);
+
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmIntent = PendingIntent.getService(this, alarmID, intent, 0);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getTimeInMillis(), alarmIntent);
+        Toast.makeText(getApplicationContext(), ""+ listItemToEdit.getListItemID(), Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    private boolean isReminded(String listItemReminderDay, String listItemReminderTime) {
+
         if (reminder.isChecked()) {
-            if ((!rDate.equals("")) && (!rTime.equals(""))) {
+            if ((!listItemReminderDay.equals("")) && (!listItemReminderTime.equals(""))) {
                 return true;
             }
         }

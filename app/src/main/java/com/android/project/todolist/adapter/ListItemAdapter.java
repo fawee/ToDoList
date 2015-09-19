@@ -1,6 +1,7 @@
 package com.android.project.todolist.adapter;
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,8 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         ImageView reminder = (ImageView) view.findViewById(R.id.listItem_reminder);
         if(currentListItem.getReminder()) {
             reminder.setImageResource(R.drawable.ic_list_item_alarm_white);
+        } else {
+            reminder.setImageResource(0);
         }
 
         return view;
@@ -80,4 +83,6 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
     public int getCount() {
         return listItemArrayList.size();
     }
+
+
 }

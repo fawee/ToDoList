@@ -236,10 +236,18 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (!listItems.get(position).getIsDone()) {
             listItems.get(position).setIsDone(true);
+            listView.setItemChecked(position, true);
 
         } else {
             listItems.get(position).setIsDone(false);
+            listView.setItemChecked(position, false);
 
+        }
+        db.updateListItem(listItems.get(position));
+        for (int i = 0; i < listItems.size(); i++) {
+            if (listItems.get(i).getListItemID() == listItems.get(position).getListItemID()) {
+                listItems.set(i, listItems.get(position));
+            }
         }
         listItemAdapter.notifyDataSetChanged();
     }
@@ -256,16 +264,18 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     private void deleteListItem() {
         SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
         int itemCount = listView.getCount();
-
         for (int i = itemCount - 1; i >= 0; i--) {
+
             if (checkedItemPositions.get(i)) {
                 db.removeListItem(listItems.get(i));
                 listItemAdapter.remove(listItems.get(i));
             }
+
         }
         checkedItemPositions.clear();
         listItemAdapter.notifyDataSetChanged();
         //Todo: Hier noch ne Toast Message um User mitzuteilen wie view gelöscht wurde.
+
     }
 }
 
