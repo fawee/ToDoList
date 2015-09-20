@@ -50,6 +50,8 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     private PendingIntent alarmIntent;
     private AlarmManager alarmManager;
     private Calendar currentTime, alarm;
+    private Intent i;
+    private int year, month, day, hour, minute;
 
     private int flag;
 
@@ -99,8 +101,11 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         addListItemButton = (Button) findViewById(R.id.addListItemButton);
 
         initReminderViews();
-        reminderDay.setText(listItemToEdit.getFormatedReminderDate());
-        reminderTime.setText(listItemToEdit.getFormatedReminderTime());
+        if(listItemToEdit.getReminder()) {
+            reminderDay.setText(listItemToEdit.getFormatedReminderDate());
+            reminderTime.setText(listItemToEdit.getFormatedReminderTime());
+        }
+
         reminder = (ToggleButton) findViewById(R.id.reminderButton);
         if (listItemToEdit.getReminder()) {
             reminder.setChecked(true);
@@ -243,6 +248,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
     private void createListItem() {
+        i = getIntent();
         String listItemReminderDay = reminderDay.getText().toString();
         String listItemReminderTime = reminderTime.getText().toString();
         boolean completeInputs = false;
@@ -307,11 +313,11 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
     private void setReminderDate() {
-        int day = Integer.parseInt(reminderDay.getText().toString().substring(0, 2));
-        int month = Integer.parseInt(reminderDay.getText().toString().substring(3, 5));
-        int year = Integer.parseInt(reminderDay.getText().toString().substring(6, 10));
-        int hour = Integer.parseInt(reminderTime.getText().toString().substring(0, 2));
-        int minute = Integer.parseInt(reminderTime.getText().toString().substring(3, 5));
+        day = Integer.parseInt(reminderDay.getText().toString().substring(0, 2));
+        month = Integer.parseInt(reminderDay.getText().toString().substring(3, 5));
+        year = Integer.parseInt(reminderDay.getText().toString().substring(6, 10));
+        hour = Integer.parseInt(reminderTime.getText().toString().substring(0, 2));
+        minute = Integer.parseInt(reminderTime.getText().toString().substring(3, 5));
 
         alarm = Calendar.getInstance();
         currentTime = Calendar.getInstance();
@@ -327,21 +333,11 @@ public class AddListItemActivity extends Activity implements Communicator, View.
 
     private void setReminderAlarm() {
 
-        Intent intent = new Intent(this, ReminderService.class);
-        int alarmID = listItemToEdit.getListItemID();
-        String listItemTitle = title.getText().toString();
-        String listItemNote = note.getText().toString();
-        intent.putExtra("title", listItemTitle);
-        intent.putExtra("alarmID", alarmID);
-        intent.putExtra("note", listItemNote);
-
-        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmIntent = PendingIntent.getService(this, alarmID, intent, 0);
-
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getTimeInMillis(), alarmIntent);
-        Toast.makeText(getApplicationContext(), ""+ listItemToEdit.getListItemID(), Toast.LENGTH_SHORT).show();
-
-
+        i.putExtra("year", year);
+        i.putExtra("month", month);
+        i.putExtra("day", day);
+        i.putExtra("hour", hour);
+        i.putExtra("minute", minute);
     }
 
     private boolean isReminded(String listItemReminderDay, String listItemReminderTime) {
@@ -357,7 +353,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
 
     //private void sendDataToSubMenu(String listItemTitle, String listItemDueDate, String listItemNote, String listItemPriority, boolean listItemReminder,  String listItemReminderDate) {
     private void sendDataToSubMenu() {
-        Intent i = getIntent();
         i.putExtra("ListItemID", listItemToEdit.getListItemID());
         i.putExtra("Title", listItemToEdit.getTitle());
         i.putExtra("DueDate", listItemToEdit.getDueDate());

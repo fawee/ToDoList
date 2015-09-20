@@ -1,5 +1,7 @@
 package com.android.project.todolist.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import com.android.project.todolist.comparators.ListItemCompPriority;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.log.Log;
 import com.android.project.todolist.persistence.ListRepository;
+import com.android.project.todolist.reminder.ReminderService;
 import com.android.project.todolist.tools.Tools;
 
 import java.text.DateFormat;
@@ -47,6 +50,12 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     private int listID;
     private String listTitle, listColor;
     private ImageButton deleteListItemButton;
+
+    //Für den Reminder
+    private AlarmManager alarmManager;
+    private PendingIntent alarmIntent;
+    private Intent reminderIntent;
+
 
     private static final int REQUEST_CODE_ADD_LISTITEM = 1;
 
@@ -226,9 +235,47 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                         }
                     }
                 }
+
+                //Einstellungen für den Reminder
+
+                reminderIntent = new Intent(this, ReminderService.class);
+                if(reminder) {
+
+                    alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    Calendar alarm = Calendar.getInstance();
+                    setReminderDate(data, alarm);
+
+                    reminderIntent.putExtra("title", listItem.getTitle());
+                    reminderIntent.putExtra("alarmID", listItem.getListItemID());
+                    reminderIntent.putExtra("note", listItem.getNote());
+
+                    alarmIntent = PendingIntent.getService(this, listItem.getListItemID(), reminderIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getTimeInMillis(), alarmIntent);
+                    //TODO: Noch im listItem reminder Datum darstellen? Oder Toast.
+                } else {
+
+                    if(alarmManager != null) {
+                       cancelReminder(listItem.getListItemID(), reminderIntent);
+                    }
+                }
+
                 listItemAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+    private void cancelReminder(int listItemID, Intent intent) {
+        alarmIntent = PendingIntent.getService(this, listItemID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.cancel(alarmIntent);
+    }
+
+    private void setReminderDate(Intent data, Calendar alarm) {
+        alarm.set(Calendar.YEAR, data.getExtras().getInt("year"));
+        alarm.set(Calendar.MONTH, data.getExtras().getInt("month")-1);
+        alarm.set(Calendar.DAY_OF_MONTH, data.getExtras().getInt("day"));
+        alarm.set(Calendar.HOUR_OF_DAY, data.getExtras().getInt("hour"));
+        alarm.set(Calendar.MINUTE, data.getExtras().getInt("minute"));
+        alarm.set(Calendar.SECOND, 0);
     }
 
 

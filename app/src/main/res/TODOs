@@ -17,7 +17,7 @@ X   - wenn man in eine liste geht, sollte der kopf nicht blau, sondern an die fa
 X    - Sortieren: - Listen
 X                 - ListItems
 X    - Plausibilitätsprüfung für Reminder Datum
-     - Wecker canceln
+X     - Wecker canceln
     - Cloud
 
     Bugs:

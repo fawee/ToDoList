@@ -1,6 +1,7 @@
 package com.android.project.todolist.reminder;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -10,6 +11,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.android.project.todolist.R;
+import com.android.project.todolist.activities.ListItemActivity;
 import com.android.project.todolist.communicator.ReminderNotifier;
 import com.android.project.todolist.log.Log;
 
@@ -33,6 +35,7 @@ public class ReminderService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         int alarmID = intent.getExtras().getInt("alarmID");
         String title = intent.getExtras().getString("title");
         String note = intent.getExtras().getString("note");
