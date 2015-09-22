@@ -44,3 +44,7 @@ X        - Checkbox nicht gespeichert bei ReOpen
     http://www.sqlite.org/lang_datefunc.html
         konvert
     http://stackoverflow.com/questions/13241251/timestamp-to-string-date
+    Parse:
+    https://www.parse.com/apps/quickstart?mkt_tok=3RkMMJWWfF9wsRonu6TOZKXonjHpfsX%2F7eQvUKC%2FlMI%2F0ER3fOvrPUfGjI4ATMdiI%2BSLDwEYGJlv6SgFTbHGMblmy7gNUxU%3D#parse_data/mobile/android/native/existing
+    libs:
+    http    ://stackoverflow.com/questions/16608135/android-studio-add-jar-as-library
