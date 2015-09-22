@@ -21,7 +21,7 @@ X     - Wecker canceln
     - Cloud
 
     Bugs:
-        - Checkbox nicht gespeichert bei ReOpen
+X        - Checkbox nicht gespeichert bei ReOpen
 
     Nice to Have:
     - Tutorial bei Firststart

@@ -194,6 +194,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         i.putExtra("listItemDueDate", listItems.get(itemPosition).getDueDate());
         i.putExtra("listItemNote", listItems.get(itemPosition).getNote());
         i.putExtra("listItemPriority", listItems.get(itemPosition).getPriority());
+        i.putExtra("listItemIsDone", listItems.get(itemPosition).getIsDone());
         i.putExtra("listItemReminder", listItems.get(itemPosition).getReminder());
         i.putExtra("listItemReminderDate", listItems.get(itemPosition).getReminderDate());
         i.putExtra("listID", listItems.get(itemPosition).getListID());
@@ -209,6 +210,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                 long dueDate = data.getExtras().getLong("DueDate");
                 String note = data.getExtras().getString("Note");
                 int priority = data.getExtras().getInt("Priority");
+                boolean isDone = data.getExtras().getBoolean("IsDone");
                 boolean reminder = data.getExtras().getBoolean("Reminder");
                 long reminderDate = data.getExtras().getLong("ReminderDate");
                 int listID = data.getExtras().getInt("ListID");
@@ -218,7 +220,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                         note,
                         priority,
                         dueDate,
-                        false,
+                        isDone,
                         reminder,
                         reminderDate,
                         listID);
@@ -278,7 +280,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         alarm.set(Calendar.SECOND, 0);
     }
 
-
+    //todo speichern
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (!listItems.get(position).getIsDone()) {
@@ -290,7 +292,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
             listView.setItemChecked(position, false);
 
         }
-        db.updateListItem(listItems.get(position));
+        int tmp = db.updateListItem(listItems.get(position));
         for (int i = 0; i < listItems.size(); i++) {
             if (listItems.get(i).getListItemID() == listItems.get(position).getListItemID()) {
                 listItems.set(i, listItems.get(position));
@@ -308,6 +310,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         }
     }
 
+    //ToDo vll smoother direkt über listitem
     private void deleteListItem() {
         SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
         int itemCount = listView.getCount();

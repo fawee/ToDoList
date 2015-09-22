@@ -259,9 +259,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         listItemToEdit.setDueDate(dueDate.getText().toString());
         listItemToEdit.setPriority(Integer.parseInt(prioritySpinner.getSelectedItem().toString()));
         listItemToEdit.setReminder(isReminded(listItemReminderDay, listItemReminderTime));
-
-
-
+        
         //LOGIK! Überprüft, ob die Eingaben vollständig sind und ob evtl. Alarm gesetzt bzw. falsch gesetzt wurde
 
         if((!listItemToEdit.getTitle().equals(""))) {
@@ -269,12 +267,10 @@ public class AddListItemActivity extends Activity implements Communicator, View.
             if(!reminder.isChecked()) {
                 completeInputs = true;
             }
-
             else if(listItemReminderDay.equals("") || listItemReminderTime.equals("")) {
                 completeInputs = false;
                 Toast.makeText(getApplicationContext(), "Can't set Reminder: Date or Time missing", Toast.LENGTH_SHORT).show();
             }
-
             else {
                 setReminderDate();
                 if(!isValidReminderDate()) {
@@ -284,7 +280,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
                     listItemToEdit.setReminderDate(listItemReminderDay + " " + listItemReminderTime);
                     completeInputs = true;
                 }
-
             }
 
         } else {
@@ -297,11 +292,8 @@ public class AddListItemActivity extends Activity implements Communicator, View.
             if(reminderIsSet) {
                 setReminderAlarm();
             }
-
             sendDataToSubMenu();
         }
-
-
     }
 
     private boolean isValidReminderDate() {
@@ -327,9 +319,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         alarm.set(Calendar.HOUR_OF_DAY, hour);
         alarm.set(Calendar.MINUTE, minute);
         alarm.set(Calendar.SECOND, 0);
-
     }
-
 
     private void setReminderAlarm() {
 
@@ -350,14 +340,13 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         return false;
     }
 
-
-    //private void sendDataToSubMenu(String listItemTitle, String listItemDueDate, String listItemNote, String listItemPriority, boolean listItemReminder,  String listItemReminderDate) {
     private void sendDataToSubMenu() {
         i.putExtra("ListItemID", listItemToEdit.getListItemID());
         i.putExtra("Title", listItemToEdit.getTitle());
         i.putExtra("DueDate", listItemToEdit.getDueDate());
         i.putExtra("Note", listItemToEdit.getNote());
         i.putExtra("Priority", listItemToEdit.getPriority());
+        i.putExtra("IsDone", listItemToEdit.getIsDone());
         i.putExtra("Reminder", listItemToEdit.getReminder());
         i.putExtra("ReminderDate", listItemToEdit.getReminderDate());
         i.putExtra("ListID", listItemToEdit.getListID());

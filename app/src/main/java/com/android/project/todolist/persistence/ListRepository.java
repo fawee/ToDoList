@@ -134,7 +134,8 @@ public class ListRepository  {
         cv.put(KEY_ListItem_isDone, item.getIsDone());
         cv.put(KEY_ListItem_reminder, item.getReminder());
         cv.put(KEY_ListItem_ReminderDate, item.getReminderDate());
-        return (int)db.update(TABLE_tblListItem, cv, KEY_ListItem_ID + " = " + item.getListID(), null);
+        int tmp = db.update(TABLE_tblListItem, cv, KEY_ListItem_ID + " = " + item.getListItemID(), null);
+        return tmp;
     }
 
     public ArrayList<ListItem> getItemsOfList(int listID) {
