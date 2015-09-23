@@ -20,9 +20,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'com.parse.bolts:bolts-android:1.+'
-    compile fileTree(dir: 'libs', include: 'Parse-*.jar')
-    compile files('C:/Users/Patrick/Documents/Studium/UR/mi/Android/ToDoList/libs/Parse-1.10.2.jar')
+    compile fileTree(include: 'Parse-*.jar', dir: 'libs')
+    compile files('/Users/fabian/Documents/Android/Projekt SS2015/ToDoList/libs/Parse-1.10.2.jar')
 }

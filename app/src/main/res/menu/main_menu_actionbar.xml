@@ -17,6 +17,11 @@
         android:title="@string/action_sortMostItems"
         app:showAsAction="never" />
 
+    <item android:id="@+id/cloud"
+        android:title="Cloud"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_cloud" />
+
     <item android:id="@+id/action_addListObject"
         app:showAsAction="always"
         android:icon="@drawable/ic_add_list_object"

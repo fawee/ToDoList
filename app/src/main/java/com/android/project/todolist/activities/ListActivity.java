@@ -137,9 +137,18 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
             case R.id.action_addListObject:
                 addNewListObject();
                 break;
+
+            case R.id.cloud:
+                openCloudActivity();
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openCloudActivity() {
+
     }
 
     private void sortListsMostItems() {
