@@ -19,6 +19,7 @@ X                 - ListItems
 X    - Plausibilitätsprüfung für Reminder Datum
 X     - Wecker canceln
     - Cloud
+        strings_activity_... organisieren
 
     Bugs:
 X        - Checkbox nicht gespeichert bei ReOpen
@@ -26,6 +27,7 @@ X        - Checkbox nicht gespeichert bei ReOpen
     Nice to Have:
     - Tutorial bei Firststart
     - Icon für die App
+    - asynchronen Login (upload, etc) (s.loginactivity vorlage von android)
 
     CodeSmell:
     Im Forum fragen ob man die DBs Indizes einfach in (int) casten kann. Da es notwendig ist und in der DB eh nur Int gespeichert wird
@@ -47,4 +49,6 @@ X        - Checkbox nicht gespeichert bei ReOpen
     Parse:
     https://www.parse.com/apps/quickstart?mkt_tok=3RkMMJWWfF9wsRonu6TOZKXonjHpfsX%2F7eQvUKC%2FlMI%2F0ER3fOvrPUfGjI4ATMdiI%2BSLDwEYGJlv6SgFTbHGMblmy7gNUxU%3D#parse_data/mobile/android/native/existing
     libs:
-    http    ://stackoverflow.com/questions/16608135/android-studio-add-jar-as-library
+    http://stackoverflow.com/questions/16608135/android-studio-add-jar-as-library
+    howe to use parse
+    https://www.youtube.com/watch?v=jNL6mWAdgq8&list=PL1LLSQc9OcKkerhxJd1q34ZYt4HfjvWrk

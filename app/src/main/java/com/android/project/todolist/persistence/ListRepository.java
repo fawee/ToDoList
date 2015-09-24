@@ -111,7 +111,7 @@ public class ListRepository  {
                 String title = cursor.getString(1);
                 String colour = cursor.getString(2);
 
-                lists.add(new ListObject(id, title, getNumOfListItems(id), colour));
+                lists.add(new ListObject(id, title, getNumOfListItems(id, false), colour));
 
             } while (cursor.moveToNext());
         }
@@ -129,7 +129,7 @@ public class ListRepository  {
         ContentValues cv = new ContentValues();
         cv.put(KEY_ListItem_Title, item.getTitle());
         cv.put(KEY_ListItem_Note, item.getNote());
-        cv.put(KEY_ListItem_Priority, item.getNote());
+        cv.put(KEY_ListItem_Priority, item.getPriority());
         cv.put(KEY_ListItem_DueDate, item.getDueDate());
         cv.put(KEY_ListItem_isDone, item.getIsDone());
         cv.put(KEY_ListItem_reminder, item.getReminder());
@@ -173,8 +173,15 @@ public class ListRepository  {
         return items;
     }
 
-    private int getNumOfListItems(int listID) {
-        Cursor cursor = db.query(TABLE_tblListItem,new String[] {KEY_ListItem_List_ID}, KEY_ListItem_List_ID + " = " + listID, null,null,null,null);
+    public int getNumOfListItems(int listID, Boolean isDone) {
+        String whereClause = KEY_ListItem_List_ID + " = " + listID;
+        if (isDone){
+            whereClause += " AND " + KEY_ListItem_isDone +" = "+ 1;
+        }
+        else {
+            whereClause += " AND " + KEY_ListItem_isDone +" = "+ 0;
+        }
+        Cursor cursor = db.query(TABLE_tblListItem,new String[] {KEY_ListItem_List_ID}, whereClause, null,null,null,null);
         return cursor.getCount();
     }
 

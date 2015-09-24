@@ -44,22 +44,11 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initParse();
         initDB();
         initArrayList();
         initUI();
     }
 
-    private void initParse(){
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "CaBmyO31WPv6Q3B3ruuBSUSL34afvoGTzjpO95do", "ChZnNxYgNjL4KllEZddIdaGN3QV0tTLRlz7vkvLc");
-
-        // Test
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
-    }
     private void initDB(){
         db = new ListRepository(this);
         db.open();
@@ -122,9 +111,8 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
         int id = item.getItemId();
 
         switch (id) {
-
-            case R.id.action_settings:
-                return true;
+            //case R.id.action_settings:
+            //    return true;
             
             case R.id.action_sortAlphabetically:
                 sortListsAlphabetically();
@@ -139,16 +127,18 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
                 break;
 
             case R.id.cloud:
-                openCloudActivity();
+                openParseActivity();
                 break;
-
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void openCloudActivity() {
+    private void openParseActivity() {
+        Intent i = new Intent(getApplicationContext(), ParseActivity.class);
+        startActivity(i);
 
+        //startActivityForResult(i, REQUEST_CODE_OPEN_SUBMENU);
     }
 
     private void sortListsMostItems() {
