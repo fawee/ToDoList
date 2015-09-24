@@ -51,6 +51,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     private int listID;
     private String listTitle, listColor;
     private ImageButton deleteListItemButton;
+    private SparseBooleanArray checkedItemPositions;
 
     //Für den Reminder
     private AlarmManager alarmManager;
@@ -91,26 +92,17 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         setContentView(R.layout.activity_sub_menu);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         TextView tvListTitle = (TextView) findViewById(R.id.tvSubMenuNameListObject);
-        tvListTitle.setText(listTitle);
-        Tools.setColor(listColor, tvListTitle);
         deleteListItemButton = (ImageButton) findViewById(R.id.delete_listItems);
         deleteListItemButton.setOnClickListener(this);
-        setDeleteButtonVisability();
+        tvListTitle.setText(listTitle);
+        Tools.setColor(listColor, tvListTitle);
         listView = (ListView) findViewById(R.id.listViewSubMenu);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemClickListener(this);
         listItemAdapter = new ListItemAdapter(this, listItems);
         listView.setAdapter(listItemAdapter);
         registerForContextMenu(listView);
-    }
 
-    private void setDeleteButtonVisability() {
-        if (db.getNumOfListItems(listID, true) > 0){
-            deleteListItemButton.setVisibility(View.VISIBLE);
-        }
-        else{
-            deleteListItemButton.setVisibility(View.INVISIBLE);
-        }
     }
 
     @Override
@@ -145,6 +137,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         listItems.remove(info.position);
         listItemAdapter.notifyDataSetChanged();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -305,6 +298,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     //todo speichern
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         if (!listItems.get(position).getIsDone()) {
             listItems.get(position).setIsDone(true);
             listView.setItemChecked(position, true);
@@ -320,7 +314,6 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                 listItems.set(i, listItems.get(position));
             }
         }
-        setDeleteButtonVisability();
         listItemAdapter.notifyDataSetChanged();
     }
 
@@ -333,21 +326,21 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         }
     }
 
-    //Delete all ListItems which marked with the flag "isDone"
+    //ToDo vll smoother direkt über listitem
     private void deleteListItem() {
-        //ToDo: Dialog um vom User nochmal die Bestätigung zu bekommen.
-        int itemCount = listItems.size();
-        for (int i = 0; i < itemCount; i++) {
-            if (listItems.get(i).getIsDone()) {
+        checkedItemPositions = listView.getCheckedItemPositions();
+        int itemCount = listView.getCount();
+        for (int i = itemCount - 1; i >= 0; i--) {
+
+            if (checkedItemPositions.get(i)) {
                 db.removeListItem(listItems.get(i));
-                //listItemAdapter.remove(listItems.get(i));
+                listItemAdapter.remove(listItems.get(i));
             }
+
         }
-        //checkedItemPositions.clear();
-        initArrayList();
-        initUI();
-        //listItemAdapter.notifyDataSetChanged();
-        //Todo: Hier noch ne Toast Message um User mitzuteilen wie viele gelöscht wurde.
+        checkedItemPositions.clear();
+        listItemAdapter.notifyDataSetChanged();
+        //Todo: Hier noch ne Toast Message um User mitzuteilen wie view gelöscht wurde.
 
     }
 }
