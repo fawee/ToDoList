@@ -401,7 +401,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
     private void sendDataToSubMenu() {
-        Toast.makeText(getApplicationContext(), ""+ listColor, Toast.LENGTH_LONG).show();
         i.putExtra("ListItemID", listItemToEdit.getListItemID());
         i.putExtra("Title", listItemToEdit.getTitle());
         i.putExtra("DueDate", listItemToEdit.getDueDate());

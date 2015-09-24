@@ -9,12 +9,14 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -40,7 +42,7 @@ import com.parse.ParseUser;
 /**
  * A login screen that offers login via email/password.
  */
-public class ParseActivity extends Activity{
+public class ParseActivity extends ActionBarActivity{
 
     private String user;
     private String password;
@@ -76,9 +78,14 @@ public class ParseActivity extends Activity{
     }
 
     private void initUI() {
+
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         // Set up the login form.
+        Typeface editTextFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Roboto-Italic.ttf");
         userView = (EditText) findViewById(R.id.user_login);
         passwordView = (EditText) findViewById(R.id.password_register);
+        userView.setTypeface(editTextFont);
+        passwordView.setTypeface(editTextFont);
 
         logInButton = (Button) findViewById(R.id.login_button);
         registerButton = (Button) findViewById(R.id.open_register_activity_button);
