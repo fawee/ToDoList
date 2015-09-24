@@ -1,46 +1,33 @@
 package com.android.project.todolist.activities;
 
-import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.SparseBooleanArray;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.project.todolist.R;
 import com.android.project.todolist.adapter.ListItemAdapter;
 import com.android.project.todolist.comparators.ListItemCompAlphabet;
 import com.android.project.todolist.comparators.ListItemCompPriority;
 import com.android.project.todolist.domain.ListItem;
-import com.android.project.todolist.log.Log;
 import com.android.project.todolist.persistence.ListRepository;
 import com.android.project.todolist.reminder.ReminderService;
 import com.android.project.todolist.tools.Tools;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Locale;
 
 public class ListItemActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
@@ -95,7 +82,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         Tools.setColor(listColor, tvListTitle);
         deleteListItemButton = (ImageButton) findViewById(R.id.delete_listItems);
         deleteListItemButton.setOnClickListener(this);
-        setDeleteButtonVisability();
+        setDeleteButtonVisibility();
         listView = (ListView) findViewById(R.id.listViewSubMenu);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemClickListener(this);
@@ -104,7 +91,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         registerForContextMenu(listView);
     }
 
-    private void setDeleteButtonVisability() {
+    private void setDeleteButtonVisibility() {
         if (db.getNumOfListItems(listID, true) > 0){
             deleteListItemButton.setVisibility(View.VISIBLE);
         }
@@ -144,6 +131,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         db.removeListItem(listItems.get(info.position));
         listItems.remove(info.position);
         listItemAdapter.notifyDataSetChanged();
+        setDeleteButtonVisibility();
     }
 
     @Override
@@ -320,7 +308,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                 listItems.set(i, listItems.get(position));
             }
         }
-        setDeleteButtonVisability();
+        setDeleteButtonVisibility();
         listItemAdapter.notifyDataSetChanged();
     }
 
