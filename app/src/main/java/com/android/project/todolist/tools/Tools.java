@@ -14,17 +14,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
-/**
- * Created by Patrick on 09.09.2015.
- */
-public class Tools {
 
+public class Tools {
 
 
     public static int currentListColor = 0;
 
     public static void setColor(String color, View view) {
-        switch (color){
+        switch (color) {
             case "blue":
                 view.setBackgroundResource(R.color.blue);
                 break;
@@ -58,7 +55,7 @@ public class Tools {
     }
 
     public static int getColor(String color) {
-        switch (color){
+        switch (color) {
             case "blue":
                 return R.color.blue;
             case "green":
@@ -81,10 +78,6 @@ public class Tools {
                 return R.color.actionbar_color;
         }
     }
-
-
-
-
 
 
 }
