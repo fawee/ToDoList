@@ -1,5 +1,6 @@
 package com.android.project.todolist.activities;
 
+import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -50,6 +51,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     private int listID;
     private String listTitle, listColor;
     private ImageButton deleteListItemButton;
+    private SparseBooleanArray checkedItemPositions;
 
     //Für den Reminder
     private AlarmManager alarmManager;
@@ -73,6 +75,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         listID = extras.getInt("ListID");
         listTitle = extras.getString("ListTitle");
         listColor = extras.getString("ListColor");
+        Tools.currentListColor = Tools.getColor(listColor);
     }
 
     private void initDB() {
@@ -99,6 +102,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         listItemAdapter = new ListItemAdapter(this, listItems);
         listView.setAdapter(listItemAdapter);
         registerForContextMenu(listView);
+
     }
 
     @Override
@@ -116,6 +120,9 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
             case R.id.listItem_FloatingMenu_Edit:
                 editListItem(info.position);
                 return true;
+
+            case R.id.listItem_FloatingMenu_delete:
+                deleteItem(info);
             /*case R.id.listItem_FloatingMenu_IsDone:
                 listItems.get(info.position).setIsDone(true);
                 //ToDo DB speichern
@@ -123,6 +130,12 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void deleteItem(AdapterView.AdapterContextMenuInfo info) {
+        db.removeListItem(listItems.get(info.position));
+        listItems.remove(info.position);
+        listItemAdapter.notifyDataSetChanged();
     }
 
 
@@ -184,6 +197,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         i.putExtra("listItemReminder", false);
         i.putExtra("listItemReminderDate", "");
         i.putExtra("listID", listID);
+        i.putExtra("listColor", listColor);
         startActivityForResult(i, 1);
     }
 
@@ -198,6 +212,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         i.putExtra("listItemReminder", listItems.get(itemPosition).getReminder());
         i.putExtra("listItemReminderDate", listItems.get(itemPosition).getReminderDate());
         i.putExtra("listID", listItems.get(itemPosition).getListID());
+        i.putExtra("listColor", listColor);
         startActivityForResult(i, 1);
     }
 
@@ -283,6 +298,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     //todo speichern
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         if (!listItems.get(position).getIsDone()) {
             listItems.get(position).setIsDone(true);
             listView.setItemChecked(position, true);
@@ -312,7 +328,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
 
     //ToDo vll smoother direkt über listitem
     private void deleteListItem() {
-        SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
+        checkedItemPositions = listView.getCheckedItemPositions();
         int itemCount = listView.getCount();
         for (int i = itemCount - 1; i >= 0; i--) {
 

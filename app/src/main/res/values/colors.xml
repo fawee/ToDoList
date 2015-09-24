@@ -12,5 +12,6 @@
     <color name="actionbar_color">#37474F</color>
     <color name="indigo">#3F51B5</color>
     <color name="teal">#009688</color>
+    <color name="grey">#727272</color>
 
 </resources>

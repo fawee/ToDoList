@@ -22,7 +22,7 @@
         android:id="@+id/tv_numOfListItems"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"

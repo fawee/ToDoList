@@ -1,6 +1,7 @@
 package com.android.project.todolist.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.android.project.todolist.R;
 import com.android.project.todolist.domain.ListItem;
+import com.android.project.todolist.tools.Tools;
 
 
 import java.util.ArrayList;
@@ -49,25 +51,33 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
             view = convertView;
         }
 
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Roboto-Regular.ttf");
+
         final ListItem currentListItem = listItemArrayList.get(position);
 
         final CheckBox title = (CheckBox) view.findViewById(R.id.listItem_checkBox);
         title.setText(currentListItem.getTitle());
+        title.setTypeface(font);
+        title.setClickable(false);
         title.setChecked(currentListItem.getIsDone());
 
         TextView date = (TextView) view.findViewById(R.id.listItem_date);
         date.setText(currentListItem.getFormatedDueDate());
+        date.setTypeface(font);
+        date.setTextColor(context.getResources().getColor(Tools.currentListColor));
 
         TextView note = (TextView) view.findViewById(R.id.listItem_note);
+        note.setTypeface(font);
         String userNote = currentListItem.getNote();
         if(userNote.length() > 15) {
-            note.setText(userNote.substring(0, 15) + "...");
+            note.setText("| " + userNote.substring(0, 15) + "...");
         } else {
             note.setText(userNote);
         }
 
         TextView priority = (TextView) view.findViewById(R.id.listItem_priority);
         priority.setText(currentListItem.getPriority()+ "");
+        priority.setTypeface(font);
 
         ImageView reminder = (ImageView) view.findViewById(R.id.listItem_reminder);
         if(currentListItem.getReminder()) {

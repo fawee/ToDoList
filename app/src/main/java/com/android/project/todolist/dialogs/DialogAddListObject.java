@@ -50,6 +50,7 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
         if(listTitle.equals("")){   handleClicks("Add", listID);}
         else{                       handleClicks("Save", listID);}
 
+
         return builder.create();
     }
 

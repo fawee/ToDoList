@@ -13,65 +13,69 @@
     <TextView
         android:id="@+id/addListItemMenuTitleTV"
         android:text="@string/addListItemMenu_Title"
-        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp" />
 
     <EditText
         android:id="@+id/addListItemMenuTitle"
         android:inputType="text"
         android:hint="@string/addListItemActivityTitle_hint"
+        android:textColorHint="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue"
+        android:textColor="@color/white"
         android:padding="12dp"/>
+
 
     <TextView
         android:id="@+id/addListItemMenuDateTV"
         android:text="@string/addListItemMenu_Date"
-        android:textColor="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp" />
 
     <EditText
         android:id="@+id/addListItemMenuDate"
         android:focusableInTouchMode="false"
         android:inputType="date"
         android:hint="@string/addListItemMenu_Date_hint"
-        android:background="@color/green"
         android:padding="12dp"
+        android:textColorHint="@color/grey"
         android:layout_width="match_parent"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"/>
+
 
     <TextView
         android:id="@+id/addListItemMenuNoteTV"
         android:text="@string/addListItemMenu_Note"
-        android:textColor="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp" />
 
     <EditText
         android:id="@+id/addListItemMenuNote"
         android:hint="@string/addListItemMenu_Note_hint"
         android:inputType="text"
         android:layout_width="match_parent"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
-        android:background="@color/yellow"
         android:padding="12dp"/>
+
 
     <TextView
         android:id="@+id/addListItemMenuPriorityTV"
         android:text="@string/addListItemMenu_Priority"
-        android:textColor="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp" />
     
     <Spinner
         android:id="@+id/addListItemMenuPriority"
         android:layout_width="wrap_content"
-        android:background="@color/red"
-        android:popupBackground="@color/red"
         android:padding="12dp"
         android:layout_height="wrap_content"/>
 
@@ -85,49 +89,51 @@
             android:id="@+id/addListItemActivityReminderTV"
             android:text="@string/addListItemActivity_RemindMe"
             android:gravity="center"
-            android:textColor="@color/white"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp" />
 
         <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
             android:id="@+id/reminderButton" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/addListItemActivityReminderDateTV"
         android:text="@string/addListItemMenu_Date"
-        android:textColor="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp" />
 
     <EditText
         android:id="@+id/addListItemActivityReminderDate"
         android:inputType="date"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/white"
         android:focusableInTouchMode="false"
         android:hint="@string/addListItemActivityReminder_Date_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/deep_purple"
         android:padding="12dp"/>
 
     <TextView
         android:id="@+id/addListItemActivityReminderTimeTV"
         android:text="@string/addListItemActivityReminder_Time"
-        android:textColor="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp" />
 
     <EditText
         android:id="@+id/addListItemActivityReminderTime"
         android:focusableInTouchMode="false"
         android:inputType="time"
+        android:textColor="@color/white"
+        android:textColorHint="@color/grey"
         android:hint="@string/addListItemActivityReminder_Time_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/deep_purple"
         android:padding="12dp"/>
 
 
@@ -137,7 +143,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/addListItemActivity_AddButton"
-        android:textColor="@color/white"
         android:layout_gravity="center_horizontal" />
     
     

@@ -5,6 +5,10 @@
         android:id="@+id/listItem_FloatingMenu_Edit"
         android:title="@string/FloatingMenu_Edit"
         ></item>
+
+    <item android:id="@+id/listItem_FloatingMenu_delete"
+        android:title="@string/FloatingMenu_Delete"
+        ></item>
 <!--    <item
         android:id="@+id/listItem_FloatingMenu_IsDone"
         android:title="@string/FloatingMenu_IsDone"

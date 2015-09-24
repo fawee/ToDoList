@@ -7,6 +7,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +35,7 @@ import com.android.project.todolist.dialogs.TimePickerFragment;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.log.Log;
 import com.android.project.todolist.reminder.ReminderService;
+import com.android.project.todolist.tools.Tools;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -45,6 +49,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     private EditText title, dueDate, note, reminderDay, reminderTime;
     private TextView reminderDateTV, reminderTimeTV, dateTextView;
     private Button addListItemButton;
+    private String listColor;
     private Spinner prioritySpinner;
     private ToggleButton reminder;
     private PendingIntent alarmIntent;
@@ -75,6 +80,8 @@ public class AddListItemActivity extends Activity implements Communicator, View.
                 extras.getBoolean("listItemReminder"),
                 extras.getLong("listItemReminderDate"),
                 extras.getInt("listID"));
+
+        listColor = extras.getString("listColor");
     }
 
     private void initUI() {
@@ -90,7 +97,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         title.setText(listItemToEdit.getTitle());
 
         dueDate = (EditText) findViewById(R.id.addListItemMenuDate);
-
         dueDate.setText(listItemToEdit.getFormatedDueDate());
 
         note = (EditText) findViewById(R.id.addListItemMenuNote);
@@ -101,17 +107,70 @@ public class AddListItemActivity extends Activity implements Communicator, View.
         addListItemButton = (Button) findViewById(R.id.addListItemButton);
 
         initReminderViews();
+
+
+
         if(listItemToEdit.getReminder()) {
             reminderDay.setText(listItemToEdit.getFormatedReminderDate());
             reminderTime.setText(listItemToEdit.getFormatedReminderTime());
         }
 
         reminder = (ToggleButton) findViewById(R.id.reminderButton);
+        setViewStyle();
+
         if (listItemToEdit.getReminder()) {
             reminder.setChecked(true);
             showReminderOptions();
         }
     }
+
+    private void setViewStyle() {
+
+        TextView titleTV = (TextView) findViewById(R.id.addListItemMenuTitleTV);
+        TextView dateTV = (TextView) findViewById(R.id.addListItemMenuDateTV);
+        TextView noteTV = (TextView) findViewById(R.id.addListItemMenuNoteTV);
+        TextView priorityTV = (TextView) findViewById(R.id.addListItemMenuPriorityTV);
+        TextView remindMe = (TextView) findViewById(R.id.addListItemActivityReminderTV);
+
+        titleTV.setTextColor(getResources().getColor(Tools.getColor(listColor)));
+        dateTV.setTextColor(getResources().getColor(Tools.getColor(listColor)));
+        noteTV.setTextColor(getResources().getColor(Tools.getColor(listColor)));
+        priorityTV.setTextColor(getResources().getColor(Tools.getColor(listColor)));
+        remindMe.setTextColor(getResources().getColor(Tools.getColor(listColor)));
+        reminderDateTV.setTextColor(getResources().getColor(Tools.getColor(listColor)));
+        reminderTimeTV.setTextColor(getResources().getColor(Tools.getColor(listColor)));
+
+        //Farbe für die Edittext-Linie
+        title.getBackground().setColorFilter(getResources().getColor(Tools.getColor(listColor)), PorterDuff.Mode.SRC_ATOP);
+        dueDate.getBackground().setColorFilter(getResources().getColor(Tools.getColor(listColor)), PorterDuff.Mode.SRC_ATOP);
+        note.getBackground().setColorFilter(getResources().getColor(Tools.getColor(listColor)), PorterDuff.Mode.SRC_ATOP);
+        reminderDay.getBackground().setColorFilter(getResources().getColor(Tools.getColor(listColor)), PorterDuff.Mode.SRC_ATOP);
+        reminderTime.getBackground().setColorFilter(getResources().getColor(Tools.getColor(listColor)), PorterDuff.Mode.SRC_ATOP);
+        prioritySpinner.getBackground().setColorFilter(getResources().getColor(Tools.getColor(listColor)), PorterDuff.Mode.SRC_ATOP);
+
+        setViewFont(titleTV, dateTV, noteTV, priorityTV, remindMe);
+
+    }
+
+    private void setViewFont(TextView titleTV, TextView dateTV, TextView noteTV, TextView priorityTV, TextView remindMe) {
+        Typeface font = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Roboto-Bold.ttf");
+        Typeface editTextFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Roboto-Italic.ttf");
+
+        titleTV.setTypeface(font);
+        dateTV.setTypeface(font);
+        noteTV.setTypeface(font);
+        priorityTV.setTypeface(font);
+        remindMe.setTypeface(font);
+        reminderDateTV.setTypeface(font);
+        reminderTimeTV.setTypeface(font);
+
+        title.setTypeface(editTextFont);
+        dueDate.setTypeface(editTextFont);
+        note.setTypeface(editTextFont);
+        reminderDay.setTypeface(editTextFont);
+        reminderTime.setTypeface(editTextFont);
+    }
+
 
     private void initReminderViews() {
         reminderDateTV = (TextView) findViewById(R.id.addListItemActivityReminderDateTV);
@@ -270,6 +329,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
             else if(listItemReminderDay.equals("") || listItemReminderTime.equals("")) {
                 completeInputs = false;
                 Toast.makeText(getApplicationContext(), "Can't set Reminder: Date or Time missing", Toast.LENGTH_SHORT).show();
+
             }
             else {
                 setReminderDate();
@@ -341,6 +401,7 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
     private void sendDataToSubMenu() {
+        Toast.makeText(getApplicationContext(), ""+ listColor, Toast.LENGTH_LONG).show();
         i.putExtra("ListItemID", listItemToEdit.getListItemID());
         i.putExtra("Title", listItemToEdit.getTitle());
         i.putExtra("DueDate", listItemToEdit.getDueDate());
