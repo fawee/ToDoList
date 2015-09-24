@@ -2,17 +2,20 @@
     <string name="title_activity_parse">ParseLogin</string>
     <string name="title_activity_parse_register">ParseRegister</string>
 
-    <string name="prompt_user">Benutzername</string>
-    <string name="prompt_password">Passwort</string>
-    <string name="action_login">Log In</string>
-    <string name="action_login_short">Sign in</string>
-    <string name="action_register_1">Neues Konto anlegen</string>
-    <string name="action_register_2">Registrieren</string>
-    <string name="action_cloud_up">Aktuellen Stand Uploaden</string>
-    <string name="action_cloud_down">Stand aus Cloud downloaden</string>
+    <string name="parse_prompt_user">     Name</string>
+    <string name="parse_prompt_password">     Password</string>
+    <string name="parse_action_login">Log In</string>
+    <string name="parse_action_logout">Log Out</string>
+    <string name="parse_action_login_short">Sign in</string>
+    <string name="parse_action_register_1">Sign Up</string>
+    <string name="parse_action_register_2">Sign Up</string>
+    <string name="parse_action_cloud_up">Cloud BackUp</string>
+    <string name="parse_action_cloud_down">Cloud Restore</string>
 
-    <string name="error_invalid_email">This password is incorrect</string>
-    <string name="error_invalid_password">This password is incorrect</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="parse_loggedin_user">Der Benutzer [user] ist eingelogt.</string>
+
+    <string name="parse_error_invalid_email">This password is incorrect</string>
+    <string name="parse_error_invalid_password">This password is incorrect</string>
+    <string name="parse_error_incorrect_password">This password is incorrect</string>
+    <string name="parse_error_field_required">This field is required</string>
 </resources>

@@ -1,57 +1,49 @@
 package com.android.project.todolist.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
+import android.graphics.Typeface;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.android.project.todolist.R;
 import com.android.project.todolist.log.Log;
+import com.android.project.todolist.persistence.ParseBackUp;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class ParseActivity extends Activity{
+public class ParseActivity extends ActionBarActivity{
 
     private String user;
     private String password;
+    private boolean loggedIn;
+    private ParseUser currentUser;
+    private ParseBackUp parseBackUp;
     // UI references.
-    private EditText userView;
-    private EditText passwordView;
+    private EditText etUserView;
+    private EditText etPasswordView;
 
-    private Button logInButton;
-    private Button registerButton;
-    private Button cloudUpButton;
-    private Button cloudDownButton;
+    private TextView tvLoggedInUser;
+    private TextView tvOr;
+
+    private Button btnLogInButton;
+    private Button btnRegisterButton;
+    private Button btnCloudUpButton;
+    private Button btnCloudDownButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,50 +56,74 @@ public class ParseActivity extends Activity{
     }
 
     private void initParse(){
-        // Enable Local Datastore.
-        //Parse.enableLocalDatastore(this);
+        try {
+            Parse.initialize(this, "CaBmyO31WPv6Q3B3ruuBSUSL34afvoGTzjpO95do", "ChZnNxYgNjL4KllEZddIdaGN3QV0tTLRlz7vkvLc");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(String.valueOf(e));
+        }
 
-        Parse.initialize(this, "CaBmyO31WPv6Q3B3ruuBSUSL34afvoGTzjpO95do", "ChZnNxYgNjL4KllEZddIdaGN3QV0tTLRlz7vkvLc");
-
-        // Test
+        currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null){
+            loggedIn = false;
+        }
+        else {
+            loggedIn = true;
+        }
+        /*// Test
         ParseObject testObject = new ParseObject("TestObject");
         testObject.put("foo", "bar");
         testObject.saveInBackground();
+        */
+        parseBackUp = new ParseBackUp(this);
     }
 
     private void initUI() {
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         // Set up the login form.
-        userView = (EditText) findViewById(R.id.user_login);
-        passwordView = (EditText) findViewById(R.id.password_register);
+        Typeface editTextFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Roboto-Italic.ttf");
+        etUserView = (EditText) findViewById(R.id.user_login);
+        etPasswordView = (EditText) findViewById(R.id.password_register);
+        etUserView.setTypeface(editTextFont);
+        etPasswordView.setTypeface(editTextFont);
 
-        logInButton = (Button) findViewById(R.id.login_button);
-        registerButton = (Button) findViewById(R.id.open_register_activity_button);
-        cloudUpButton = (Button) findViewById(R.id.cloud_up_button);
-        cloudDownButton = (Button) findViewById(R.id.cloud_up_button);
+        tvLoggedInUser = (TextView) findViewById(R.id.parse_tv_LoggedInUser);
+        tvOr = (TextView) findViewById(R.id.parse_tv_or);
+
+        btnLogInButton = (Button) findViewById(R.id.login_button);
+        btnRegisterButton = (Button) findViewById(R.id.open_register_activity_button);
+        btnCloudUpButton = (Button) findViewById(R.id.cloud_up_button);
+        btnCloudDownButton = (Button) findViewById(R.id.cloud_down_button);
         initEvents();
+        switchLook();
     }
 
     private void initEvents() {
 /*
-        passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        etPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptLogIn();
                     return true;
                 }
                 return false;
             }
         });
 */
-        logInButton.setOnClickListener(new OnClickListener() {
+        btnLogInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                if (loggedIn){
+                    logOut();
+                }
+                else{
+                    attemptLogIn();
+                }
             }
         });
 
-        registerButton.setOnClickListener(new OnClickListener() {
+        btnRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), ParseRegisterActivity.class);
@@ -115,49 +131,48 @@ public class ParseActivity extends Activity{
             }
         });
 
-        cloudUpButton.setOnClickListener(new OnClickListener() {
+        btnCloudUpButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //CloudUpload();
+                parseBackUp.uploadBackUp();
             }
         });
 
-        cloudDownButton.setOnClickListener(new OnClickListener() {
+        btnCloudDownButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //CloudDownload();
+                parseBackUp.downloadBackUp();
             }
         });
     }
-
 
     /**
      * Attempts to login
      * If there are form errors (missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    public void attemptLogin() {
+    public void attemptLogIn() {
         // Reset errors.
-        userView.setError(null);
-        passwordView.setError(null);
+        etUserView.setError(null);
+        etPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        user = userView.getText().toString();
-        password = passwordView.getText().toString();
+        user = etUserView.getText().toString();
+        password = etPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a user and passwort
         if (TextUtils.isEmpty(password)) {
-            passwordView.setError(getString(R.string.error_field_required));
-            focusView = passwordView;
+            etPasswordView.setError(getString(R.string.parse_error_field_required));
+            focusView = etPasswordView;
             cancel = true;
         }
 
         if (TextUtils.isEmpty(user)) {
-            userView.setError(getString(R.string.error_field_required));
-            focusView = userView;
+            etUserView.setError(getString(R.string.parse_error_field_required));
+            focusView = etUserView;
             cancel = true;
         }
 
@@ -172,14 +187,57 @@ public class ParseActivity extends Activity{
         ParseUser.logInInBackground(user, password, new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
+                    loggedIn = true;
+                    currentUser = ParseUser.getCurrentUser();
                     Log.d("Loged In");
+                    switchLook();
                     // Hooray! The user is logged in.
                 } else {
                     Log.d(String.valueOf(e));
+                    //todo: toast, dass login fehlgeschlagen hat
                     // Signup failed. Look at the ParseException to see what happened.
                 }
             }
         });
+    }
+
+    private void logOut() {
+        ParseUser.logOut();
+        loggedIn = false;
+        currentUser = ParseUser.getCurrentUser();
+        switchLook();
+    }
+
+    private void switchLook() {
+        if (loggedIn){
+
+            // Set Visability
+            tvLoggedInUser.setVisibility(View.VISIBLE);
+            etUserView.setVisibility(View.GONE);
+            etPasswordView.setVisibility(View.GONE);
+            tvOr.setVisibility(View.INVISIBLE);
+            btnRegisterButton.setVisibility(View.INVISIBLE);
+            btnCloudUpButton.setVisibility(View.VISIBLE);
+            btnCloudDownButton.setVisibility(View.VISIBLE);
+            //Set label
+            btnLogInButton.setText(R.string.parse_action_logout);
+            String loggedInUser = getResources().getString(R.string.parse_loggedin_user);
+            loggedInUser = loggedInUser.replace("[user]", currentUser.getUsername());
+            tvLoggedInUser.setText(loggedInUser);
+        }
+        else {
+            // Set Visability
+            tvLoggedInUser.setVisibility(View.GONE);
+            etUserView.setVisibility(View.VISIBLE);
+            etPasswordView.setVisibility(View.VISIBLE);
+            tvOr.setVisibility(View.VISIBLE);
+            btnRegisterButton.setVisibility(View.VISIBLE);
+            btnCloudUpButton.setVisibility(View.INVISIBLE);
+            btnCloudDownButton.setVisibility(View.INVISIBLE);
+            tvLoggedInUser.setVisibility(View.INVISIBLE);
+            //Set label
+            btnLogInButton.setText(R.string.parse_action_login);
+        }
     }
 }
 

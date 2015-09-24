@@ -9,12 +9,14 @@ import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -38,7 +40,7 @@ import com.parse.SignUpCallback;
 /**
  * A login screen that offers login via email/password.
  */
-public class ParseRegisterActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class ParseRegisterActivity extends ActionBarActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -64,13 +66,18 @@ public class ParseRegisterActivity extends Activity implements LoaderCallbacks<C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parse_register);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         //setupActionBar();
 
         // Set up the login form.
+        Typeface editTextFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Roboto-Italic.ttf");
+
         mEmailView = (AutoCompleteTextView) findViewById(R.id.user_register);
+        mEmailView.setTypeface(editTextFont);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password_register);
+        mPasswordView.setTypeface(editTextFont);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -132,18 +139,18 @@ public class ParseRegisterActivity extends Activity implements LoaderCallbacks<C
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getString(R.string.parse_error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid user address.
         if (TextUtils.isEmpty(user)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+            mEmailView.setError(getString(R.string.parse_error_field_required));
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(user)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
+            mEmailView.setError(getString(R.string.parse_error_invalid_email));
             focusView = mEmailView;
             cancel = true;
         }
@@ -332,7 +339,7 @@ public class ParseRegisterActivity extends Activity implements LoaderCallbacks<C
             if (success) {
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(getString(R.string.parse_error_incorrect_password));
                 mPasswordView.requestFocus();
             }
         }
