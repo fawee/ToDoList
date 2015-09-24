@@ -173,7 +173,7 @@ public class ListRepository  {
         return items;
     }
 
-    public int getNumOfListItems(int listID, Boolean isDone) {
+    public int getNumOfListItems(int listID, boolean isDone) {
         String whereClause = KEY_ListItem_List_ID + " = " + listID;
         if (isDone){
             whereClause += " AND " + KEY_ListItem_isDone +" = "+ 1;
