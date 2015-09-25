@@ -26,6 +26,7 @@ import com.android.project.todolist.comparators.ListItemCompPriority;
 import com.android.project.todolist.dialogs.DeleteListItemDialog;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.persistence.ListRepository;
+import com.android.project.todolist.reminder.ReminderAlarm;
 import com.android.project.todolist.reminder.ReminderService;
 import com.android.project.todolist.tools.Tools;
 
@@ -50,9 +51,8 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     private AdapterView.AdapterContextMenuInfo info;
 
     //Für den Reminder
-    private AlarmManager alarmManager;
-    private PendingIntent alarmIntent;
-    private Intent reminderIntent;
+
+    private ReminderAlarm reminderAlarm;
 
 
     private static final int REQUEST_CODE_ADD_LISTITEM = 1;
@@ -273,28 +273,20 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
 
                 //Einstellungen für den Reminder
 
-                reminderIntent = new Intent(this, ReminderService.class);
                 if (reminder) {
 
-                    alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    Calendar alarm = Calendar.getInstance();
-                    setReminderDate(data, alarm);
+                    reminderAlarm = new ReminderAlarm(this);
+                    reminderAlarm.setReminderTime(data.getExtras().getInt("year"), data.getExtras().getInt("month"), data.getExtras().getInt("day"), data.getExtras().getInt("hour"), data.getExtras().getInt("minute"));
+                    reminderAlarm.setNotificationText(listItem.getTitle(), listItem.getListItemID(), listItem.getNote());
+                    reminderAlarm.setNotificationClickInfo(listID, listTitle, listColor);
+                    reminderAlarm.setPendingIntent(listItem.getListItemID());
+                    reminderAlarm.activateReminder();
 
-                    reminderIntent.putExtra("title", listItem.getTitle());
-                    reminderIntent.putExtra("alarmID", listItem.getListItemID());
-                    reminderIntent.putExtra("note", listItem.getNote());
-                    //Infos für Notification-Klick
-                    reminderIntent.putExtra("ListID", listID);
-                    reminderIntent.putExtra("ListTitle", listTitle);
-                    reminderIntent.putExtra("ListColor", listColor);
-
-                    alarmIntent = PendingIntent.getService(this, listItem.getListItemID(), reminderIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getTimeInMillis(), alarmIntent);
                     //TODO: Noch im listItem reminder Datum darstellen? Oder Toast.
                 } else {
 
-                    if (alarmManager != null) {
-                        cancelReminder(listItem.getListItemID(), reminderIntent);
+                    if (reminderAlarm != null) {
+                        reminderAlarm.cancelReminder(listItem.getListItemID());
                     }
                 }
 
@@ -303,19 +295,9 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         }
     }
 
-    private void cancelReminder(int listItemID, Intent intent) {
-        alarmIntent = PendingIntent.getService(this, listItemID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.cancel(alarmIntent);
-    }
 
-    private void setReminderDate(Intent data, Calendar alarm) {
-        alarm.set(Calendar.YEAR, data.getExtras().getInt("year"));
-        alarm.set(Calendar.MONTH, data.getExtras().getInt("month") - 1);
-        alarm.set(Calendar.DAY_OF_MONTH, data.getExtras().getInt("day"));
-        alarm.set(Calendar.HOUR_OF_DAY, data.getExtras().getInt("hour"));
-        alarm.set(Calendar.MINUTE, data.getExtras().getInt("minute"));
-        alarm.set(Calendar.SECOND, 0);
-    }
+
+
 
     //todo speichern
     @Override
@@ -367,8 +349,8 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
             for (int i = 0; i < itemCount; i++) {
                 if (listItems.get(i).getIsDone()) {
                     numOfDeletedItems++;
-                    if (alarmManager != null) {
-                        cancelReminder(listItems.get(i).getListItemID(), reminderIntent);
+                    if (reminderAlarm != null) {
+                        reminderAlarm.cancelReminder(listItems.get(i).getListItemID());
                     }
                     db.removeListItem(listItems.get(i));
                     //listItemAdapter.remove(listItems.get(i));
@@ -381,8 +363,8 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         } else {
             numOfDeletedItems = 1;
 
-            if (alarmManager != null) {
-                cancelReminder(listItems.get(info.position).getListItemID(), reminderIntent);
+            if (reminderAlarm != null) {
+                reminderAlarm.cancelReminder(listItems.get(info.position).getListItemID());
             }
 
             db.removeListItem(listItems.get(info.position));

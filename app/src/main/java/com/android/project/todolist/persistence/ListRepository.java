@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.domain.ListItem;
+import com.android.project.todolist.reminder.ReminderAlarm;
 
 import java.lang.String;
 import java.util.ArrayList;
@@ -41,12 +42,13 @@ public class ListRepository  {
 //    //Indexe noch setzen
 //    public static final int COLUMN_TASK_INDEX = 1;
 //    public static final int COLUMN_DATE_INDEX = 2;
-
+    private Context context;
     private ToDoDBOpenHelper dbHelper;
 
     private SQLiteDatabase db;
 
     public ListRepository(Context context) {
+        this.context = context;
         dbHelper = new ToDoDBOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -87,11 +89,23 @@ public class ListRepository  {
     }
 
     public void removeList(ListObject list) {
-        //Nicht nur die Liste sondern auch die dazugehörigen ListItems müssen gelöscht werden, sollange in der DB noch keine Löschweitergabe implementiert ist, muss das manuel geschehen
-        String whereClause = KEY_ListItem_List_ID + " = " + list.getListID();
+        ReminderAlarm reminderAlarm = new ReminderAlarm(context);   //deklarierung des Klassenobjects
+        //Loop to remove each Reminder in the List
+
+        String whereClause = KEY_ListItem_List_ID + " = " + list.getListID() + " AND " + KEY_ListItem_reminder + " = " + 1;
+        Cursor cursor = db.query(TABLE_tblListItem, new String[]{KEY_ListItem_ID},whereClause, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int listItemID = cursor.getInt(0);
+                reminderAlarm.cancelReminder(listItemID);  //aufruf der Klassenmethode zum entfernen eines Reminder
+            } while (cursor.moveToNext());
+        }
+
+        //Delete of ListItems of List
+        whereClause = KEY_ListItem_List_ID + " = " + list.getListID();
         db.delete(TABLE_tblListItem, whereClause, null);
 
-
+        //Final delete of List
         whereClause = KEY_List_ID + " = " + list.getListID();
         db.delete(TABLE_tblList, whereClause, null);
     }
