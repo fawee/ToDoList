@@ -52,17 +52,9 @@ public class ParseActivity extends ActionBarActivity{
 
         initParse();
         initUI();
-
     }
 
     private void initParse(){
-        try {
-            Parse.initialize(this, "CaBmyO31WPv6Q3B3ruuBSUSL34afvoGTzjpO95do", "ChZnNxYgNjL4KllEZddIdaGN3QV0tTLRlz7vkvLc");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d(String.valueOf(e));
-        }
-
         currentUser = ParseUser.getCurrentUser();
         if (currentUser == null){
             loggedIn = false;
@@ -70,11 +62,7 @@ public class ParseActivity extends ActionBarActivity{
         else {
             loggedIn = true;
         }
-        /*// Test
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
-        */
+
         parseBackUp = new ParseBackUp(this);
     }
 
@@ -99,18 +87,6 @@ public class ParseActivity extends ActionBarActivity{
     }
 
     private void initEvents() {
-/*
-        etPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogIn();
-                    return true;
-                }
-                return false;
-            }
-        });
-*/
         btnLogInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,7 +187,7 @@ public class ParseActivity extends ActionBarActivity{
     private void switchLook() {
         if (loggedIn){
 
-            // Set Visability
+            // Set Visibility
             tvLoggedInUser.setVisibility(View.VISIBLE);
             etUserView.setVisibility(View.GONE);
             etPasswordView.setVisibility(View.GONE);
@@ -226,7 +202,7 @@ public class ParseActivity extends ActionBarActivity{
             tvLoggedInUser.setText(loggedInUser);
         }
         else {
-            // Set Visability
+            // Set Visibility
             tvLoggedInUser.setVisibility(View.GONE);
             etUserView.setVisibility(View.VISIBLE);
             etPasswordView.setVisibility(View.VISIBLE);

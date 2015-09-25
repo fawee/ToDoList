@@ -10,8 +10,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.reminder.ReminderAlarm;
+import com.android.project.todolist.log.Log;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.String;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 
@@ -44,12 +52,20 @@ public class ListRepository  {
 //    public static final int COLUMN_DATE_INDEX = 2;
     private Context context;
     private ToDoDBOpenHelper dbHelper;
+    public String dbPath;
+    public String dbName;
 
     private SQLiteDatabase db;
 
     public ListRepository(Context context) {
         this.context = context;
         dbHelper = new ToDoDBOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
+        initDBPath();
+    }
+
+    private void initDBPath() {
+        dbName = dbHelper.getDatabaseName();
+        dbPath = String.valueOf(context.getDatabasePath(dbName));
     }
 
     public void open() throws SQLException {
@@ -154,15 +170,15 @@ public class ListRepository  {
 
     public ArrayList<ListItem> getItemsOfList(int listID) {
         ArrayList<ListItem> items = new ArrayList<ListItem>();
-        Cursor cursor = db.query(TABLE_tblListItem, new String[] {  KEY_ListItem_ID,
-                KEY_ListItem_Title,
-                KEY_ListItem_Note,
-                KEY_ListItem_Priority,
-                KEY_ListItem_DueDate,
-                KEY_ListItem_isDone,
-                KEY_ListItem_reminder,
-                KEY_ListItem_ReminderDate},
-                KEY_ListItem_List_ID + " = " + listID,null, null, null, null);
+        Cursor cursor = db.query(TABLE_tblListItem, new String[]{KEY_ListItem_ID,
+                        KEY_ListItem_Title,
+                        KEY_ListItem_Note,
+                        KEY_ListItem_Priority,
+                        KEY_ListItem_DueDate,
+                        KEY_ListItem_isDone,
+                        KEY_ListItem_reminder,
+                        KEY_ListItem_ReminderDate},
+                KEY_ListItem_List_ID + " = " + listID, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(0);
@@ -204,6 +220,46 @@ public class ListRepository  {
             return true;
         }
         return false;
+    }
+
+    public byte[] getDBByteArray(){
+
+        File file = new File(dbPath);
+        int size = (int) file.length();
+        byte[] data = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(data, 0, data.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    public void setDBByteArray(byte[] data){
+
+        FileOutputStream backUp = null;
+        try {
+            backUp = new FileOutputStream(dbPath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            backUp.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            backUp.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return;
     }
 
     private class ToDoDBOpenHelper extends SQLiteOpenHelper {

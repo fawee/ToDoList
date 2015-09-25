@@ -52,3 +52,7 @@ X        - Checkbox nicht gespeichert bei ReOpen
     http://stackoverflow.com/questions/16608135/android-studio-add-jar-as-library
     howe to use parse
     https://www.youtube.com/watch?v=jNL6mWAdgq8&list=PL1LLSQc9OcKkerhxJd1q34ZYt4HfjvWrk
+
+    dbfilecopy
+    version A http://stackoverflow.com/questions/1995320/how-to-backup-database-file-to-sdcard-on-android
+    version B http://stackoverflow.com/questions/6540906/simple-export-and-import-of-a-sqlite-database-on-android/6542214#6542214

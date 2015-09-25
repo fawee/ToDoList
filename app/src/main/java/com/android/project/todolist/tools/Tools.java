@@ -1,19 +1,7 @@
 package com.android.project.todolist.tools;
 
-import android.content.Context;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.project.todolist.R;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
-
 
 public class Tools {
 
@@ -78,6 +66,4 @@ public class Tools {
                 return R.color.actionbar_color;
         }
     }
-
-
 }
