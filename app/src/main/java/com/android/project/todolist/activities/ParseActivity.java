@@ -1,6 +1,5 @@
 package com.android.project.todolist.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 
@@ -17,10 +16,7 @@ import com.android.project.todolist.R;
 import com.android.project.todolist.log.Log;
 import com.android.project.todolist.persistence.ParseBackUp;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 /**
