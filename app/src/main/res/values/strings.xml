@@ -45,4 +45,9 @@
     <string name="action_sortMostItems">Sort: Most Items</string>
     <string name="action_sortPriority">Sort: Priority</string>
     <string name="action_sortDate">Sort: Date</string>
+
+    <!--- DeleteListItemDialog  -->
+    <string name="message">Are you sure you want to delete selected Items?</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
 </resources>

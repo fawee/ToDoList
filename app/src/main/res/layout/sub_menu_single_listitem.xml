@@ -41,7 +41,7 @@
 
     <TextView
         android:id="@+id/listItem_note"
-        android:textColor="@color/white"
+        android:textColor="@color/grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/listItem_date"

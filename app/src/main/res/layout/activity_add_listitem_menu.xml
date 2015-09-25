@@ -23,6 +23,7 @@
         android:id="@+id/addListItemMenuTitle"
         android:inputType="text"
         android:hint="@string/addListItemActivityTitle_hint"
+        android:maxLength="18"
         android:textColorHint="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

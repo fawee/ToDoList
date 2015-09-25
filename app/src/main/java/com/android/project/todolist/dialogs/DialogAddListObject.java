@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -55,7 +56,7 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
     }
 
     private void setupDialog(String listTitle, String listColour) {
-        builder = new AlertDialog.Builder(getActivity());
+        builder = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.dialog_add_list, null);
 

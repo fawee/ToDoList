@@ -15,11 +15,15 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.project.todolist.R;
 import com.android.project.todolist.adapter.ListItemAdapter;
+import com.android.project.todolist.communicator.DeleteNotifier;
+import com.android.project.todolist.communicator.ReminderNotifier;
 import com.android.project.todolist.comparators.ListItemCompAlphabet;
 import com.android.project.todolist.comparators.ListItemCompPriority;
+import com.android.project.todolist.dialogs.DeleteListItemDialog;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.persistence.ListRepository;
 import com.android.project.todolist.reminder.ReminderService;
@@ -29,15 +33,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
-public class ListItemActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class ListItemActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, View.OnClickListener, DeleteNotifier, ReminderNotifier {
 
     private ListView listView;
     private ListItemAdapter listItemAdapter;
     private ArrayList<ListItem> listItems;
     private ListRepository db;
+
+    //received Intent Values
+    private Bundle extras;
     private int listID;
     private String listTitle, listColor;
+    private boolean notificationIntent;
+
     private ImageButton deleteListItemButton;
+    private AdapterView.AdapterContextMenuInfo info;
 
     //Für den Reminder
     private AlarmManager alarmManager;
@@ -46,6 +56,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
 
 
     private static final int REQUEST_CODE_ADD_LISTITEM = 1;
+    private int deleteOption = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +68,11 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     }
 
     private void readIntents() {
-        Bundle extras = getIntent().getExtras();
+        extras = getIntent().getExtras();
         listID = extras.getInt("ListID");
         listTitle = extras.getString("ListTitle");
         listColor = extras.getString("ListColor");
+        notificationIntent = extras.getBoolean("fromNotification");
         Tools.currentListColor = Tools.getColor(listColor);
     }
 
@@ -73,6 +85,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         listItems = new ArrayList<ListItem>();
         listItems = db.getItemsOfList(listID);
     }
+
 
     private void initUI() {
         setContentView(R.layout.activity_sub_menu);
@@ -89,13 +102,28 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         listItemAdapter = new ListItemAdapter(this, listItems);
         listView.setAdapter(listItemAdapter);
         registerForContextMenu(listView);
+        //Überprüft ob der Intent von der Notification ausgelöst wurde, wenn ja wird die ListItem-Eigenschaft "reminder" geupdatet
+        if (notificationIntent) {
+            updateListItem();
+        }
+    }
+
+    private void updateListItem() {
+        int listItemID = extras.getInt("ID");
+        for (int i = 0; i < listItems.size(); i++) {
+            if (listItems.get(i).getListItemID() == listItemID) {
+                listItems.get(i).setReminder(false);
+                listItems.set(i, listItems.get(i));
+            }
+        }
+        listItemAdapter.notifyDataSetChanged();
+
     }
 
     private void setDeleteButtonVisibility() {
-        if (db.getNumOfListItems(listID, true) > 0){
+        if (db.getNumOfListItems(listID, true) > 0) {
             deleteListItemButton.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             deleteListItemButton.setVisibility(View.INVISIBLE);
         }
     }
@@ -109,7 +137,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
 
             case R.id.listItem_FloatingMenu_Edit:
@@ -117,7 +145,8 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                 return true;
 
             case R.id.listItem_FloatingMenu_delete:
-                deleteItem(info);
+                deleteOption = 1;
+                deleteListItem();
             /*case R.id.listItem_FloatingMenu_IsDone:
                 listItems.get(info.position).setIsDone(true);
                 //ToDo DB speichern
@@ -127,12 +156,6 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         }
     }
 
-    private void deleteItem(AdapterView.AdapterContextMenuInfo info) {
-        db.removeListItem(listItems.get(info.position));
-        listItems.remove(info.position);
-        listItemAdapter.notifyDataSetChanged();
-        setDeleteButtonVisibility();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -251,7 +274,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                 //Einstellungen für den Reminder
 
                 reminderIntent = new Intent(this, ReminderService.class);
-                if(reminder) {
+                if (reminder) {
 
                     alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     Calendar alarm = Calendar.getInstance();
@@ -260,13 +283,17 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                     reminderIntent.putExtra("title", listItem.getTitle());
                     reminderIntent.putExtra("alarmID", listItem.getListItemID());
                     reminderIntent.putExtra("note", listItem.getNote());
+                    //Infos für Notification-Klick
+                    reminderIntent.putExtra("ListID", listID);
+                    reminderIntent.putExtra("ListTitle", listTitle);
+                    reminderIntent.putExtra("ListColor", listColor);
 
                     alarmIntent = PendingIntent.getService(this, listItem.getListItemID(), reminderIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getTimeInMillis(), alarmIntent);
                     //TODO: Noch im listItem reminder Datum darstellen? Oder Toast.
                 } else {
 
-                    if(alarmManager != null) {
+                    if (alarmManager != null) {
                         cancelReminder(listItem.getListItemID(), reminderIntent);
                     }
                 }
@@ -283,7 +310,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
 
     private void setReminderDate(Intent data, Calendar alarm) {
         alarm.set(Calendar.YEAR, data.getExtras().getInt("year"));
-        alarm.set(Calendar.MONTH, data.getExtras().getInt("month")-1);
+        alarm.set(Calendar.MONTH, data.getExtras().getInt("month") - 1);
         alarm.set(Calendar.DAY_OF_MONTH, data.getExtras().getInt("day"));
         alarm.set(Calendar.HOUR_OF_DAY, data.getExtras().getInt("hour"));
         alarm.set(Calendar.MINUTE, data.getExtras().getInt("minute"));
@@ -316,26 +343,62 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.delete_listItems:
+                deleteOption = 0;
                 deleteListItem();
                 break;
         }
     }
 
-    //Delete all ListItems which marked with the flag "isDone"
+    //Öffnet Delete Dialog
     private void deleteListItem() {
-        //ToDo: Dialog um vom User nochmal die Bestätigung zu bekommen.
-        int itemCount = listItems.size();
-        for (int i = 0; i < itemCount; i++) {
-            if (listItems.get(i).getIsDone()) {
-                db.removeListItem(listItems.get(i));
-                //listItemAdapter.remove(listItems.get(i));
-            }
-        }
-        //checkedItemPositions.clear();
-        initArrayList();
-        initUI();
-        //listItemAdapter.notifyDataSetChanged();
-        //Todo: Hier noch ne Toast Message um User mitzuteilen wie viele gelöscht wurde.
+        DeleteListItemDialog dialog = new DeleteListItemDialog();
+        dialog.show(getFragmentManager(), "DeleteListItemDialog");
+    }
 
+
+    //Delete all ListItems which marked with the flag "isDone"
+    @Override
+    public void onListItemsDeleted() {
+        int numOfDeletedItems = 0;
+        String message = " Item";
+        if (deleteOption == 0) {
+
+            int itemCount = listItems.size();
+            for (int i = 0; i < itemCount; i++) {
+                if (listItems.get(i).getIsDone()) {
+                    numOfDeletedItems++;
+                    if (alarmManager != null) {
+                        cancelReminder(listItems.get(i).getListItemID(), reminderIntent);
+                    }
+                    db.removeListItem(listItems.get(i));
+                    //listItemAdapter.remove(listItems.get(i));
+                }
+            }
+            //checkedItemPositions.clear();
+            initArrayList();
+            initUI();
+            //listItemAdapter.notifyDataSetChanged();
+        } else {
+            numOfDeletedItems = 1;
+
+            if (alarmManager != null) {
+                cancelReminder(listItems.get(info.position).getListItemID(), reminderIntent);
+            }
+
+            db.removeListItem(listItems.get(info.position));
+            listItems.remove(info.position);
+            listItemAdapter.notifyDataSetChanged();
+            setDeleteButtonVisibility();
+        }
+
+        if (numOfDeletedItems > 1) {
+            message += "s";
+        }
+        Toast.makeText(getApplicationContext(), "Deleted " + numOfDeletedItems + message, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onAlarmGoesOff(int listItemId) {
     }
 }

@@ -17,6 +17,8 @@
     <EditText
         android:id="@+id/dialog_addList_title"
         android:layout_width="match_parent"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:hint="@string/dialog_hint_title_listobject"
         android:maxLength="10"
@@ -25,6 +27,8 @@
 
     <Spinner
         android:id="@+id/dialog_addList_spinner"
+        android:background="@color/dark_background"
+        android:popupBackground="@color/dark_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

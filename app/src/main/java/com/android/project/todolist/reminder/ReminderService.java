@@ -11,16 +11,13 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.android.project.todolist.R;
+import com.android.project.todolist.activities.ListActivity;
 import com.android.project.todolist.activities.ListItemActivity;
 import com.android.project.todolist.communicator.ReminderNotifier;
 import com.android.project.todolist.log.Log;
 
-/**
- * Created by fabian on 18.09.15.
- */
-public class ReminderService extends Service {
 
-    private ReminderNotifier reminderNotifier;
+public class ReminderService extends Service {
 
 
     @Override
@@ -28,24 +25,37 @@ public class ReminderService extends Service {
         return null;
     }
 
+
     @Override
     public void onCreate() {
 
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         int alarmID = intent.getExtras().getInt("alarmID");
-        String title = intent.getExtras().getString("title");
+        String listItemTitle = intent.getExtras().getString("title");
+        String listTitle = intent.getExtras().getString("ListTitle");
         String note = intent.getExtras().getString("note");
+
+        Intent resultIntent = new Intent(this, ListItemActivity.class);
+        resultIntent.putExtra("ListID", intent.getExtras().getInt("ListID"));
+        resultIntent.putExtra("ListTitle", listTitle);
+        resultIntent.putExtra("ListColor", intent.getExtras().getString("ListColor"));
+        resultIntent.putExtra("fromNotification", true);
+        resultIntent.putExtra("ID", alarmID);
+
+        PendingIntent openListItemActivity = PendingIntent.getActivity(this, alarmID, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_list_item_alarm_white)
-                        .setContentTitle(title)
-                        .setTicker("Reminder")
-                        .setContentText(note);
+                        .setContentTitle(listTitle)
+                        .setTicker("Don't forget!")
+                        .setContentIntent(openListItemActivity)
+                        .setContentText(listItemTitle + ":   " + note);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder.setSound(alarmSound);
 
@@ -54,6 +64,7 @@ public class ReminderService extends Service {
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         mNotifyMgr.notify(alarmID, mBuilder.build());
+
         return super.onStartCommand(intent, flags, startId);
     }
 }

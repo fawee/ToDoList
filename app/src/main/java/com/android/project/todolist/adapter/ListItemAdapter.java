@@ -61,19 +61,28 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         title.setClickable(false);
         title.setChecked(currentListItem.getIsDone());
 
-        TextView date = (TextView) view.findViewById(R.id.listItem_date);
-        date.setText(currentListItem.getFormatedDueDate());
-        date.setTypeface(font);
-        date.setTextColor(context.getResources().getColor(Tools.currentListColor));
+        boolean dateIsEmpty = currentListItem.getFormatedDueDate().equals("");
+        boolean noteIsEmpty = currentListItem.getNote().equals("");
 
+        TextView date = (TextView) view.findViewById(R.id.listItem_date);
         TextView note = (TextView) view.findViewById(R.id.listItem_note);
-        note.setTypeface(font);
-        String userNote = currentListItem.getNote();
-        if(userNote.length() > 15) {
-            note.setText("| " + userNote.substring(0, 15) + "...");
+
+        if(dateIsEmpty) {
+            if(!noteIsEmpty) {
+                setNote(date, font, currentListItem);
+                date.setTextColor(context.getResources().getColor(R.color.grey));
+            }
         } else {
-            note.setText(userNote);
+            date.setText(currentListItem.getFormatedDueDate());
+            date.setTypeface(font);
+            date.setTextColor(context.getResources().getColor(Tools.currentListColor));
+            if(!noteIsEmpty) {
+                setNote(note, font, currentListItem);
+            }
         }
+
+
+
 
         TextView priority = (TextView) view.findViewById(R.id.listItem_priority);
         priority.setText(currentListItem.getPriority()+ "");
@@ -82,11 +91,22 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         ImageView reminder = (ImageView) view.findViewById(R.id.listItem_reminder);
         if(currentListItem.getReminder()) {
             reminder.setImageResource(R.drawable.ic_list_item_alarm_white);
+            reminder.setColorFilter(context.getResources().getColor(Tools.currentListColor));
         } else {
             reminder.setImageResource(0);
         }
 
         return view;
+    }
+
+    private void setNote(TextView textView, Typeface font, ListItem currentListItem) {
+        textView.setTypeface(font);
+        String userNote = currentListItem.getNote();
+        if(userNote.length() > 15) {
+            textView.setText("" + userNote.substring(0, 15) + "...");
+        } else {
+            textView.setText(userNote);
+        }
     }
 
     @Override
