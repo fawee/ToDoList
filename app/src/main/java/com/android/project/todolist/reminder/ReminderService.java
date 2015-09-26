@@ -6,15 +6,15 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.android.project.todolist.R;
-import com.android.project.todolist.activities.ListActivity;
 import com.android.project.todolist.activities.ListItemActivity;
-import com.android.project.todolist.communicator.ReminderNotifier;
-import com.android.project.todolist.log.Log;
+
+/**
+ * This class will show a notification after an alarm goes off.
+ */
 
 
 public class ReminderService extends Service {
@@ -48,6 +48,7 @@ public class ReminderService extends Service {
         resultIntent.putExtra("ID", alarmID);
 
         PendingIntent openListItemActivity = PendingIntent.getActivity(this, alarmID, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)

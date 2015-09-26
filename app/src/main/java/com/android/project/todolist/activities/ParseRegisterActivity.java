@@ -3,9 +3,7 @@ package com.android.project.todolist.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
@@ -138,7 +136,7 @@ public class ParseRegisterActivity extends ActionBarActivity implements LoaderCa
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.parse_error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -147,10 +145,6 @@ public class ParseRegisterActivity extends ActionBarActivity implements LoaderCa
         // Check for a valid user address.
         if (TextUtils.isEmpty(user)) {
             mEmailView.setError(getString(R.string.parse_error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(user)) {
-            mEmailView.setError(getString(R.string.parse_error_invalid_email));
             focusView = mEmailView;
             cancel = true;
         }

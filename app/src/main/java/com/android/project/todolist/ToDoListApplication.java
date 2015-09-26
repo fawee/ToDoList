@@ -2,12 +2,9 @@ package com.android.project.todolist;
 
 import android.app.Application;
 
-import com.android.project.todolist.log.Log;
 import com.parse.Parse;
 
-/**
- * Created by Patrick on 25.09.2015.
- */
+
 public class ToDoListApplication extends Application {
 
     @Override public void onCreate() {

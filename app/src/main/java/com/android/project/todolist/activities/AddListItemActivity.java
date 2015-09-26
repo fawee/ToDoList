@@ -1,20 +1,11 @@
 package com.android.project.todolist.activities;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.DialogFragment;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,15 +24,12 @@ import com.android.project.todolist.communicator.Communicator;
 import com.android.project.todolist.dialogs.DatePickerFragment;
 import com.android.project.todolist.dialogs.TimePickerFragment;
 import com.android.project.todolist.domain.ListItem;
-import com.android.project.todolist.log.Log;
-import com.android.project.todolist.reminder.ReminderService;
 import com.android.project.todolist.tools.Tools;
-
-import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+
+/**
+ * This class represents the Activity where you can customize your Item.
+ */
 
 public class AddListItemActivity extends Activity implements Communicator, View.OnClickListener {
 
@@ -52,8 +40,6 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     private String listColor;
     private Spinner prioritySpinner;
     private ToggleButton reminder;
-    private PendingIntent alarmIntent;
-    private AlarmManager alarmManager;
     private Calendar currentTime, alarm;
     private Intent i;
     private int year, month, day, hour, minute;
@@ -195,10 +181,11 @@ public class AddListItemActivity extends Activity implements Communicator, View.
     }
 
     private void initPrioritySpinner() {
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.addListItemMenu_Priority_Spinner, android.R.layout.simple_spinner_item);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.addListItemMenu_Priority_Spinner, R.layout.spinner_add_listitem_activity);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         prioritySpinner.setAdapter(adapter);
         prioritySpinner.setSelection(listItemToEdit.getPriority() - 1);
+
     }
 
     private void initReminder() {

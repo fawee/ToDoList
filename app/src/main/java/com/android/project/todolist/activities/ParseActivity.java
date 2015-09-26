@@ -72,7 +72,6 @@ public class ParseActivity extends ActionBarActivity{
         etPasswordView.setTypeface(editTextFont);
 
         tvLoggedInUser = (TextView) findViewById(R.id.parse_tv_LoggedInUser);
-        tvOr = (TextView) findViewById(R.id.parse_tv_or);
 
         btnLogInButton = (Button) findViewById(R.id.login_button);
         btnRegisterButton = (Button) findViewById(R.id.open_register_activity_button);
@@ -187,7 +186,6 @@ public class ParseActivity extends ActionBarActivity{
             tvLoggedInUser.setVisibility(View.VISIBLE);
             etUserView.setVisibility(View.GONE);
             etPasswordView.setVisibility(View.GONE);
-            tvOr.setVisibility(View.INVISIBLE);
             btnRegisterButton.setVisibility(View.INVISIBLE);
             btnCloudUpButton.setVisibility(View.VISIBLE);
             btnCloudDownButton.setVisibility(View.VISIBLE);
@@ -202,7 +200,6 @@ public class ParseActivity extends ActionBarActivity{
             tvLoggedInUser.setVisibility(View.GONE);
             etUserView.setVisibility(View.VISIBLE);
             etPasswordView.setVisibility(View.VISIBLE);
-            tvOr.setVisibility(View.VISIBLE);
             btnRegisterButton.setVisibility(View.VISIBLE);
             btnCloudUpButton.setVisibility(View.INVISIBLE);
             btnCloudDownButton.setVisibility(View.INVISIBLE);

@@ -2,7 +2,6 @@ package com.android.project.todolist.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,7 @@ import com.android.project.todolist.tools.Tools;
 
 import java.util.ArrayList;
 
-/**
- * Created by fabian on 27.08.15.
- */
+
 public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
     private Context context;

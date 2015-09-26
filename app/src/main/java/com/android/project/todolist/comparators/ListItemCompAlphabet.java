@@ -5,8 +5,9 @@ import com.android.project.todolist.domain.ListItem;
 import java.util.Comparator;
 
 /**
- * Created by fabian on 15.09.15.
+ * This class is used to sort the Items alphabetically.
  */
+
 public class ListItemCompAlphabet implements Comparator<ListItem> {
     @Override
     public int compare(ListItem listItem1  , ListItem listItem2) {

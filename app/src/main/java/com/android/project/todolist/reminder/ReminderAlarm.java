@@ -8,6 +8,10 @@ import android.content.Intent;
 
 import java.util.Calendar;
 
+/**
+ * This class can be used to create a Alarm.
+ */
+
 public class ReminderAlarm {
 
     private Context context;

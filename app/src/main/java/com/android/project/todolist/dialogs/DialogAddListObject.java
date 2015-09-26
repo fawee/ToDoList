@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +23,11 @@ import com.android.project.todolist.tools.Tools;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents a Dialog, where you can create a new List.
+ * It allows you to give your List a name and you can choose a certain color
+ * for your List from the Spinner.
+ */
 
 public class DialogAddListObject extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
@@ -106,6 +110,8 @@ public class DialogAddListObject extends DialogFragment implements AdapterView.O
         spinnerItems.add(new SpinnerItem("Lime", "lime", R.color.lime));
         spinnerItems.add(new SpinnerItem("Teal", "teal", R.color.teal));
         spinnerItems.add(new SpinnerItem("Indigo", "indigo", R.color.indigo));
+        spinnerItems.add(new SpinnerItem("Pink", "pink", R.color.pink));
+        spinnerItems.add(new SpinnerItem("Orange", "orange", R.color.orange));
     }
 
     private void handleClicks(String positivTitle, final int listID) {

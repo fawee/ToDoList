@@ -10,9 +10,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-/**
- * Created by Patrick on 01.09.2015.
- */
+
 public class ParseBackUp {
 
     private Context context;

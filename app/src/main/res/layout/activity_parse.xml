@@ -23,6 +23,7 @@
             <TextView
                 android:id="@+id/parse_tv_LoggedInUser"
                 android:layout_width="match_parent"
+                android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/parse_loggedin_user" />
@@ -76,13 +77,6 @@
             android:text="@string/parse_action_login"
             android:textColor="@color/white"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/parse_tv_or"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="or" />
 
         <Button
             android:id="@+id/open_register_activity_button"

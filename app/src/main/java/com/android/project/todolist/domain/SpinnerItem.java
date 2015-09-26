@@ -1,8 +1,11 @@
 package com.android.project.todolist.domain;
 
+
 /**
- * Created by fabian on 02.09.15.
+ * This class is used in the "DialogAddListObject" and represents a custom Spinner
+ * where you can choose a color for your list.
  */
+
 public class SpinnerItem {
 
     private String colorName;

@@ -3,6 +3,10 @@ package com.android.project.todolist.tools;
 import android.view.View;
 import com.android.project.todolist.R;
 
+/**
+ * This class is just used for getting the correct color in different activities.
+ */
+
 public class Tools {
 
 
@@ -37,6 +41,12 @@ public class Tools {
             case "indigo":
                 view.setBackgroundResource(R.color.indigo);
                 break;
+            case "pink":
+                view.setBackgroundResource(R.color.pink);
+                break;
+            case "orange":
+                view.setBackgroundResource(R.color.orange);
+                break;
             default:
                 view.setBackgroundResource(R.color.actionbar_color);
         }
@@ -62,6 +72,10 @@ public class Tools {
                 return R.color.teal;
             case "indigo":
                 return R.color.indigo;
+            case "pink":
+                return R.color.pink;
+            case "orange":
+                return R.color.orange;
             default:
                 return R.color.actionbar_color;
         }

@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.reminder.ReminderAlarm;
-import com.android.project.todolist.log.Log;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -21,6 +20,9 @@ import java.io.IOException;
 import java.lang.String;
 import java.util.ArrayList;
 
+/**
+ * This class is used for setting up the Database Connection.
+ */
 
 public class ListRepository  {
     private static final String DATABASE_NAME = "todolist.db";

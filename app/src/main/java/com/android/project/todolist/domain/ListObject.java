@@ -1,10 +1,10 @@
 package com.android.project.todolist.domain;
 
-import java.util.Comparator;
 
 /**
- * Created by fabian on 24.08.15.
+ * This class represents a List on the Home-Activity.
  */
+
 public class ListObject {
 
     private int listID;

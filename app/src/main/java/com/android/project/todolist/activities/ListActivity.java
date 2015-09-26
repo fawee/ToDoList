@@ -21,15 +21,14 @@ import com.android.project.todolist.dialogs.DialogAddListObject;
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.adapter.ListObjectAdapter;
 import com.android.project.todolist.R;
-import com.android.project.todolist.log.Log;
 import com.android.project.todolist.persistence.ListRepository;
-import com.parse.Parse;
-import com.parse.ParseObject;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * This class represents the Home-Activity, where all the created Lists are displayed.
+ */
 
 public class ListActivity extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener {
 

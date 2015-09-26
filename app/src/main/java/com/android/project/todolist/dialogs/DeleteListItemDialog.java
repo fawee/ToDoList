@@ -10,6 +10,9 @@ import android.os.Bundle;
 import com.android.project.todolist.R;
 import com.android.project.todolist.communicator.DeleteNotifier;
 
+/**
+ * This class represents a Dialog, which asks, if you really want to delete the Items.
+ */
 
 public class DeleteListItemDialog extends DialogFragment {
 

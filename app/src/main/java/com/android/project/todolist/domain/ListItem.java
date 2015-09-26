@@ -6,10 +6,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This class represents an Item in a List.
+ */
+
 public class ListItem implements Comparable<ListItem> {
 
     private static final String DATE_FORMAT = "dd.MM.yyyy";
-    private static final String TIME_FORMAT = "hh:mm";
 
     private int listItemID;
     private String title;

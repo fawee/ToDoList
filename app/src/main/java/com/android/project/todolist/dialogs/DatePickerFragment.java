@@ -12,6 +12,9 @@ import com.android.project.todolist.communicator.Communicator;
 
 import java.util.Calendar;
 
+/**
+ * This class represents a Dialog, where you can pick a Date.
+ */
 
 public class DatePickerFragment extends DialogFragment implements
         DatePickerDialog.OnDateSetListener {

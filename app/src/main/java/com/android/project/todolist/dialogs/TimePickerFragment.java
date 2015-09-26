@@ -14,8 +14,9 @@ import com.android.project.todolist.communicator.Communicator;
 import java.util.Calendar;
 
 /**
- * Created by fabian on 06.09.15.
+ * This class represents a Dialog, where you can pick the Time.
  */
+
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 

@@ -16,9 +16,7 @@ import com.android.project.todolist.tools.Tools;
 
 import java.util.ArrayList;
 
-/**
- * Created by fabian on 24.08.15.
- */
+
 public class ListObjectAdapter extends ArrayAdapter<ListObject> {
 
     private Context context;

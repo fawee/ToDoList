@@ -12,9 +12,7 @@ import com.android.project.todolist.domain.SpinnerItem;
 
 import java.util.ArrayList;
 
-/**
- * Created by fabian on 02.09.15.
- */
+
 public class SpinnerAdapter extends ArrayAdapter<SpinnerItem> {
     private Context context;
     private int spinnerLayout;

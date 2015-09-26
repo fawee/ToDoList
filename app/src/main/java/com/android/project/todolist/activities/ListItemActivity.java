@@ -1,8 +1,5 @@
 package com.android.project.todolist.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -20,21 +17,23 @@ import android.widget.Toast;
 import com.android.project.todolist.R;
 import com.android.project.todolist.adapter.ListItemAdapter;
 import com.android.project.todolist.communicator.DeleteNotifier;
-import com.android.project.todolist.communicator.ReminderNotifier;
 import com.android.project.todolist.comparators.ListItemCompAlphabet;
 import com.android.project.todolist.comparators.ListItemCompPriority;
 import com.android.project.todolist.dialogs.DeleteListItemDialog;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.persistence.ListRepository;
 import com.android.project.todolist.reminder.ReminderAlarm;
-import com.android.project.todolist.reminder.ReminderService;
 import com.android.project.todolist.tools.Tools;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 
-public class ListItemActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, View.OnClickListener, DeleteNotifier, ReminderNotifier {
+/**
+ * This class represents the content of one List.
+ * It displays the Items of a certain List.
+ */
+
+public class ListItemActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, View.OnClickListener, DeleteNotifier {
 
     private ListView listView;
     private ListItemAdapter listItemAdapter;
@@ -92,6 +91,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         TextView tvListTitle = (TextView) findViewById(R.id.tvSubMenuNameListObject);
         tvListTitle.setText(listTitle);
+        tvListTitle.setOnClickListener(this);
         Tools.setColor(listColor, tvListTitle);
         deleteListItemButton = (ImageButton) findViewById(R.id.delete_listItems);
         deleteListItemButton.setOnClickListener(this);
@@ -328,7 +328,15 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                 deleteOption = 0;
                 deleteListItem();
                 break;
+
+            case R.id.tvSubMenuNameListObject:
+                showListInfo();
         }
+    }
+
+    private void showListInfo() {
+
+        Toast.makeText(getApplicationContext(), "You have " + listItems.size() + " Items in this List.", Toast.LENGTH_LONG).show();
     }
 
     //Öffnet Delete Dialog
@@ -380,7 +388,5 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
 
     }
 
-    @Override
-    public void onAlarmGoesOff(int listItemId) {
-    }
+
 }

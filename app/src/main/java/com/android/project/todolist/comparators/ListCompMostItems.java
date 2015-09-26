@@ -5,8 +5,10 @@ import com.android.project.todolist.domain.ListObject;
 import java.util.Comparator;
 
 /**
- * Created by fabian on 15.09.15.
+ * This class is used to sort the Lists according to the number of undone Items.
  */
+
+
 public class ListCompMostItems implements Comparator<ListObject> {
     @Override
     public int compare(ListObject list1, ListObject list2) {
