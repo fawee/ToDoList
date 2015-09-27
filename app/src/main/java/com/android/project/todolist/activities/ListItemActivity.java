@@ -206,7 +206,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     }
 
     private void addListItem() {
-        Intent i = new Intent(this, AddListItemActivity.class);
+        Intent i = new Intent(this, ListItemDetailActivity.class);
         i.putExtra("listItemID", 0);
         i.putExtra("listItemTitle", "");
         i.putExtra("listItemDueDate", "");
@@ -220,7 +220,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     }
 
     private void editListItem(int itemPosition) {
-        Intent i = new Intent(this, AddListItemActivity.class);
+        Intent i = new Intent(this, ListItemDetailActivity.class);
         i.putExtra("listItemID", listItems.get(itemPosition).getListItemID());
         i.putExtra("listItemTitle", listItems.get(itemPosition).getTitle());
         i.putExtra("listItemDueDate", listItems.get(itemPosition).getDueDate());

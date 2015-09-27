@@ -11,15 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.android.project.todolist.activities.ParseRegisterActivity">
 
-    <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/parse_register_form"
         android:layout_width="wrap_content"
@@ -30,13 +21,13 @@
         android:orientation="vertical"
         android:padding="2dp">
 
-        <AutoCompleteTextView
+        <EditText
             android:id="@+id/user_register"
             android:layout_width="250dp"
             android:layout_height="40dp"
             android:background="@color/white"
             android:hint="@string/parse_prompt_user"
-            android:inputType="textEmailAddress"
+            android:inputType="textPersonName"
             android:maxLines="1"
             android:singleLine="true"
             android:textColorHint="@color/grey"

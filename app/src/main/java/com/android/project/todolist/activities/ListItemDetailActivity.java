@@ -31,7 +31,7 @@ import java.util.Calendar;
  * This class represents the Activity where you can customize your Item.
  */
 
-public class AddListItemActivity extends Activity implements Communicator, View.OnClickListener {
+public class ListItemDetailActivity extends Activity implements Communicator, View.OnClickListener {
 
     private ListItem listItemToEdit;
     private EditText title, dueDate, note, reminderDay, reminderTime;

@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.project.todolist.R;
 import com.android.project.todolist.log.Log;
@@ -40,6 +42,10 @@ public class ParseActivity extends ActionBarActivity{
     private Button btnRegisterButton;
     private Button btnCloudUpButton;
     private Button btnCloudDownButton;
+
+    private LinearLayout llLoggedInForm;
+    private LinearLayout llLogInForm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,9 @@ public class ParseActivity extends ActionBarActivity{
         btnRegisterButton = (Button) findViewById(R.id.open_register_activity_button);
         btnCloudUpButton = (Button) findViewById(R.id.cloud_up_button);
         btnCloudDownButton = (Button) findViewById(R.id.cloud_down_button);
+
+        llLoggedInForm = (LinearLayout) findViewById(R.id.parse_loggedin_form);
+        llLogInForm = (LinearLayout) findViewById(R.id.parse_login_form);
         initEvents();
         switchLook();
     }
@@ -134,7 +143,7 @@ public class ParseActivity extends ActionBarActivity{
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a user and passwort
+        // Check for a user and password
         if (TextUtils.isEmpty(password)) {
             etPasswordView.setError(getString(R.string.parse_error_field_required));
             focusView = etPasswordView;
@@ -162,11 +171,11 @@ public class ParseActivity extends ActionBarActivity{
                     currentUser = ParseUser.getCurrentUser();
                     Log.d("Loged In");
                     switchLook();
+                    Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_LONG).show();
                     // Hooray! The user is logged in.
                 } else {
                     Log.d(String.valueOf(e));
-                    //todo: toast, dass login fehlgeschlagen hat
-                    // Signup failed. Look at the ParseException to see what happened.
+                    Toast.makeText(getApplicationContext(), "Login not possible. Check your username, password and internet connection.", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -177,15 +186,18 @@ public class ParseActivity extends ActionBarActivity{
         loggedIn = false;
         currentUser = ParseUser.getCurrentUser();
         switchLook();
+        Toast.makeText(getApplicationContext(), "Logout successful.", Toast.LENGTH_LONG).show();
     }
 
     private void switchLook() {
         if (loggedIn){
 
             // Set Visibility
-            tvLoggedInUser.setVisibility(View.VISIBLE);
-            etUserView.setVisibility(View.GONE);
-            etPasswordView.setVisibility(View.GONE);
+            //tvLoggedInUser.setVisibility(View.VISIBLE);
+            llLoggedInForm.setVisibility(View.VISIBLE);
+            //etUserView.setVisibility(View.GONE);
+            //etPasswordView.setVisibility(View.GONE);
+            llLogInForm.setVisibility(View.GONE);
             btnRegisterButton.setVisibility(View.INVISIBLE);
             btnCloudUpButton.setVisibility(View.VISIBLE);
             btnCloudDownButton.setVisibility(View.VISIBLE);
@@ -197,9 +209,11 @@ public class ParseActivity extends ActionBarActivity{
         }
         else {
             // Set Visibility
-            tvLoggedInUser.setVisibility(View.GONE);
-            etUserView.setVisibility(View.VISIBLE);
-            etPasswordView.setVisibility(View.VISIBLE);
+            //tvLoggedInUser.setVisibility(View.GONE);
+            llLoggedInForm.setVisibility(View.GONE);
+            //etUserView.setVisibility(View.VISIBLE);
+            //etPasswordView.setVisibility(View.VISIBLE);
+            llLogInForm.setVisibility(View.VISIBLE);
             btnRegisterButton.setVisibility(View.VISIBLE);
             btnCloudUpButton.setVisibility(View.INVISIBLE);
             btnCloudDownButton.setVisibility(View.INVISIBLE);

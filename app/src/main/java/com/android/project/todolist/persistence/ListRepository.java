@@ -242,25 +242,12 @@ public class ListRepository  {
         return data;
     }
 
-    public void setDBByteArray(byte[] data){
+    public void setDBByteArray(byte[] data) throws IOException {
 
         FileOutputStream backUp = null;
-        try {
             backUp = new FileOutputStream(dbPath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
             backUp.write(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
             backUp.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return;
     }
 
     private class ToDoDBOpenHelper extends SQLiteOpenHelper {

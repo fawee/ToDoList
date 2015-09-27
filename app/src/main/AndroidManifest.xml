@@ -30,7 +30,7 @@
             android:parentActivityName=".activities.ListActivity" >
         </activity>
         <activity
-            android:name=".activities.AddListItemActivity"
+            android:name=".activities.ListItemDetailActivity"
             android:parentActivityName=".activities.ListItemActivity" >
         </activity>
 
