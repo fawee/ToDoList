@@ -1,6 +1,9 @@
 package com.android.project.todolist.tools;
 
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
 import com.android.project.todolist.R;
 
 /**
@@ -8,8 +11,6 @@ import com.android.project.todolist.R;
  */
 
 public class Tools {
-
-
     public static int currentListColor = 0;
 
     public static void setColor(String color, View view) {
@@ -79,5 +80,15 @@ public class Tools {
             default:
                 return R.color.actionbar_color;
         }
+    }
+
+    //hides the Keyboard in the handed activity
+    public static void hideKeyboard(ActionBarActivity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(ActionBarActivity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if(view == null) {
+            view = new View(activity);
+        }
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

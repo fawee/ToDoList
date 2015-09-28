@@ -66,9 +66,7 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@color/white"
                 android:hint="@string/parse_prompt_password"
-                android:imeActionId="@+id/login"
                 android:imeActionLabel="@string/parse_action_login_short"
-                android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -107,18 +105,16 @@
         <Button
             android:id="@+id/open_info"
             style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
+            android:layout_width="254dp"
             android:layout_marginTop="70dp"
             android:layout_height="25dp"
-            android:layout_marginRight="227dp"
-            android:background="@null"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/button_blue"
             android:text="@string/parse_action_info"
-            android:textColor="@color/grey"
+            android:textColor="@color/white"
             android:textStyle="bold" />
 
-
         <Button
-
             android:id="@+id/cloud_up_button"
             style="?android:textAppearanceSmall"
             android:layout_width="254dp"
@@ -126,7 +122,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:background="@color/button_blue"
-            android:clickable="false"
             android:drawableStart="@drawable/ic_cloud_upload"
             android:text="@string/parse_action_cloud_up"
             android:textColor="@color/white"
@@ -140,7 +135,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:background="@color/button_blue"
-            android:clickable="false"
             android:drawableStart="@drawable/ic_cloud_download"
             android:text="@string/parse_action_cloud_down"
             android:textColor="@color/white"

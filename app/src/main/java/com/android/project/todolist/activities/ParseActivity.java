@@ -1,5 +1,9 @@
 package com.android.project.todolist.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 
@@ -8,6 +12,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -20,6 +26,8 @@ import com.android.project.todolist.persistence.ParseBackUp;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import static com.android.project.todolist.tools.Tools.hideKeyboard;
 
 /**
  * A login screen that offers login via email/password.
@@ -39,6 +47,7 @@ public class ParseActivity extends ActionBarActivity{
 
     private Button btnLogInButton;
     private Button btnRegisterButton;
+    private Button btnInfoButton;
     private Button btnCloudUpButton;
     private Button btnCloudDownButton;
 
@@ -80,6 +89,7 @@ public class ParseActivity extends ActionBarActivity{
 
         btnLogInButton = (Button) findViewById(R.id.login_button);
         btnRegisterButton = (Button) findViewById(R.id.open_register_activity_button);
+        btnInfoButton = (Button) findViewById(R.id.open_info);
         btnCloudUpButton = (Button) findViewById(R.id.cloud_up_button);
         btnCloudDownButton = (Button) findViewById(R.id.cloud_down_button);
 
@@ -107,6 +117,13 @@ public class ParseActivity extends ActionBarActivity{
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), ParseRegisterActivity.class);
                 startActivity(i);
+            }
+        });
+
+        btnInfoButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showHowToDialog();
             }
         });
 
@@ -168,10 +185,8 @@ public class ParseActivity extends ActionBarActivity{
                 if (user != null) {
                     loggedIn = true;
                     currentUser = ParseUser.getCurrentUser();
-                    Log.d("Loged In");
                     switchLook();
                     Toast.makeText(getApplicationContext(), getString(R.string.toast_login_successful), Toast.LENGTH_LONG).show();
-                    // Hooray! The user is logged in.
                 } else {
                     Log.d(String.valueOf(e));
                     Toast.makeText(getApplicationContext(), getString(R.string.toast_login_fail), Toast.LENGTH_LONG).show();
@@ -190,36 +205,53 @@ public class ParseActivity extends ActionBarActivity{
 
     private void switchLook() {
         if (loggedIn){
-
-            // Set Visibility
-            //tvLoggedInUser.setVisibility(View.VISIBLE);
-            llLoggedInForm.setVisibility(View.VISIBLE);
-            //etUserView.setVisibility(View.GONE);
-            //etPasswordView.setVisibility(View.GONE);
-            llLogInForm.setVisibility(View.GONE);
-            btnRegisterButton.setVisibility(View.INVISIBLE);
-            btnCloudUpButton.setVisibility(View.VISIBLE);
-            btnCloudDownButton.setVisibility(View.VISIBLE);
+            hideKeyboard(this);
             //Set label
             btnLogInButton.setText(R.string.parse_action_logout);
             String loggedInUser = getResources().getString(R.string.parse_loggedin_user);
             loggedInUser = loggedInUser.replace("[user]", currentUser.getUsername());
             tvLoggedInUser.setText(loggedInUser);
+            // Set Visibility
+            tvLoggedInUser.setVisibility(View.VISIBLE);
+            llLoggedInForm.setVisibility(View.VISIBLE);
+            //etUserView.setVisibility(View.GONE);
+            //etPasswordView.setVisibility(View.GONE);
+            llLogInForm.setVisibility(View.GONE);
+            btnRegisterButton.setVisibility(View.INVISIBLE);
+            btnInfoButton.setVisibility(View.VISIBLE);
+            btnCloudUpButton.setVisibility(View.VISIBLE);
+            btnCloudDownButton.setVisibility(View.VISIBLE);
         }
         else {
             // Set Visibility
-            //tvLoggedInUser.setVisibility(View.GONE);
+            tvLoggedInUser.setVisibility(View.GONE);
             llLoggedInForm.setVisibility(View.GONE);
             //etUserView.setVisibility(View.VISIBLE);
             //etPasswordView.setVisibility(View.VISIBLE);
             llLogInForm.setVisibility(View.VISIBLE);
             btnRegisterButton.setVisibility(View.VISIBLE);
+            btnInfoButton.setVisibility(View.INVISIBLE);
             btnCloudUpButton.setVisibility(View.INVISIBLE);
             btnCloudDownButton.setVisibility(View.INVISIBLE);
-            tvLoggedInUser.setVisibility(View.INVISIBLE);
             //Set label
             btnLogInButton.setText(R.string.parse_action_login);
         }
+    }
+
+    private void showHowToDialog(){
+        String title = "How to use the Cloud BackUp";
+        String text = "If you use the backup or restore function , you will informed by a toast (Notification at the bottom of the screen) if the task has been performed successfully." +
+                " Did you have a bad or no internet connection the app can´t give you a response. It is still trying to perform the backup or restore in the background.";
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle(title);
+        dialogBuilder.setMessage(text);
+        dialogBuilder.setPositiveButton("Got it!", new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = dialogBuilder.create(); dialog.show();
     }
 }
 

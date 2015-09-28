@@ -10,7 +10,7 @@
     <string name="parse_action_register_1">Sign Up</string>
     <string name="parse_action_cloud_up">Cloud BackUp</string>
     <string name="parse_action_cloud_down">Cloud Restore</string>
-    <string name="parse_action_info">Info</string>
+    <string name="parse_action_info">How to use the Cloud!</string>
 
     <string name="parse_loggedin_user">Hello [user], you are logged in.</string>
 

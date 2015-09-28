@@ -35,6 +35,7 @@ public class ParseBackUp {
         dbBackUp.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+                Toast.makeText(context, context.getString(R.string.toast_cloud_backup_success), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -48,18 +49,18 @@ public class ParseBackUp {
             public void done(ParseObject object, ParseException e) {
                 if (object == null) {
                     Log.d("score", "The getFirst request failed.");
-                    Toast.makeText(context, context.getString(R.string.toast_cloud_internet), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getString(R.string.toast_cloud_restore_internet), Toast.LENGTH_LONG).show();
                 } else {
                     ParseFile backUpFile = object.getParseFile("file");
                     try {
                         byte[] data = backUpFile.getData();
                         db.setDBByteArray(data);
-                        Toast.makeText(context, context.getString(R.string.toast_cloud_success), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.toast_cloud_restore_success), Toast.LENGTH_LONG).show();
                     } catch (ParseException e1) {
-                        Toast.makeText(context, context.getString(R.string.toast_cloud_fail), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.toast_cloud_restore_fail), Toast.LENGTH_LONG).show();
                         e1.printStackTrace();
                     } catch (IOException e1) {
-                        Toast.makeText(context, context.getString(R.string.toast_cloud_fail), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.toast_cloud_restore_fail), Toast.LENGTH_LONG).show();
                         e1.printStackTrace();
                     }
                 }
