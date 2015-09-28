@@ -44,7 +44,6 @@ public class ReminderService extends Service {
         resultIntent.putExtra("ListID", intent.getExtras().getInt("ListID"));
         resultIntent.putExtra("ListTitle", listTitle);
         resultIntent.putExtra("ListColor", intent.getExtras().getString("ListColor"));
-        resultIntent.putExtra("fromNotification", true);
         resultIntent.putExtra("ID", alarmID);
 
         PendingIntent openListItemActivity = PendingIntent.getActivity(this, alarmID, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);

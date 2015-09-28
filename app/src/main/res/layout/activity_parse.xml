@@ -112,7 +112,7 @@
             android:layout_height="25dp"
             android:layout_marginRight="227dp"
             android:background="@null"
-            android:text="@string/sd"
+            android:text="@string/parse_action_info"
             android:textColor="@color/grey"
             android:textStyle="bold" />
 

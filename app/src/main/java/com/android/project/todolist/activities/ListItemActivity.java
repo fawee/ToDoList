@@ -20,7 +20,7 @@ import com.android.project.todolist.communicator.DeleteNotifier;
 import com.android.project.todolist.comparators.ListItemCompAlphabet;
 import com.android.project.todolist.comparators.ListItemCompDone;
 import com.android.project.todolist.comparators.ListItemCompPriority;
-import com.android.project.todolist.dialogs.DeleteListItemDialog;
+import com.android.project.todolist.dialogs.DeleteDialog;
 import com.android.project.todolist.domain.ListItem;
 import com.android.project.todolist.persistence.ListRepository;
 import com.android.project.todolist.reminder.ReminderAlarm;
@@ -45,7 +45,6 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
     private Bundle extras;
     private int listID;
     private String listTitle, listColor;
-    private boolean notificationIntent;
 
     private ImageButton deleteListItemButton;
     private AdapterView.AdapterContextMenuInfo info;
@@ -72,7 +71,6 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         listID = extras.getInt("ListID");
         listTitle = extras.getString("ListTitle");
         listColor = extras.getString("ListColor");
-        notificationIntent = extras.getBoolean("fromNotification");
         Tools.currentListColor = Tools.getColor(listColor);
     }
 
@@ -103,23 +101,9 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         listItemAdapter = new ListItemAdapter(this, listItems);
         listView.setAdapter(listItemAdapter);
         registerForContextMenu(listView);
-        //Überprüft ob der Intent von der Notification ausgelöst wurde, wenn ja wird die ListItem-Eigenschaft "reminder" geupdatet
-        if (notificationIntent) {
-            updateListItem();
-        }
-    }
-
-    private void updateListItem() {
-        int listItemID = extras.getInt("ID");
-        for (int i = 0; i < listItems.size(); i++) {
-            if (listItems.get(i).getListItemID() == listItemID) {
-                listItems.get(i).setReminder(false);
-                listItems.set(i, listItems.get(i));
-            }
-        }
-        listItemAdapter.notifyDataSetChanged();
 
     }
+
 
     private void setDeleteButtonVisibility() {
         if (db.getNumOfListItems(listID, true) > 0) {
@@ -352,14 +336,15 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
 
     //Öffnet Delete Dialog
     private void deleteListItem() {
-        DeleteListItemDialog dialog = new DeleteListItemDialog();
-        dialog.show(getFragmentManager(), "DeleteListItemDialog");
+        DeleteDialog dialog = new DeleteDialog();
+        dialog.setMessage(getString(R.string.message));
+        dialog.show(getFragmentManager(), "DeleteDialog");
     }
 
 
     //Delete all ListItems which marked with the flag "isDone"
     @Override
-    public void onListItemsDeleted() {
+    public void onDeleted() {
         int numOfDeletedItems = 0;
         String message = " Item";
         if (deleteOption == 0) {
@@ -398,6 +383,8 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         Toast.makeText(getApplicationContext(), "Deleted " + numOfDeletedItems + message, Toast.LENGTH_SHORT).show();
 
     }
+
+
 
 
 }

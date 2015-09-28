@@ -21,7 +21,9 @@ import android.widget.ToggleButton;
 
 
 import com.android.project.todolist.R;
+import com.android.project.todolist.communicator.CancelNotifier;
 import com.android.project.todolist.communicator.Communicator;
+import com.android.project.todolist.dialogs.CancelDialog;
 import com.android.project.todolist.dialogs.DatePickerFragment;
 import com.android.project.todolist.dialogs.TimePickerFragment;
 import com.android.project.todolist.domain.ListItem;
@@ -32,12 +34,12 @@ import java.util.Calendar;
  * This class represents the Activity where you can customize your Item.
  */
 
-public class ListItemDetailActivity extends Activity implements Communicator, View.OnClickListener {
+public class ListItemDetailActivity extends Activity implements Communicator, View.OnClickListener, CancelNotifier {
 
     private ListItem listItemToEdit;
     private EditText title, dueDate, note, reminderDay, reminderTime;
     private TextView reminderDateTV, reminderTimeTV, dateTextView;
-    private Button addListItemButton;
+    private Button addListItemButton, cancelButton;
     private String listColor;
     private Spinner prioritySpinner;
     private ToggleButton reminder;
@@ -92,6 +94,7 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
         prioritySpinner = (Spinner) findViewById(R.id.addListItemMenuPriority);
 
         addListItemButton = (Button) findViewById(R.id.addListItemButton);
+        cancelButton = (Button) findViewById(R.id.addListItemActivityCancel);
 
         initReminderViews();
 
@@ -127,6 +130,7 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
         reminderDateTV.setTextColor(getResources().getColor(Tools.getColor(listColor)));
         reminderTimeTV.setTextColor(getResources().getColor(Tools.getColor(listColor)));
         addListItemButton.setTextColor(getResources().getColor(Tools.getColor(listColor)));
+        cancelButton.setTextColor(getResources().getColor(Tools.getColor(listColor)));
 
 
         //Farbe für die Edittext-Linie
@@ -217,6 +221,7 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
         reminderDay.setOnClickListener(this);
         reminderTime.setOnClickListener(this);
         addListItemButton.setOnClickListener(this);
+        cancelButton.setOnClickListener(this);
     }
 
     @Override
@@ -240,7 +245,36 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
             case R.id.addListItemButton:
                 createListItem();
                 break;
+
+            case R.id.addListItemActivityCancel:
+                openCancelDialog();
+                break;
         }
+    }
+
+    private void openCancelDialog() {
+        if(changesWereMade()) {
+            CancelDialog dialog = new CancelDialog();
+            dialog.show(getFragmentManager(), "CancelDialog");
+        } else {
+            quitActivity();
+        }
+
+    }
+
+    private void quitActivity() {
+        setResult(RESULT_CANCELED);
+        finish();
+    }
+
+    private boolean changesWereMade() {
+
+        if((!title.getText().toString().isEmpty()) || (!dueDate.getText().toString().isEmpty()) || (!note.getText().toString().isEmpty()) || (!reminderDay.getText().toString().isEmpty()) || (!reminderTime.getText().toString().isEmpty())) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     @Override
@@ -320,6 +354,7 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
             }
             else if(listItemReminderDay.equals("") || listItemReminderTime.equals("")) {
                 completeInputs = false;
+                setReminderError();
                 Toast.makeText(getApplicationContext(), getString(R.string.toast_reminder_fail), Toast.LENGTH_SHORT).show();
 
             }
@@ -327,8 +362,7 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
                 setReminderDate();
                 if(!isValidReminderDate()) {
                     completeInputs = false;
-                    reminderDay.setError("");
-                    reminderTime.setError("");
+                    setReminderError();
                     Toast.makeText(getApplicationContext(), getString(R.string.toast_reminder_past), Toast.LENGTH_SHORT).show();
                 } else {
                     listItemToEdit.setReminderDate(listItemReminderDay + " " + listItemReminderTime);
@@ -347,6 +381,10 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
             }
             sendDataToSubMenu();
         }
+    }
+    private void setReminderError() {
+        reminderDay.setError("");
+        reminderTime.setError("");
     }
 
     private boolean isValidReminderDate() {
@@ -415,5 +453,10 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
     private void showDatePickerDialog() {
         DialogFragment dateFragment = new DatePickerFragment();
         dateFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    @Override
+    public void onCancelPressed() {
+        quitActivity();
     }
 }

@@ -8,33 +8,31 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.android.project.todolist.R;
-import com.android.project.todolist.communicator.DeleteNotifier;
+import com.android.project.todolist.communicator.CancelNotifier;
 
-/**
- * This class represents a Dialog, which asks, if you really want to delete the Items.
- */
 
-public class DeleteListItemDialog extends DialogFragment {
+public class CancelDialog extends DialogFragment {
 
-    private DeleteNotifier deleteNotifier;
+    private CancelNotifier cancelNotifier;
+
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        deleteNotifier = (DeleteNotifier) activity;
+        cancelNotifier = (CancelNotifier) activity;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
-        builder.setMessage(R.string.message)
-                .setPositiveButton(R.string.action_yes, new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.dialog_cancelMessage)
+                .setPositiveButton(R.string.dialog_cancelYes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteNotifier.onListItemsDeleted();
+                        cancelNotifier.onCancelPressed();
                     }
                 })
-                .setNegativeButton(R.string.action_no, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.dialog_cancelNo, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
                     }

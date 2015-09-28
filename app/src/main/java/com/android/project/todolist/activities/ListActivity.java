@@ -15,8 +15,10 @@ import android.widget.TimePicker;
 
 
 import com.android.project.todolist.communicator.Communicator;
+import com.android.project.todolist.communicator.DeleteNotifier;
 import com.android.project.todolist.comparators.ListCompAlphabet;
 import com.android.project.todolist.comparators.ListCompMostItems;
+import com.android.project.todolist.dialogs.DeleteDialog;
 import com.android.project.todolist.dialogs.DialogAddListObject;
 import com.android.project.todolist.domain.ListObject;
 import com.android.project.todolist.adapter.ListObjectAdapter;
@@ -30,13 +32,13 @@ import java.util.Collections;
  * This class represents the Home-Activity, where all the created Lists are displayed.
  */
 
-public class ListActivity extends ActionBarActivity implements Communicator, AdapterView.OnItemClickListener {
+public class ListActivity extends ActionBarActivity implements Communicator, DeleteNotifier, AdapterView.OnItemClickListener {
 
     private GridView main_menu_gridView;
     private ArrayList<ListObject> listObjects;
     private ListObjectAdapter listObjectAdapter;
-    private ListObject listObject;
     private ListRepository db;
+    private int selectedListObject;
 
     private static final int REQUEST_CODE_OPEN_SUBMENU = 0;
 
@@ -78,20 +80,24 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
+        selectedListObject = info.position;
         switch (item.getItemId()){
             case R.id.list_FloatingMenu_delete:
-                db.removeList(listObjects.get(info.position));
-                listObjects.remove(info.position);
-                listObjectAdapter.notifyDataSetChanged();
+                showDeleteDialog();
                 break;
             case R.id.list_FloatingMenu_Edit:
-                editListObject(info.position);
+                editListObject(selectedListObject);
                 break;
             default:
                 return super.onContextItemSelected(item);
         }
         return true;
+    }
+
+    private void showDeleteDialog() {
+        DeleteDialog deleteDialog = new DeleteDialog();
+        deleteDialog.setMessage(getString(R.string.messageList));
+        deleteDialog.show(getFragmentManager(), "ListDeleteDialog");
     }
 
     // Inflate the menu; this adds items to the action bar if it is present.
@@ -110,8 +116,6 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
         int id = item.getItemId();
 
         switch (id) {
-            //case R.id.action_settings:
-            //    return true;
             
             case R.id.action_sortAlphabetically:
                 sortListsAlphabetically();
@@ -221,5 +225,13 @@ public class ListActivity extends ActionBarActivity implements Communicator, Ada
             initArrayList();
             initUI();
         }
+    }
+
+
+    @Override
+    public void onDeleted() {
+        db.removeList(listObjects.get(selectedListObject));
+        listObjects.remove(selectedListObject);
+        listObjectAdapter.notifyDataSetChanged();
     }
 }

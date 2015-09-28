@@ -3,6 +3,7 @@ package com.android.project.todolist.persistence;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.android.project.todolist.R;
 import com.android.project.todolist.log.Log;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -47,18 +48,18 @@ public class ParseBackUp {
             public void done(ParseObject object, ParseException e) {
                 if (object == null) {
                     Log.d("score", "The getFirst request failed.");
-                    Toast.makeText(context, "Cloud Restore not possible. Check your internet connection.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getString(R.string.toast_cloud_internet), Toast.LENGTH_LONG).show();
                 } else {
                     ParseFile backUpFile = object.getParseFile("file");
                     try {
                         byte[] data = backUpFile.getData();
                         db.setDBByteArray(data);
-                        Toast.makeText(context, "Cloud Restore successful.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.toast_cloud_success), Toast.LENGTH_LONG).show();
                     } catch (ParseException e1) {
-                        Toast.makeText(context, "Cloud Restore not possible. Something went wrong.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.toast_cloud_fail), Toast.LENGTH_LONG).show();
                         e1.printStackTrace();
                     } catch (IOException e1) {
-                        Toast.makeText(context, "Cloud Restore not possible. Something went wrong.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.toast_cloud_fail), Toast.LENGTH_LONG).show();
                         e1.printStackTrace();
                     }
                 }

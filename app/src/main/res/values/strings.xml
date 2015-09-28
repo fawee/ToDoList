@@ -41,17 +41,25 @@
     <string name="action_sortDate">Sort: Date</string>
     <string name="action_sortDone">Sort: Undone Items</string>
 
-    <!--- Strings for DeleteListItemDialog  -->
+    <!--- Strings for Dialogs -->
     <string name="message">Are you sure you want to delete selected Items?</string>
+    <string name="messageList">Are you sure you want to delete selected List?</string>
     <string name="action_yes">Yes</string>
     <string name="action_no">No</string>
+    <string name="addListItemMenu_cancel">Cancel</string>
+    <string name="dialog_cancelMessage">You have some unsaved changes. Are you sure you want to leave this page?</string>
+    <string name="dialog_cancelYes">Leave this Page</string>
+    <string name="dialog_cancelNo">Stay on this Page</string>
+
+
+    <!--- Strings for Toast Messages  -->
     <string name="toast_register_fail">Registration was not successful.</string>
     <string name="toast_reminder_fail">Can\'t set Reminder: Date or Time missing</string>
     <string name="toast_reminder_past">Can\'t set Reminder in the past</string>
     <string name="toast_title_fail">Title is missing</string>
-
-
-    <!--- Strings for Toast Messages  -->
+    <string name="toast_cloud_success">Cloud Restore successful.</string>
+    <string name="toast_cloud_fail">Cloud Restore not possible. Something went wrong.</string>
+    <string name="toast_cloud_internet">Cloud Restore not possible. Check your internet connection.</string>
 
 
 </resources>
