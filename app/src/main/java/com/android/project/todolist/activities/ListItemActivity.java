@@ -290,11 +290,6 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
         }
     }
 
-
-
-
-
-    //todo speichern
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (!listItems.get(position).getIsDone()) {
@@ -306,7 +301,7 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
             listView.setItemChecked(position, false);
 
         }
-        int tmp = db.updateListItem(listItems.get(position));
+        db.updateListItem(listItems.get(position));
         for (int i = 0; i < listItems.size(); i++) {
             if (listItems.get(i).getListItemID() == listItems.get(position).getListItemID()) {
                 listItems.set(i, listItems.get(position));

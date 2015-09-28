@@ -7,7 +7,10 @@ import android.view.inputmethod.InputMethodManager;
 import com.android.project.todolist.R;
 
 /**
- * This class is just used for getting the correct color in different activities.
+ * This class is just used for some little Helper-Fuctions, whiche are used on different spots in the code.
+ * Functions are used for
+ * - getting the correct color in different activities.
+ * - hide the keyboard
  */
 
 public class Tools {

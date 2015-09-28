@@ -35,9 +35,6 @@ public class ListRepository  {
     public static final String KEY_List_Title = "Lst_Title";
     public static final String KEY_List_Colour = "Lst_Colour";
 
-//    public static final int COLUMN_TASK_INDEX = 1;
-//    public static final int COLUMN_DATE_INDEX = 2;
-
     public static final String KEY_ListItem_ID = "LstItem_ID";
     public static final String KEY_ListItem_Title = "LstItem_Title";
     public static final String KEY_ListItem_Note = "LstItem_Note";
@@ -48,9 +45,6 @@ public class ListRepository  {
     public static final String KEY_ListItem_ReminderDate = "LstItem_ReminderDate";
     public static final String KEY_ListItem_List_ID = "LstItem_List_ID";
 
-//    //Indexe noch setzen
-//    public static final int COLUMN_TASK_INDEX = 1;
-//    public static final int COLUMN_DATE_INDEX = 2;
     private Context context;
     private ToDoDBOpenHelper dbHelper;
     public String dbPath;
@@ -165,8 +159,7 @@ public class ListRepository  {
         cv.put(KEY_ListItem_isDone, item.getIsDone());
         cv.put(KEY_ListItem_reminder, item.getReminder());
         cv.put(KEY_ListItem_ReminderDate, item.getReminderDate());
-        int tmp = db.update(TABLE_tblListItem, cv, KEY_ListItem_ID + " = " + item.getListItemID(), null);
-        return tmp;
+        return db.update(TABLE_tblListItem, cv, KEY_ListItem_ID + " = " + item.getListItemID(), null);
     }
 
     public ArrayList<ListItem> getItemsOfList(int listID) {
@@ -224,7 +217,6 @@ public class ListRepository  {
     }
 
     public byte[] getDBByteArray(){
-
         File file = new File(dbPath);
         int size = (int) file.length();
         byte[] data = new byte[size];
@@ -233,21 +225,20 @@ public class ListRepository  {
             buf.read(data, 0, data.length);
             buf.close();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        open();
         return data;
     }
 
     public void setDBByteArray(byte[] data) throws IOException {
-
         FileOutputStream backUp = null;
             backUp = new FileOutputStream(dbPath);
             backUp.write(data);
-            backUp.close();
+        backUp.close();
+        open();
     }
 
     private class ToDoDBOpenHelper extends SQLiteOpenHelper {

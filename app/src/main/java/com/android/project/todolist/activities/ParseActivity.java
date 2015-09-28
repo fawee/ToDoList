@@ -2,7 +2,6 @@ package com.android.project.todolist.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -12,8 +11,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,7 +27,7 @@ import com.parse.ParseUser;
 import static com.android.project.todolist.tools.Tools.hideKeyboard;
 
 /**
- * A login screen that offers login via email/password.
+ * This class represents the Parse-Activity, where the user can login to use the Cloude-BackUp
  */
 public class ParseActivity extends ActionBarActivity{
 

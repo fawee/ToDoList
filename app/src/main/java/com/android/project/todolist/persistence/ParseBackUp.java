@@ -15,6 +15,9 @@ import com.parse.SaveCallback;
 
 import java.io.IOException;
 
+/**
+ * This class is used as interface between the ParseActivity and the SQL-Database, to manage the BackUp and Restore
+ */
 
 public class ParseBackUp {
 
@@ -41,7 +44,6 @@ public class ParseBackUp {
     }
 
     public void downloadBackUp(){
-
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DBBackUp");
         query.whereEqualTo("User", ParseUser.getCurrentUser());
         query.orderByDescending("createdAt");
@@ -49,7 +51,7 @@ public class ParseBackUp {
             public void done(ParseObject object, ParseException e) {
                 if (object == null) {
                     Log.d("score", "The getFirst request failed.");
-                    Toast.makeText(context, context.getString(R.string.toast_cloud_restore_internet), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getString(R.string.toast_cloud_restore_nobackup), Toast.LENGTH_LONG).show();
                 } else {
                     ParseFile backUpFile = object.getParseFile("file");
                     try {

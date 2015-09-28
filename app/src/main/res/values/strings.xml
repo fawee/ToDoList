@@ -60,7 +60,7 @@
     <string name="toast_cloud_backup_success">Cloud BackUp successful.</string>
     <string name="toast_cloud_restore_success">Cloud Restore successful.</string>
     <string name="toast_cloud_restore_fail">Cloud Restore not possible. Something went wrong.</string>
-    <string name="toast_cloud_restore_internet">Cloud Restore not possible. Check your internet connection.</string>
+    <string name="toast_cloud_restore_nobackup">Cloud Restore not possible. May there is no BackUp in the Cloud.</string>
 
 
 </resources>
