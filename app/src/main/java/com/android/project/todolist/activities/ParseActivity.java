@@ -239,9 +239,9 @@ public class ParseActivity extends ActionBarActivity{
     }
 
     private void showHowToDialog(){
-        String title = "How to use the Cloud BackUp";
-        String text = "If you use the backup or restore function , you will informed by a toast (Notification at the bottom of the screen) if the task has been performed successfully." +
-                " Did you have a bad or no internet connection the app can´t give you a response. It is still trying to perform the backup or restore in the background.";
+        String title = getString(R.string.parse_howto);
+        String text = getString(R.string.parse_howtoinfo1) +
+                getString(R.string.parse_howtoinfo1_continue);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle(title);
         dialogBuilder.setMessage(text);

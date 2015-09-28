@@ -10,9 +10,13 @@
     <string name="parse_action_register_1">Sign Up</string>
     <string name="parse_action_cloud_up">Cloud BackUp</string>
     <string name="parse_action_cloud_down">Cloud Restore</string>
-    <string name="parse_action_info">How to use the Cloud!</string>
+    <string name="parse_action_info">How to use the Cloud?</string>
 
     <string name="parse_loggedin_user">Hello [user], you are logged in.</string>
+    <string name="parse_howto">How to use the Cloud BackUp</string>
+    <string name="parse_howtoinfo1">If you use the backup or restore function, you will be informed by a toast (Notification at the bottom of the screen) if the task has been performed successfully.</string>
+    <string name="parse_howtoinfo1_continue">" If you have a bad or no internet connection at all, the app can´t give you a response. It is still trying to perform the backup or the restore of the data in the background."</string>
+
 
     <string name="parse_error_invalid_email">This password is incorrect</string>
     <string name="parse_error_invalid_password">This password is incorrect</string>
