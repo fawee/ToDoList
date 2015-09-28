@@ -115,11 +115,11 @@ public class ParseRegisterActivity extends ActionBarActivity {
                 if (e == null) {
                     // Hooray! Let them use the app now.
                     Log.d("Signed Up");
-                    Toast.makeText(getApplicationContext(), "Your Sigh In were successful. Now you can login.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_register_success), Toast.LENGTH_LONG).show();
                     finish();
                 } else {
                     Log.d(String.valueOf(e));
-                    Toast.makeText(getApplicationContext(), "Your Sigh In were not successful.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_register_fail), Toast.LENGTH_LONG).show();
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
                 }

@@ -47,18 +47,18 @@ public class ParseBackUp {
             public void done(ParseObject object, ParseException e) {
                 if (object == null) {
                     Log.d("score", "The getFirst request failed.");
-                    Toast.makeText(context, "Resotre not possible. Check your internet connection.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Cloud Restore not possible. Check your internet connection.", Toast.LENGTH_LONG).show();
                 } else {
                     ParseFile backUpFile = object.getParseFile("file");
                     try {
                         byte[] data = backUpFile.getData();
                         db.setDBByteArray(data);
-                        Toast.makeText(context, "Restore successful.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Cloud Restore successful.", Toast.LENGTH_LONG).show();
                     } catch (ParseException e1) {
-                        Toast.makeText(context, "Restore not possible. Something went wrong.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Cloud Restore not possible. Something went wrong.", Toast.LENGTH_LONG).show();
                         e1.printStackTrace();
                     } catch (IOException e1) {
-                        Toast.makeText(context, "Restore not possible. Something went wrong.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Cloud Restore not possible. Something went wrong.", Toast.LENGTH_LONG).show();
                         e1.printStackTrace();
                     }
                 }

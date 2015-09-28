@@ -18,6 +18,7 @@ import com.android.project.todolist.R;
 import com.android.project.todolist.adapter.ListItemAdapter;
 import com.android.project.todolist.communicator.DeleteNotifier;
 import com.android.project.todolist.comparators.ListItemCompAlphabet;
+import com.android.project.todolist.comparators.ListItemCompDone;
 import com.android.project.todolist.comparators.ListItemCompPriority;
 import com.android.project.todolist.dialogs.DeleteListItemDialog;
 import com.android.project.todolist.domain.ListItem;
@@ -183,11 +184,21 @@ public class ListItemActivity extends ActionBarActivity implements AdapterView.O
                 sortListItemsDate();
                 break;
 
+            case R.id.action_sortDone:
+                sortListItemsDone();
+                break;
+
+
             case R.id.action_addListItem:
                 addListItem();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sortListItemsDone() {
+        Collections.sort(listItems, new ListItemCompDone());
+        listItemAdapter.notifyDataSetChanged();
     }
 
     private void sortListItemsDate() {

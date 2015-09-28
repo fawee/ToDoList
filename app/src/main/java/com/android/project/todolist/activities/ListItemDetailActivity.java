@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -125,6 +126,8 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
         remindMe.setTextColor(getResources().getColor(Tools.getColor(listColor)));
         reminderDateTV.setTextColor(getResources().getColor(Tools.getColor(listColor)));
         reminderTimeTV.setTextColor(getResources().getColor(Tools.getColor(listColor)));
+        addListItemButton.setTextColor(getResources().getColor(Tools.getColor(listColor)));
+
 
         //Farbe für die Edittext-Linie
         title.getBackground().setColorFilter(getResources().getColor(Tools.getColor(listColor)), PorterDuff.Mode.SRC_ATOP);
@@ -193,8 +196,10 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    reminder.setTextColor(getResources().getColor(Tools.getColor(listColor)));
                     showReminderOptions();
                 } else {
+                    reminder.setTextColor(getResources().getColor(R.color.dark_background));
                     hideReminderOptions();
                     clearInputs();
                 }
@@ -315,14 +320,16 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
             }
             else if(listItemReminderDay.equals("") || listItemReminderTime.equals("")) {
                 completeInputs = false;
-                Toast.makeText(getApplicationContext(), "Can't set Reminder: Date or Time missing", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_reminder_fail), Toast.LENGTH_SHORT).show();
 
             }
             else {
                 setReminderDate();
                 if(!isValidReminderDate()) {
                     completeInputs = false;
-                    Toast.makeText(getApplicationContext(), "Can't set Reminder in the past", Toast.LENGTH_SHORT).show();
+                    reminderDay.setError("");
+                    reminderTime.setError("");
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_reminder_past), Toast.LENGTH_SHORT).show();
                 } else {
                     listItemToEdit.setReminderDate(listItemReminderDay + " " + listItemReminderTime);
                     completeInputs = true;
@@ -330,8 +337,7 @@ public class ListItemDetailActivity extends Activity implements Communicator, Vi
             }
 
         } else {
-            title.requestFocus();
-            Toast.makeText(getApplicationContext(), "Title is missing", Toast.LENGTH_SHORT).show();
+            title.setError("Title is missing");
         }
 
         if(completeInputs) {

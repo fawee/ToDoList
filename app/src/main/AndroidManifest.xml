@@ -40,13 +40,13 @@
 
         <activity
             android:name=".activities.ParseActivity"
-            android:label="@string/title_activity_parse"
+            android:label="@string/actionbar_parse_activity"
             android:parentActivityName=".activities.ListActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
             android:name=".activities.ParseRegisterActivity"
-            android:label="@string/title_activity_parse_register"
+            android:label="@string/actionbar_parse_register_activity"
             android:parentActivityName=".activities.ParseActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <meta-data

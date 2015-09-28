@@ -7,13 +7,21 @@
         app:showAsAction="never"
         android:title="@string/action_sortAlphabetically" />
 
+    <item android:id="@+id/action_sortDate"
+        app:showAsAction="never"
+        android:title="@string/action_sortDate" />
+
     <item android:id="@+id/action_sortPriority"
         app:showAsAction="never"
         android:title="@string/action_sortPriority" />
 
-    <item android:id="@+id/action_sortDate"
+    <item android:id="@+id/action_sortDone"
         app:showAsAction="never"
-        android:title="@string/action_sortDate" />
+        android:title="@string/action_sortDone" />
+
+
+
+
 
     <item
         android:id="@+id/action_addListItem"

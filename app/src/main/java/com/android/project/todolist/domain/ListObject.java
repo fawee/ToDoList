@@ -33,16 +33,13 @@ public class ListObject {
         return numOfListItems;
     }
 
-    public void setNumOfListItems(int numOfListItems) {
-        this.numOfListItems = numOfListItems;
-    }
 
     public String getColour() {
         return colour;
     }
 
     public void setColour(String colour) {
-        this.colour= colour;
+        this.colour = colour;
     }
 
     public int getListID() {
@@ -50,7 +47,7 @@ public class ListObject {
     }
 
     public void setListID(int listID) {
-        this.listID= listID;
+        this.listID = listID;
     }
 
 

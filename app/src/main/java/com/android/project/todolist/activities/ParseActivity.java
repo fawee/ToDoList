@@ -36,7 +36,6 @@ public class ParseActivity extends ActionBarActivity{
     private EditText etPasswordView;
 
     private TextView tvLoggedInUser;
-    private TextView tvOr;
 
     private Button btnLogInButton;
     private Button btnRegisterButton;
@@ -171,11 +170,11 @@ public class ParseActivity extends ActionBarActivity{
                     currentUser = ParseUser.getCurrentUser();
                     Log.d("Loged In");
                     switchLook();
-                    Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_login_successful), Toast.LENGTH_LONG).show();
                     // Hooray! The user is logged in.
                 } else {
                     Log.d(String.valueOf(e));
-                    Toast.makeText(getApplicationContext(), "Login not possible. Check your username, password and internet connection.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_login_fail), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -186,7 +185,7 @@ public class ParseActivity extends ActionBarActivity{
         loggedIn = false;
         currentUser = ParseUser.getCurrentUser();
         switchLook();
-        Toast.makeText(getApplicationContext(), "Logout successful.", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.toast_logout_successful), Toast.LENGTH_LONG).show();
     }
 
     private void switchLook() {

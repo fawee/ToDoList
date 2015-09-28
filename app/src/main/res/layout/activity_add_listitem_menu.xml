@@ -99,6 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textOff="@string/action_no"
+            android:textColor="@color/dark_background"
             android:textOn="@string/action_yes"
             android:id="@+id/reminderButton" />
     </LinearLayout>

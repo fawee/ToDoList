@@ -129,14 +129,12 @@ public class ListItem implements Comparable<ListItem> {
         this.priority = priority;
     }
 
-    public void setDueDate(long dueDate) { this.dueDate = dueDate; }
 
     public void setDueDate(String Date){
         if (Date.equals("")){
             this.dueDate=0;
         }
         else {
-            //DateFormat formatter  = new SimpleDateFormat(DATE_FORMAT);
             DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
             Date date = null;
             try {
@@ -156,16 +154,11 @@ public class ListItem implements Comparable<ListItem> {
         this.reminder = reminder;
     }
 
-    public void setReminderDate(long reminderDate) {
-        this.reminderDate = reminderDate;
-    }
-
     public void setReminderDate(String Date){
         if (Date.equals("")){
             this.reminderDate=0;
         }
         else{
-            //DateFormat formatter  = new SimpleDateFormat(DATE_FORMAT);
             DateFormat formatter  = new SimpleDateFormat("dd.MM.yyyy HH:mm");
             Date date = null;
             try {
@@ -179,7 +172,6 @@ public class ListItem implements Comparable<ListItem> {
 
     @Override
     public int compareTo(ListItem listItem) {
-        //return (int) (this.dueDate.getTimeInMillis() - listItem.dueDate.getTimeInMillis());
         return (int) (this.dueDate - listItem.dueDate);
     }
 }

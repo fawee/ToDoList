@@ -1,53 +1,57 @@
 <resources>
-    <string name="app_name">ToDoList</string>
+    <!--- Strings for Actionbar Title  -->
+    <string name="app_name">What ToDo?</string>
+    <string name="actionbar_parse_register_activity">Sign up</string>
+    <string name="actionbar_parse_activity">Cloud</string>
 
-    <string name="spinnerBlue">blue</string>
-    <string name="spinnerWhite">white</string>
-    <string name="spinnerRed">red</string>
-    <string name="spinnerDeep_purple">deep_purple</string>
-    <string name="spinnerLime">lime</string>
-    <string name="spinnerYellow">yellow</string>
-    <string name="spinnerGreen">green</string>
 
-    <string name="action_settings">Settings</string>
+    <!--- Strings for DialogAddListObject  -->
     <string name="dialog_title_add_listobject">Customize your List</string>
     <string name="dialog_hint_title_listobject">Name of your List…</string>
 
+    <!--- Strings for ListItemDetailActivity  -->
     <string name="addListItemMenu_Title">Title</string>
     <string name="addListItemMenu_Date">Date</string>
     <string name="addListItemMenu_Date_hint">Set Date here</string>
     <string name="addListItemMenu_Note">Note</string>
     <string name="addListItemMenu_Note_hint">Add a Note here</string>
     <string name="addListItemMenu_Priority">Priority</string>
-    <string name="addListItemActivity_AddButton">Ok</string>
-
+    <string name="addListItemActivity_AddButton">OK</string>
+    <string name="addListItemActivity_RemindMe">Remind me?</string>
     <string name="addListItemActivityTitle_hint">Set Title here</string>
     <string name="addListItemActivityReminder_Date_hint">Set Reminder Date here</string>
     <string name="addListItemActivityReminder_Time_hint">Set Reminder Time here</string>
     <string name="addListItemActivityReminder_Time">Time</string>
 
-
+    <!--- String Array for Priority Spinner in EditListItemActivity  -->
     <string-array name="addListItemMenu_Priority_Spinner">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
 
+    <!--- Strings for Floating Menu  -->
     <string name="FloatingMenu_Delete">Löschen</string>
     <string name="FloatingMenu_Edit">Bearbeiten</string>
-    <string name="FloatingMenu_IsDone">Erledigt</string>
-    <string name="addListItemActivity_RemindMe">Remind me?</string>
 
-    <string name="blub">blub</string>
-
-
+    <!--- Strings for sort actions  -->
     <string name="action_sortAlphabetically">Sort: A-Z</string>
     <string name="action_sortMostItems">Sort: Most Items</string>
     <string name="action_sortPriority">Sort: Priority</string>
     <string name="action_sortDate">Sort: Date</string>
+    <string name="action_sortDone">Sort: Undone Items</string>
 
-    <!--- DeleteListItemDialog  -->
+    <!--- Strings for DeleteListItemDialog  -->
     <string name="message">Are you sure you want to delete selected Items?</string>
     <string name="action_yes">Yes</string>
     <string name="action_no">No</string>
+    <string name="toast_register_fail">Registration was not successful.</string>
+    <string name="toast_reminder_fail">Can\'t set Reminder: Date or Time missing</string>
+    <string name="toast_reminder_past">Can\'t set Reminder in the past</string>
+    <string name="toast_title_fail">Title is missing</string>
+
+
+    <!--- Strings for Toast Messages  -->
+
+
 </resources>

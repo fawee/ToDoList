@@ -56,11 +56,11 @@
     <Button
         android:id="@+id/register_button"
         style="?android:textAppearanceSmall"
-        android:background="@color/blue"
+        android:background="@color/button_blue"
         android:layout_width="254dp"
         android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/parse_action_register_2"
+        android:text="@string/parse_action_register_1"
         android:textStyle="bold" />
 </LinearLayout>

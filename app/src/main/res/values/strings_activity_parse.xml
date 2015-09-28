@@ -1,21 +1,27 @@
 <resources>
-    <string name="title_activity_parse">ParseLogin</string>
-    <string name="title_activity_parse_register">ParseRegister</string>
 
+    <!--- Strings for Parse Activity  -->
     <string name="parse_prompt_user">     Name</string>
     <string name="parse_prompt_password">     Password</string>
+
     <string name="parse_action_login">Login</string>
     <string name="parse_action_logout">Logout</string>
     <string name="parse_action_login_short">Sign in</string>
     <string name="parse_action_register_1">Sign Up</string>
-    <string name="parse_action_register_2">Sign Up</string>
     <string name="parse_action_cloud_up">Cloud BackUp</string>
     <string name="parse_action_cloud_down">Cloud Restore</string>
+    <string name="parse_action_info">Info</string>
 
     <string name="parse_loggedin_user">Hello [user], you are logged in.</string>
 
     <string name="parse_error_invalid_email">This password is incorrect</string>
     <string name="parse_error_invalid_password">This password is incorrect</string>
-    <string name="parse_error_incorrect_password">This password is incorrect</string>
     <string name="parse_error_field_required">This field is required</string>
+
+    <!--- Strings for Parse Activity Toasts  -->
+    <string name="toast_login_successful">Login successful.</string>
+    <string name="toast_login_fail">Login not possible. Check your username, password and internet connection.</string>
+    <string name="toast_logout_successful">Logout successful.</string>
+    <string name="toast_register_success">Registration was successful</string>
+
 </resources>

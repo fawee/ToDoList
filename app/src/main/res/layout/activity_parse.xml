@@ -10,72 +10,74 @@
         android:background="@color/dark_background"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/parse_loggedin_form"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:background="@color/button_blue"
-        android:orientation="vertical"
-        android:padding="2dp">
-
-        <TextView
-            android:id="@+id/parse_tv_LoggedInUser"
-            android:layout_width="match_parent"
-            android:textColor="@color/white"
+        <LinearLayout
+            android:id="@+id/parse_loggedin_form"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/parse_loggedin_user" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/parse_login_form"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:background="@color/button_blue"
-        android:orientation="vertical"
-        android:padding="2dp">
-
-        <EditText
-            android:id="@+id/user_login"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:background="@color/white"
-            android:hint="@string/parse_prompt_user"
-            android:inputType="textPersonName"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColorHint="@color/grey"
-            android:textSize="20sp" />
+            android:layout_marginTop="40dp"
+            android:background="@color/button_blue"
+            android:orientation="vertical"
+            android:padding="2dp">
 
-        <View
-            android:layout_width="250dp"
-            android:layout_height="1dp"
-            android:background="@color/button_blue" />
+            <TextView
+                android:id="@+id/parse_tv_LoggedInUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/parse_loggedin_user"
+                android:textColor="@color/white" />
 
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/password_register"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
+        <LinearLayout
+            android:id="@+id/parse_login_form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@color/white"
-            android:hint="@string/parse_prompt_password"
-            android:imeActionId="@+id/login"
-            android:imeActionLabel="@string/parse_action_login_short"
-            android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColorHint="@color/grey"
-            android:textSize="20sp" />
+            android:layout_marginTop="40dp"
+            android:background="@color/button_blue"
+            android:orientation="vertical"
+            android:padding="2dp">
+
+            <EditText
+                android:id="@+id/user_login"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/white"
+                android:hint="@string/parse_prompt_user"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColorHint="@color/grey"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="250dp"
+                android:layout_height="1dp"
+                android:background="@color/button_blue" />
 
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/password_register"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/white"
+                android:hint="@string/parse_prompt_password"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/parse_action_login_short"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColorHint="@color/grey"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/login_button"
@@ -89,6 +91,7 @@
             android:textColor="@color/white"
             android:textStyle="bold" />
 
+
         <Button
             android:id="@+id/open_register_activity_button"
             style="?android:textAppearanceSmall"
@@ -101,6 +104,18 @@
             android:textColor="@color/grey"
             android:textStyle="bold" />
 
+        <Button
+            android:id="@+id/open_info"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_marginTop="70dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="227dp"
+            android:background="@null"
+            android:text="@string/sd"
+            android:textColor="@color/grey"
+            android:textStyle="bold" />
+
 
         <Button
 
@@ -109,7 +124,7 @@
             android:layout_width="254dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="85dp"
+            android:layout_marginTop="10dp"
             android:background="@color/button_blue"
             android:clickable="false"
             android:drawableStart="@drawable/ic_cloud_upload"
@@ -126,8 +141,8 @@
             android:layout_marginTop="16dp"
             android:background="@color/button_blue"
             android:clickable="false"
-            android:text="@string/parse_action_cloud_down"
             android:drawableStart="@drawable/ic_cloud_download"
+            android:text="@string/parse_action_cloud_down"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
